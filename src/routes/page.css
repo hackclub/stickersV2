@@ -7,18 +7,19 @@ html, body {
 .hero h1, h2 {
     color: white;
     font-style: italic;
-    -webkit-text-stroke: black 0.8rem;
+    -webkit-text-stroke: black 0.9rem;
     paint-order: stroke fill;
 }
 
 .hero h1 {
     margin: 0;
-    font-size: 10rem;
+    font-size: 13rem;
+    position: relative;
 }
 
 .hero h2 {
     margin-top: -1.5rem;
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: right;
     margin-right: 1rem;
 }
@@ -33,4 +34,24 @@ html, body {
     background-image:
         linear-gradient(to right, #313237 0.3rem, transparent 0.3rem),
         linear-gradient(to bottom, #313237 0.3rem, transparent 0.3rem);
+}
+
+.hero form {
+    width: 95%;
+}
+
+#email {
+    color: white;
+    background-color: #272832;
+    font-weight: bold;
+    font-style: italic;
+    width: 100%;
+    border: 0.3rem solid black;
+    font-size: 2.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 1.5rem;
+}
+
+#email:focus {
+    outline: none;
 }
