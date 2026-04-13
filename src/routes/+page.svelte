@@ -3,5 +3,8 @@
 </script>
 
 <div class="hero">
-    <h1>stickers</h1>
+    <div class="hero-title">
+        <h1>stickers</h1>
+        <h2>hack club</h2>
+    </div>
 </div>
