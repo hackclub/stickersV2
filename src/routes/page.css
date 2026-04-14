@@ -76,13 +76,15 @@ html, body {
     justify-content: center;
     height: 80vh;
     background-size: 5rem 5rem;
-    background-color: #272832;
+    background-color: #141318;
     background-image:
-        linear-gradient(to right, #313237 0.3rem, transparent 0.3rem),
-        linear-gradient(to bottom, #313237 0.3rem, transparent 0.3rem);
+        linear-gradient(to right, #1c1c20 0.3rem, transparent 0.3rem),
+        linear-gradient(to bottom, #1c1c20 0.3rem, transparent 0.3rem);
 }
 
 .hero form {
+    margin-top: 2.3rem;
+    height: 5.1rem;
     width: 100%;
     gap: 1rem;
     display: flex;
@@ -91,16 +93,20 @@ html, body {
 
 #email {
     font-family: "Phantom Sans";
-    color: black;
-    background-color: white;
-    /* font-weight: bold; */
-    /* font-style: italic; */
-    width: 75%;
-    border: 0.25rem solid black;
-    font-size: 2.5rem;
-    padding: 1rem 1.5rem;
-    border-radius: 1.5rem;
+    color: white;
+    background-color: #1d1c23;
+    width: 78%;
+    border: 0.2rem solid #37373c;
+    font-size: 2rem;
+    padding: 1.25rem 1.25rem;
+    border-radius: 99999999px;
 }
+
+::placeholder {
+  color: #37373c;
+  opacity: 1;
+}
+
 
 #email:focus {
     outline: none;
@@ -108,11 +114,16 @@ html, body {
 
 #submit {
     font-family: "Phantom Sans";
-    color: black;
-    background-color: white;
-    width: 25%;
-    border: 0.25rem solid black;
-    font-size: 2.5rem;
-    padding: 1rem 1.5rem;
-    border-radius: 1.5rem;
+    color: white;
+    background-color: #1d1c23;
+    width: 22%;
+    border: 0.2rem solid #37373c;
+    font-size: 2rem;
+    padding: 0.75rem 1rem;
+    border-radius: 99999999px;
+    transition: background-color 0.125s linear;
+}
+
+#submit:hover {
+    background-color: #24242c;
 }
