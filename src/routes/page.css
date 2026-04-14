@@ -64,10 +64,9 @@ html, body {
 }
 
 .hero h2 {
-    margin-top: clamp(-2rem, -1.2vw, -0.8rem);
+    margin: 0;
     font-size: clamp(1.5rem, 2vw, 3.5rem);
     text-align: right;
-    margin-right: clamp(0.5rem, 0.8vw, 1.5rem);
 }
 
 .hero {
@@ -84,6 +83,7 @@ html, body {
     background-image:
         linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
         linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
+    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 
 .sticker {
@@ -162,4 +162,28 @@ html, body {
 
 .steps div {
     font-size: clamp(1.2rem, 1.5vw, 2rem);
+}
+
+@media (max-width: 640px) {
+    .hero h1, h2 {
+        -webkit-text-stroke: black 0.2rem;
+    }
+
+    .hero h1 {
+        font-size: 13vw;
+    }
+
+    .hero h2 {
+        font-size: 4.5vw;
+    }
+
+    .steps {
+        flex-direction: column;
+        padding: 3rem 2rem;
+        gap: 1.5rem;
+    }
+
+    .steps div {
+        font-size: 1.1rem;
+    }
 }

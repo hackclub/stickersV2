@@ -41,19 +41,27 @@
         };
 
         const stickerEls = heroEl.querySelectorAll('.sticker') as NodeListOf<HTMLElement>;
+
+        // Compute every sticker's size in hero-percentage units upfront
+        const sizes = stickers.map((_, i) => {
+            const el = stickerEls[i];
+            if (!el) return { sW: 0, sH: 0 };
+            const r = el.getBoundingClientRect();
+            return {
+                sW: (r.width / heroRect.width) * 100,
+                sH: (r.height / heroRect.height) * 100,
+            };
+        });
+
+        const hitsZone = (x: number, y: number, sW: number, sH: number) =>
+            x < zone.right && x + sW > zone.left && y < zone.bottom && y + sH > zone.top;
+
+        // First pass: push stickers clear of the title zone (original logic)
         for (let i = 0; i < stickers.length; i++) {
             const sticker = stickers[i];
-            const el = stickerEls[i];
-            if (!el) continue;
+            const { sW, sH } = sizes[i];
 
-            const elRect = el.getBoundingClientRect();
-            const sW = (elRect.width / heroRect.width) * 100;
-            const sH = (elRect.height / heroRect.height) * 100;
-
-            const overlapsH = sticker.x < zone.right && sticker.x + sW > zone.left;
-            const overlapsV = sticker.y < zone.bottom && sticker.y + sH > zone.top;
-
-            if (overlapsH && overlapsV) {
+            if (hitsZone(sticker.x, sticker.y, sW, sH)) {
                 const centerX = sticker.x + sW / 2;
                 const zoneCenter = (zone.left + zone.right) / 2;
                 if (centerX < zoneCenter) {
@@ -62,6 +70,48 @@
                     sticker.x = Math.min(99 - sW, zone.right + pad);
                 }
             }
+        }
+
+        // Second pass: resolve sticker-sticker overlaps when space allows
+        type Box = { x: number; y: number; sW: number; sH: number };
+        const placed: Box[] = [];
+
+        for (let i = 0; i < stickers.length; i++) {
+            const sticker = stickers[i];
+            const { sW, sH } = sizes[i];
+
+            const hitsPlaced = (x: number, y: number) =>
+                placed.some(b => x < b.x + b.sW && x + sW > b.x && y < b.y + b.sH && y + sH > b.y);
+
+            const isOpen = (x: number, y: number) =>
+                x >= 0 && y >= 0 && x + sW <= 100 && y + sH <= 100 &&
+                !hitsZone(x, y, sW, sH) && !hitsPlaced(x, y);
+
+            if (hitsPlaced(sticker.x, sticker.y)) {
+                // Grid-search for the valid spot closest to the original position
+                let bestPos: { x: number; y: number } | null = null;
+                let bestDist = Infinity;
+
+                for (let gx = 0; gx <= 100 - sW; gx += 5) {
+                    for (let gy = 0; gy <= 100 - sH; gy += 5) {
+                        if (isOpen(gx, gy)) {
+                            const dist = Math.hypot(gx - sticker.x, gy - sticker.y);
+                            if (dist < bestDist) {
+                                bestDist = dist;
+                                bestPos = { x: gx, y: gy };
+                            }
+                        }
+                    }
+                }
+
+                if (bestPos) {
+                    sticker.x = bestPos.x;
+                    sticker.y = bestPos.y;
+                }
+                // No valid spot found → leave sticker in place (not enough space to spare)
+            }
+
+            placed.push({ x: sticker.x, y: sticker.y, sW, sH });
         }
 
         ready = true;
