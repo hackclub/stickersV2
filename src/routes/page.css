@@ -71,6 +71,8 @@ html, body {
 }
 
 .hero {
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +82,26 @@ html, body {
     background-image:
         linear-gradient(to right, #1c1c20 0.3rem, transparent 0.3rem),
         linear-gradient(to bottom, #1c1c20 0.3rem, transparent 0.3rem);
+}
+
+.sticker {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    border-radius: 0.75rem;
+    filter: none;
+    transition: filter 0.15s ease, transform 0.1s ease;
+    touch-action: none;
+}
+
+.sticker:hover {
+    filter: none;
+}
+
+.sticker.dragging {
+    cursor: grabbing;
+    filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.7));
+    transition: filter 0.15s ease, transform 0.1s ease;
 }
 
 .hero form {
