@@ -53,35 +53,37 @@ html, body {
     font-weight: 600;
     font-style: italic;
     color: white;
-    -webkit-text-stroke: black 0.8rem;
+    -webkit-text-stroke: black clamp(0.4rem, 0.65vw, 1.2rem);
     paint-order: stroke fill;
 }
 
 .hero h1 {
     margin: 0;
-    font-size: 13rem;
+    font-size: clamp(7rem, 11vw, 20rem);
     position: relative;
 }
 
 .hero h2 {
-    margin-top: -1.5rem;
-    font-size: 2.5rem;
+    margin-top: clamp(-2rem, -1.2vw, -0.8rem);
+    font-size: clamp(1.5rem, 2vw, 3.5rem);
     text-align: right;
-    margin-right: 1rem;
+    margin-right: clamp(0.5rem, 0.8vw, 1.5rem);
 }
 
 .hero {
+    --grid: clamp(3rem, 4vw, 7rem);
+    --grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80vh;
-    background-size: 5rem 5rem;
+    height: 100dvh;
+    background-size: var(--grid) var(--grid);
     background-color: #141318;
     background-image:
-        linear-gradient(to right, #1c1c20 0.3rem, transparent 0.3rem),
-        linear-gradient(to bottom, #1c1c20 0.3rem, transparent 0.3rem);
+        linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
+        linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
 }
 
 .sticker {
@@ -90,7 +92,7 @@ html, body {
     user-select: none;
     border-radius: 0.75rem;
     filter: none;
-    transition: filter 0.15s ease, transform 0.1s ease;
+    transition: filter 0.15s ease, transform 0.1s ease, opacity 0.3s ease;
     touch-action: none;
 }
 
@@ -105,10 +107,10 @@ html, body {
 }
 
 .hero form {
-    margin-top: 2.3rem;
-    height: 5.1rem;
+    margin-top: clamp(1.5rem, 2vw, 3rem);
+    height: clamp(3.5rem, 4.2vw, 6rem);
     width: 100%;
-    gap: 1rem;
+    gap: clamp(0.5rem, 0.8vw, 1.2rem);
     display: flex;
     justify-content: space-between;
 }
@@ -118,9 +120,9 @@ html, body {
     color: white;
     background-color: #1d1c23;
     width: 78%;
-    border: 0.2rem solid #37373c;
-    font-size: 2rem;
-    padding: 1.25rem 1.25rem;
+    border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+    font-size: clamp(1.2rem, 1.5vw, 2.5rem);
+    padding: clamp(0.8rem, 1vw, 1.5rem);
     border-radius: 99999999px;
 }
 
@@ -139,13 +141,25 @@ html, body {
     color: white;
     background-color: #1d1c23;
     width: 22%;
-    border: 0.2rem solid #37373c;
-    font-size: 2rem;
-    padding: 0.75rem 1rem;
+    border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+    font-size: clamp(1.2rem, 1.5vw, 2.5rem);
+    padding: clamp(0.5rem, 0.6vw, 1rem) clamp(0.6rem, 0.8vw, 1.2rem);
     border-radius: 99999999px;
     transition: background-color 0.125s linear;
 }
 
 #submit:hover {
     background-color: #24242c;
+}
+
+.steps {
+    color: black;
+    display: flex;
+    justify-content: center;
+    gap: clamp(2rem, 3vw, 5rem);
+    padding: clamp(4rem, 6vw, 10rem) clamp(2rem, 5vw, 8rem);
+}
+
+.steps div {
+    font-size: clamp(1.2rem, 1.5vw, 2rem);
 }
