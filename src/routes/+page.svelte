@@ -10,15 +10,16 @@
         rotation: number;
         size: number;
         z: number;
+        visible: boolean;
     };
 
     let stickers = $state<Sticker[]>([
-        { id: 1, src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', x: 13, y: 28, rotation: -15, size: 14, z: 1 },
-        { id: 2, src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', x: 78, y: 16, rotation: 12, size: 13, z: 2 },
-        { id: 3, src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', x: 22, y: 67, rotation: -8, size: 9, z: 3 },
-        { id: 4, src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', x: 72, y: 65, rotation: 20, size: 9, z: 4 },
-        { id: 5, src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', x: 58, y: 5, rotation: -5, size: 18, z: 5 },
-        { id: 6, src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', x: 32, y: 5, rotation: -5, size: 10, z: 6 },
+        { id: 1, src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', x: 13, y: 28, rotation: -15, size: 14, z: 1, visible: false },
+        { id: 2, src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', x: 78, y: 16, rotation: 12, size: 13, z: 2, visible: false },
+        { id: 3, src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', x: 22, y: 67, rotation: -8, size: 9, z: 3, visible: false },
+        { id: 4, src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', x: 72, y: 65, rotation: 20, size: 9, z: 4, visible: false },
+        { id: 5, src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', x: 58, y: 5, rotation: -5, size: 18, z: 5, visible: false },
+        { id: 6, src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', x: 32, y: 5, rotation: -5, size: 10, z: 6, visible: false },
     ]);
 
     let topZ = $state(7);
@@ -26,7 +27,6 @@
     let dragOffset = { x: 0, y: 0 };
     let heroEl: HTMLDivElement;
     let titleEl: HTMLElement;
-    let ready = $state(false);
 
     onMount(() => {
         const heroRect = heroEl.getBoundingClientRect();
@@ -56,7 +56,6 @@
         const hitsZone = (x: number, y: number, sW: number, sH: number) =>
             x < zone.right && x + sW > zone.left && y < zone.bottom && y + sH > zone.top;
 
-        // First pass: push stickers clear of the title zone (original logic)
         for (let i = 0; i < stickers.length; i++) {
             const sticker = stickers[i];
             const { sW, sH } = sizes[i];
@@ -72,23 +71,21 @@
             }
         }
 
-        // Second pass: resolve sticker-sticker overlaps when space allows
         type Box = { x: number; y: number; sW: number; sH: number };
-        const placed: Box[] = [];
+        const placedBoxes: Box[] = [];
 
         for (let i = 0; i < stickers.length; i++) {
             const sticker = stickers[i];
             const { sW, sH } = sizes[i];
 
             const hitsPlaced = (x: number, y: number) =>
-                placed.some(b => x < b.x + b.sW && x + sW > b.x && y < b.y + b.sH && y + sH > b.y);
+                placedBoxes.some((b: Box) => x < b.x + b.sW && x + sW > b.x && y < b.y + b.sH && y + sH > b.y);
 
             const isOpen = (x: number, y: number) =>
                 x >= 0 && y >= 0 && x + sW <= 100 && y + sH <= 100 &&
                 !hitsZone(x, y, sW, sH) && !hitsPlaced(x, y);
 
             if (hitsPlaced(sticker.x, sticker.y)) {
-                // Grid-search for the valid spot closest to the original position
                 let bestPos: { x: number; y: number } | null = null;
                 let bestDist = Infinity;
 
@@ -108,13 +105,17 @@
                     sticker.x = bestPos.x;
                     sticker.y = bestPos.y;
                 }
-                // No valid spot found → leave sticker in place (not enough space to spare)
             }
 
-            placed.push({ x: sticker.x, y: sticker.y, sW, sH });
+            placedBoxes.push({ x: sticker.x, y: sticker.y, sW, sH });
         }
 
-        ready = true;
+        const order = stickers.map((_, i) => i).sort(() => Math.random() - 0.5);
+        order.forEach((idx, i) => {
+            setTimeout(() => {
+                stickers[idx].visible = true;
+            }, 150 + i * 180);
+        });
     });
 
     function onPointerDown(e: PointerEvent, sticker: Sticker) {
@@ -147,6 +148,7 @@
     {#each stickers as sticker (sticker.id)}
         <link rel="preload" href={sticker.src} as="image" />
     {/each}
+    <title>Stickers - Hack Club</title>
 </svelte:head>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -155,9 +157,10 @@
         <img
             class="sticker"
             class:dragging={dragging === sticker.id}
+            class:placed={sticker.visible}
             src={sticker.src}
             alt="sticker"
-            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max(7rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1}); opacity: {ready ? 1 : 0};"
+            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max(7rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1});"
             onpointerdown={(e) => onPointerDown(e, sticker)}
             draggable="false"
         />
@@ -173,8 +176,8 @@
 </div>
 
 <section class="steps">
-    <div>1. make projects</div>
-    <div>2. get tokens</div>
-    <div>3. buy stickers from the shop</div>
-    <div>4. we'll mail them to you!</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">1. make projects</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">2. get tokens</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-1755-7a0c-9e6f-d9b08e0affd5/YDTGVqKSv30zwAf8kuudy8vr3dV_v2Q2gU4A01CZP7o">3. buy stickers from the shop</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">4. we'll mail them to you!</div>
 </section>
