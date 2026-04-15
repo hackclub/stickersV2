@@ -229,7 +229,7 @@ html, body {
 }
 
 .steps div {
-    -webkit-text-stroke: black clamp(0.15rem, 0.25vw, 0.4rem);
+    -webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.55rem);
     font-weight: bold;
     paint-order: stroke fill;
     position: relative;
