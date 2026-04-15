@@ -208,6 +208,7 @@ html, body {
 
 #submit:hover {
     background-color: #24242c;
+    cursor: pointer;
 }
 
 .steps {
