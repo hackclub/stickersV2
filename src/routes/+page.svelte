@@ -190,6 +190,7 @@
         </form>
     </section>
     <a class="scroll-arrow" href="#steps" aria-label="Scroll to steps" style="opacity: {scrollY > 0 ? 0 : 0.7}; pointer-events: {scrollY > 0 ? 'none' : 'auto'}">
+        <span>scroll</span>
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
