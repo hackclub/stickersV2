@@ -157,7 +157,7 @@
             class:dragging={dragging === sticker.id}
             src={sticker.src}
             alt="sticker"
-            style="left: {sticker.x}%; top: {sticker.y}%; width: max(7rem, {sticker.size}vw); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1}); opacity: {ready ? 1 : 0};"
+            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max(7rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1}); opacity: {ready ? 1 : 0};"
             onpointerdown={(e) => onPointerDown(e, sticker)}
             draggable="false"
         />

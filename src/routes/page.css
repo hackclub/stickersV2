@@ -165,16 +165,37 @@ html, body {
 }
 
 @media (max-width: 640px) {
-    .hero h1, h2 {
-        -webkit-text-stroke: black 0.2rem;
+    .hero-title {
+        max-width: 90%;
     }
 
     .hero h1 {
-        font-size: 13vw;
+        font-size: clamp(4rem, 18vw, 7rem);
+    }
+
+    .hero h1, h2 {
+        -webkit-text-stroke: black clamp(0.2rem, 0.5vw, 0.4rem);
     }
 
     .hero h2 {
-        font-size: 4.5vw;
+        font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .sticker {
+        --sticker-scale: 0.85;
+    }
+
+    .hero form {
+        flex-direction: column;
+        height: auto;
+        gap: 0.6rem;
+    }
+
+    #email, #submit {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+        box-sizing: border-box;
     }
 
     .steps {
@@ -185,5 +206,28 @@ html, body {
 
     .steps div {
         font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 390px) {
+    .hero h1 {
+        font-size: clamp(3.2rem, 17vw, 4rem);
+    }
+
+    .hero h2 {
+        font-size: 0.95rem;
+    }
+
+    .hero form {
+        margin-top: 1rem;
+    }
+
+    #email, #submit {
+        font-size: 0.9rem;
+        padding: 0.65rem 0.85rem;
+    }
+
+    .sticker {
+        --sticker-scale: 0.7;
     }
 }
