@@ -167,6 +167,7 @@
 
 <svelte:window bind:scrollY={scrollY} />
 
+<!-- <a href="https://hackclub.com/"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
     {#each stickers as sticker (sticker.id)}
@@ -198,8 +199,8 @@
 </div>
 
 <section id="steps" class="steps">
-    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">1. make projects</div>
-    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">2. get tokens</div>
-    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-1755-7a0c-9e6f-d9b08e0affd5/YDTGVqKSv30zwAf8kuudy8vr3dV_v2Q2gU4A01CZP7o">3. buy stickers from the shop</div>
-    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">4. we'll mail them to you!</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">make creative projects</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">get tokens for your efforts!</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-1755-7a0c-9e6f-d9b08e0affd5/YDTGVqKSv30zwAf8kuudy8vr3dV_v2Q2gU4A01CZP7o">buy stickers from the shop</div>
+    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
 </section>

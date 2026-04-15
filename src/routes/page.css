@@ -66,7 +66,8 @@ html, body {
 
 .hero h2 {
     margin: 0;
-    font-size: clamp(1.5rem, 2vw, 3.5rem);
+    margin-top: clamp(-2rem, -1.4vw, -0.8rem);
+    font-size: clamp(1.5rem, 2.3vw, 3.8rem);
     text-align: right;
 }
 
@@ -215,6 +216,7 @@ html, body {
 .steps {
     --grid: clamp(3rem, 4vw, 7rem);
     --grid-line: clamp(0.1rem, 0.125vw, 0.2rem);
+    counter-reset: step;
     color: black;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -232,6 +234,7 @@ html, body {
     -webkit-text-stroke: black clamp(0.15rem, 0.25vw, 0.4rem);
     font-weight: bold;
     paint-order: stroke fill;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -245,6 +248,25 @@ html, body {
     border-radius: 2rem;
     transition: filter 0.2s ease, transform 0.2s ease;
     border: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
+    counter-increment: step;
+}
+
+.steps div::before {
+    content: counter(step);
+    position: absolute;
+    top: clamp(-0.7rem, -1vw, -1rem);
+    left: clamp(-0.5rem, -0.7vw, -0.8rem);
+    width: clamp(2rem, 3vw, 3.5rem);
+    height: clamp(2rem, 3vw, 3.5rem);
+    background-color: black;
+    color: white;
+    font-size: clamp(1.1rem, 1.5vw, 1.9rem);
+    font-weight: bold;
+    -webkit-text-stroke: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
 }
 
 .steps div:nth-child(2) { background-color: #fff959; }
@@ -252,7 +274,7 @@ html, body {
 .steps div:nth-child(4) { background-color: #3758c4; }
 
 .steps div:hover {
-    filter: brightness(1.12);
+    filter: brightness(1.1);
     transform: scale(1.025);
 }
 
@@ -281,6 +303,7 @@ html, body {
 
     .hero h2 {
         font-size: clamp(1rem, 4vw, 1.5rem);
+        margin-top: -0.3rem;
     }
 
     .sticker {
@@ -308,6 +331,14 @@ html, body {
         padding: 2.5rem 2rem;
         gap: 1.5rem;
     }
+
+    .steps div::before {
+        width: 2.8rem;
+        height: 2.8rem;
+        font-size: 1.5rem;
+        top: -0.9rem;
+        left: -0.6rem;
+    }
 }
 
 @media (max-width: 455px) {
@@ -317,6 +348,7 @@ html, body {
 
     .hero h2 {
         font-size: 0.95rem;
+        margin-top: -0.2rem;
     }
 
     .hero form {
@@ -341,4 +373,21 @@ html, body {
     .steps div {
         font-size: 1rem;
     }
+
+    .steps div::before {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.3rem;
+        top: -0.8rem;
+        left: -0.5rem;
+    }
+}
+
+.hc-logo {
+    transform: rotate(0deg) translateY(-0.5rem);
+    transition: transform 0.3s ease-in-out;
+}
+
+.hc-logo:hover {
+    transform: rotate(10deg) translateY(0.5rem);
 }
