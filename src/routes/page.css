@@ -66,12 +66,6 @@ html, body {
     margin-bottom: clamp(-2rem, -1.4vw, -0.8rem);
     height: clamp(2rem, 3.5vw, 5.5rem);
     width: auto;
-    --stroke: clamp(0.15rem, 0.25vw, 0.4rem);
-    filter:
-        drop-shadow(var(--stroke) 0 0 black)
-        drop-shadow(calc(var(--stroke) * -1) 0 0 black)
-        drop-shadow(0 var(--stroke) 0 black)
-        drop-shadow(0 calc(var(--stroke) * -1) 0 black);
 }
 
 .hero {
