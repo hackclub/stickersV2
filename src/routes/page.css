@@ -50,25 +50,28 @@ html, body {
     scroll-behavior: smooth;
 }
 
-.hero h1, h2 {
+.hero h1 {
+    margin: 0;
     font-weight: 600;
     font-style: italic;
     color: white;
     -webkit-text-stroke: black clamp(0.4rem, 0.65vw, 1.2rem);
     paint-order: stroke fill;
-}
-
-.hero h1 {
-    margin: 0;
     font-size: clamp(7rem, 11vw, 20rem);
     position: relative;
 }
 
-.hero h2 {
-    margin: 0;
-    margin-top: clamp(-2rem, -1.4vw, -0.8rem);
-    font-size: clamp(1.5rem, 2.3vw, 3.8rem);
-    text-align: right;
+.hero-flag {
+    display: block;
+    margin-bottom: clamp(-2rem, -1.4vw, -0.8rem);
+    height: clamp(2rem, 3.5vw, 5.5rem);
+    width: auto;
+    --stroke: clamp(0.15rem, 0.25vw, 0.4rem);
+    filter:
+        drop-shadow(var(--stroke) 0 0 black)
+        drop-shadow(calc(var(--stroke) * -1) 0 0 black)
+        drop-shadow(0 var(--stroke) 0 black)
+        drop-shadow(0 calc(var(--stroke) * -1) 0 black);
 }
 
 .hero {
@@ -168,7 +171,7 @@ html, body {
 }
 
 .hero form {
-    margin-top: clamp(1.5rem, 2vw, 3rem);
+    margin-top: clamp(0.5rem, 0.8vw, 1.2rem);
     height: clamp(3.5rem, 4.2vw, 6rem);
     width: 100%;
     gap: clamp(0.5rem, 0.8vw, 1.2rem);
@@ -280,7 +283,7 @@ html, body {
 
 .steps div img {
     width: clamp(7rem, 12vw, 16rem);
-    height: auto;
+    height: clamp(7rem, 12vw, 16rem);
     object-fit: contain;
 }
 
@@ -297,13 +300,13 @@ html, body {
         font-size: clamp(4rem, 18vw, 7rem);
     }
 
-    .hero h1, h2 {
+    .hero h1 {
         -webkit-text-stroke: black clamp(0.2rem, 0.5vw, 0.4rem);
     }
 
-    .hero h2 {
-        font-size: clamp(1rem, 4vw, 1.5rem);
-        margin-top: -0.3rem;
+    .hero-flag {
+        height: clamp(1.4rem, 4.5vw, 2.4rem);
+        margin-bottom: -0.3rem;
     }
 
     .sticker {
@@ -346,9 +349,9 @@ html, body {
         font-size: clamp(3.2rem, 17vw, 4rem);
     }
 
-    .hero h2 {
-        font-size: 0.95rem;
-        margin-top: -0.2rem;
+    .hero-flag {
+        height: 1.3rem;
+        margin-bottom: -0.2rem;
     }
 
     .hero form {
@@ -390,4 +393,19 @@ html, body {
 
 .hc-logo:hover {
     transform: rotate(10deg) translateY(0.5rem);
+}
+
+footer {
+    text-align: center;
+    padding: clamp(0.9rem, 1.2vw, 1.8rem);
+    font-size: clamp(0.85rem, 0.9vw, 1.25rem);
+}
+
+footer a {
+    color: black;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: wavy underline;
 }

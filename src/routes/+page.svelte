@@ -5,7 +5,7 @@
     const savedScroll = typeof window !== 'undefined' ? window.scrollY : 0;
     if (typeof window !== 'undefined') {
         history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     type Sticker = {
@@ -128,7 +128,7 @@
             const lastStickerDone = 150 + (stickers.length - 1) * 180 + 400;
             setTimeout(() => {
                 window.scrollTo({ top: savedScroll, behavior: 'smooth' });
-            }, lastStickerDone + 300);
+            }, lastStickerDone);
         }
     });
 
@@ -162,12 +162,15 @@
     {#each stickers as sticker (sticker.id)}
         <link rel="preload" href={sticker.src} as="image" />
     {/each}
+    <link rel="preload" href="https://assets.hackclub.com/flag-standalone-wtransparent.svg" as="image" />
+    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <title>Stickers - Hack Club</title>
 </svelte:head>
 
 <svelte:window bind:scrollY={scrollY} />
 
-<!-- <a href="https://hackclub.com/"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
+<!-- <a href="https://hackclub.com"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
     {#each stickers as sticker (sticker.id)}
@@ -183,8 +186,8 @@
         />
     {/each}
     <section class="hero-title" bind:this={titleEl}>
+        <a href="https://hackclub.com"><img class="hero-flag" src="https://assets.hackclub.com/flag-standalone-wtransparent.svg" alt="Hack Club" /></a>
         <h1>stickers</h1>
-        <h2>hack club</h2>
         <form>
             <input id="email" placeholder="your@email.com" type="email" required>
             <button id="submit">rsvp!</button>
@@ -204,3 +207,7 @@
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-1755-7a0c-9e6f-d9b08e0affd5/YDTGVqKSv30zwAf8kuudy8vr3dV_v2Q2gU4A01CZP7o">buy stickers from the shop</div>
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
 </section>
+
+<footer>
+    made with &lt;3 by <a href="https://github.com/maxstellar">maxstellar</a> and <a href="https://hackclub.com">hack club</a>
+</footer>
