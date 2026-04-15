@@ -2,6 +2,9 @@
 	"name": "stickersv2",
 	"private": true,
 	"version": "0.0.1",
+	"engines": {
+		"node": ">=20"
+	},
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -21,7 +24,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
-		"@sveltejs/adapter-node": "^5.5.4",
+		"@sveltejs/adapter-vercel": "^6.3.3",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@types/node": "^24",
