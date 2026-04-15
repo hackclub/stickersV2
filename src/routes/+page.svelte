@@ -33,6 +33,7 @@
     let dragOffset = { x: 0, y: 0 };
     let heroEl: HTMLDivElement;
     let titleEl: HTMLElement;
+    let scrollY = $state(0);
 
     onMount(() => {
         const heroRect = heroEl.getBoundingClientRect();
@@ -164,6 +165,8 @@
     <title>Stickers - Hack Club</title>
 </svelte:head>
 
+<svelte:window bind:scrollY={scrollY} />
+
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
     {#each stickers as sticker (sticker.id)}
@@ -186,9 +189,14 @@
             <button id="submit">rsvp!</button>
         </form>
     </section>
+    <a class="scroll-arrow" href="#steps" aria-label="Scroll to steps" style="opacity: {scrollY > 0 ? 0 : 0.7}; pointer-events: {scrollY > 0 ? 'none' : 'auto'}">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </a>
 </div>
 
-<section class="steps">
+<section id="steps" class="steps">
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">1. make projects</div>
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">2. get tokens</div>
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730c-1755-7a0c-9e6f-d9b08e0affd5/YDTGVqKSv30zwAf8kuudy8vr3dV_v2Q2gU4A01CZP7o">3. buy stickers from the shop</div>
