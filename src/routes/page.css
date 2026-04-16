@@ -42,6 +42,17 @@
   font-style: italic;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff')
+      format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2')
+      format('woff2');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
 
 html, body {
     margin: 0;
@@ -231,13 +242,12 @@ html, body {
 
 .steps h2 {
     grid-column: 1 / -1;
-    color: white;
-    font-weight: 600;
+    color: black;
+    font-weight: bold;
     font-style: italic;
     font-size: clamp(2.5rem, 5vw, 5rem);
     text-align: center;
-    margin: 0 0 clamp(0.5rem, 1vw, 1rem);
-    -webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.6rem);
+    margin: 0 0 calc(clamp(3rem, 5vw, 8rem) - clamp(1rem, 2vw, 2.5rem));
     paint-order: stroke fill;
 }
 
