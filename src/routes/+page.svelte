@@ -198,16 +198,15 @@
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
     <a href="https://example.com" class="catalog-link">catalog <span class="catalog-arrow">↗</span></a>
     {#each stickers as sticker (sticker.id)}
-        <img
-            class="sticker"
+        <div
+            class="sticker-wrap"
             class:dragging={dragging === sticker.id}
             class:placed={sticker.visible}
-            src={sticker.src}
-            alt="sticker"
             style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size * 0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1});"
             onpointerdown={(e) => onPointerDown(e, sticker)}
-            draggable="false"
-        />
+        >
+            <img class="sticker" src={sticker.src} alt="sticker" draggable="false" />
+        </div>
     {/each}
     <section class="hero-title" bind:this={titleEl}>
         <a href="https://hackclub.com"><img class="hero-flag" src="https://assets.hackclub.com/flag-standalone-wtransparent.svg" alt="Hack Club" /></a>

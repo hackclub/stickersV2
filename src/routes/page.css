@@ -107,29 +107,46 @@ html, body {
     background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 
-.sticker {
+.sticker-wrap {
     position: absolute;
     cursor: grab;
     user-select: none;
-    border-radius: 0.75rem;
     filter: none;
     transition: filter 0.15s ease, transform 0.1s ease;
     touch-action: none;
     opacity: 0;
 }
 
-.sticker.placed {
+.sticker-wrap.placed {
     animation: sticker-place 0.4s cubic-bezier(0.2, 0.6, 0.35, 1) forwards;
 }
 
-.sticker:hover {
+.sticker-wrap:hover {
     filter: none;
 }
 
-.sticker.dragging {
+.sticker-wrap.dragging {
     cursor: grabbing;
-    filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.7));
     transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.sticker {
+    display: block;
+    width: 100%;
+    border-radius: 0.75rem;
+    pointer-events: none;
+    transform-origin: top left;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.sticker-wrap:hover .sticker {
+    transform: perspective(400px) rotateX(4deg) rotateY(-3deg);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+.sticker-wrap.dragging .sticker {
+    transform: perspective(300px) rotateX(9deg) rotateY(-5deg);
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55));
 }
 
 .scroll-arrow {
