@@ -53,6 +53,17 @@
   font-style: italic;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff')
+      format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2')
+      format('woff2');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
 
 html, body {
     margin: 0;
@@ -290,9 +301,9 @@ html, body {
     border-radius: 0.5rem;
 }
 
-.steps div:nth-child(2) { background-color: #fff959; }
-.steps div:nth-child(3) { background-color: #239640; }
-.steps div:nth-child(4) { background-color: #3758c4; }
+.steps div:nth-child(3) { background-color: #fff959; }
+.steps div:nth-child(4) { background-color: #239640; }
+.steps div:nth-child(5) { background-color: #3758c4; }
 
 .steps div:hover {
     filter: brightness(1.1);
