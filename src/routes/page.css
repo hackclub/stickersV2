@@ -229,6 +229,18 @@ html, body {
     background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 
+.steps h2 {
+    grid-column: 1 / -1;
+    color: white;
+    font-weight: 600;
+    font-style: italic;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    text-align: center;
+    margin: 0 0 clamp(0.5rem, 1vw, 1rem);
+    -webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.6rem);
+    paint-order: stroke fill;
+}
+
 .steps div {
     -webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.55rem);
     font-weight: bold;

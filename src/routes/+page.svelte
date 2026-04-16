@@ -213,6 +213,7 @@
 </div>
 
 <section id="steps" class="steps">
+    <h2>make projects. get stickers.</h2>
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">make creative projects</div>
     <div><img alt="Raccoon with foot on chest of treasure sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">get tokens for your efforts!</div>
     <div><img alt="Raccoon inside giftbox sticker" src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png">buy stickers from the shop</div>
