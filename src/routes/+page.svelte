@@ -43,7 +43,6 @@
 
         const stickerEls = heroEl.querySelectorAll('.sticker') as NodeListOf<HTMLElement>;
 
-        // Compute every sticker's size in hero-percentage units upfront
         const sizes = stickers.map((_, i) => {
             const el = stickerEls[i];
             if (!el) return { sW: 0, sH: 0 };
