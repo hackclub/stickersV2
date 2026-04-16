@@ -15,7 +15,7 @@
     };
 
     let stickers = $state<Sticker[]>([
-        { id: 1, src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', x: 13, y: 28, rotation: -15, size: 14, z: 1, visible: false },
+        { id: 1, src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', x: 11, y: 28, rotation: -15, size: 14, z: 1, visible: false },
         { id: 2, src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', x: 78, y: 16, rotation: 12, size: 13, z: 2, visible: false },
         { id: 3, src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', x: 22, y: 67, rotation: -8, size: 9, z: 3, visible: false },
         { id: 4, src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', x: 72, y: 65, rotation: 20, size: 9, z: 4, visible: false },
@@ -42,11 +42,14 @@
     ];
 
     onMount(() => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || ('ontouchstart' in window && window.innerWidth < 1024);
         const lockHeroHeight = () => {
             heroEl.style.height = `${window.innerHeight}px`;
         };
-        lockHeroHeight();
-        window.addEventListener('orientationchange', lockHeroHeight);
+        if (isMobile) {
+            lockHeroHeight();
+            window.addEventListener('orientationchange', lockHeroHeight);
+        }
 
         const heroRect = heroEl.getBoundingClientRect();
         const titleRect = titleEl.getBoundingClientRect();
@@ -136,7 +139,7 @@
         });
 
         return () => {
-            window.removeEventListener('orientationchange', lockHeroHeight);
+            if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
         };
     });
 
@@ -188,7 +191,7 @@
             class:placed={sticker.visible}
             src={sticker.src}
             alt="sticker"
-            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max(7rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1});"
+            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size * 0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1});"
             onpointerdown={(e) => onPointerDown(e, sticker)}
             draggable="false"
         />
