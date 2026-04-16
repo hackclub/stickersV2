@@ -31,14 +31,23 @@
     let scrollY = $state(0);
     let openFaq = $state<number | null>(null);
 
-    const faqs = [
+    type FaqPart = string | { text: string; href: string };
+    type Faq = { q: string; a: string | FaqPart[] };
+
+    const faqs: Faq[] = [
         { q: 'how do i get tokens?', a: 'ship creative, unique, and high-quality projects through our dashboard, and you\'ll receive a set amount of x tokens / hour shipped! if your projects are REALLY cool, you might even get a token boost from your reviewer.' },
         { q: 'what are "sticker boxes?"', a: 'sticker boxes are our plan to bring monthly subscriptions to the YSWS model (lol). every month in the shop, for 10 hours worth of tokens you can buy one "sticker box" that will contain exclusive stickers, signed postcards, and more hack club goodies!' },
         { q: 'is this free?', a: 'yep, completely free! all it takes is your hard work and creativity. we\'ll also cover shipping (except customs fees)!' },
         { q: 'who is eligible?', a: 'to participate, you need to be between the ages of 13 and 18!' },
         { q: 'how many projects can i make?', a: 'there\'s no limit, so you can make as many as you please! mo\' projects, mo\' stickers. and that\'s a good thing!' },
         { q: 'can i put stickers on my forehead? ', a: 'legally, we can\'t stop you, and truthfully, we\'re not stopping you.' },
-        { q: 'is this legit? ', a: 'yep! hack club is the world\'s largest community of teenage makers, and a 501(c)(3) nonprofit. we\'ve hosted programs like <a href="https://highseas.hackclub.com/">high seas</a> and <a href="https://summer.hackclub.com/">summer of making</a> which gave out prizes for building other sorts of projects. we\'re supported by donations from companies like GitHub or individual generous donations!' },
+        { q: 'is this legit? ', a: [
+            "yep! hack club is the world's largest community of teenage makers, and a 501(c)(3) nonprofit. we've hosted programs like ",
+            { text: 'high seas', href: 'https://highseas.hackclub.com/' },
+            ' and ',
+            { text: 'summer of making', href: 'https://summer.hackclub.com/' },
+            " which gave out prizes for building other sorts of projects. we're supported by donations from companies like GitHub or individual generous donations!",
+        ]},
     ];
 
     onMount(() => {
@@ -234,7 +243,19 @@
                     <span class="faq-icon" class:open={openFaq === i}>+</span>
                 </button>
                 {#if openFaq === i}
-                    <p transition:slide={{ duration: 250 }}>{@html faq.a}</p>
+                    <p transition:slide={{ duration: 250 }}>
+                        {#if typeof faq.a === 'string'}
+                            {faq.a}
+                        {:else}
+                            {#each faq.a as part, j (j)}
+                                {#if typeof part === 'string'}
+                                    {part}
+                                {:else}
+                                    <a href={part.href} target="_blank" rel="external noopener noreferrer">{part.text}</a>
+                                {/if}
+                            {/each}
+                        {/if}
+                    </p>
                 {/if}
             </div>
         {/each}
