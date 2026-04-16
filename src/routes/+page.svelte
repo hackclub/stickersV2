@@ -77,6 +77,7 @@
         const hitsZone = (x: number, y: number, sW: number, sH: number) =>
             x < zone.right && x + sW > zone.left && y < zone.bottom && y + sH > zone.top;
 
+        const vMargin = 8;
         for (let i = 0; i < stickers.length; i++) {
             const sticker = stickers[i];
             const { sW, sH } = sizes[i];
@@ -90,6 +91,8 @@
                     sticker.x = Math.min(99 - sW, zone.right + pad);
                 }
             }
+
+            sticker.y = Math.max(vMargin, Math.min(100 - sH - vMargin, sticker.y));
         }
 
         type Box = { x: number; y: number; sW: number; sH: number };
@@ -103,7 +106,7 @@
                 placedBoxes.some((b: Box) => x < b.x + b.sW && x + sW > b.x && y < b.y + b.sH && y + sH > b.y);
 
             const isOpen = (x: number, y: number) =>
-                x >= 0 && y >= 0 && x + sW <= 100 && y + sH <= 100 &&
+                x >= 0 && y >= vMargin && x + sW <= 100 && y + sH <= 100 - vMargin &&
                 !hitsZone(x, y, sW, sH) && !hitsPlaced(x, y);
 
             if (hitsPlaced(sticker.x, sticker.y)) {
@@ -111,7 +114,7 @@
                 let bestDist = Infinity;
 
                 for (let gx = 0; gx <= 100 - sW; gx += 5) {
-                    for (let gy = 0; gy <= 100 - sH; gy += 5) {
+                    for (let gy = vMargin; gy <= 100 - sH - vMargin; gy += 5) {
                         if (isOpen(gx, gy)) {
                             const dist = Math.hypot(gx - sticker.x, gy - sticker.y);
                             if (dist < bestDist) {
@@ -184,6 +187,7 @@
 <!-- <a href="https://hackclub.com"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
+    <a href="https://example.com" class="catalog-link">catalog <span class="catalog-arrow">↗</span></a>
     {#each stickers as sticker (sticker.id)}
         <img
             class="sticker"
