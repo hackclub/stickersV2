@@ -2,12 +2,6 @@
     import { onMount } from 'svelte';
     import './page.css';
 
-    const savedScroll = typeof window !== 'undefined' ? window.scrollY : 0;
-    if (typeof window !== 'undefined') {
-        history.scrollRestoration = 'manual';
-        window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
     type Sticker = {
         id: number;
         src: string;
@@ -124,12 +118,6 @@
             }, 150 + i * 180);
         });
 
-        if (savedScroll > 0) {
-            const lastStickerDone = 150 + (stickers.length - 1) * 180 + 400;
-            setTimeout(() => {
-                window.scrollTo({ top: savedScroll, behavior: 'smooth' });
-            }, lastStickerDone);
-        }
     });
 
     function onPointerDown(e: PointerEvent, sticker: Sticker) {
