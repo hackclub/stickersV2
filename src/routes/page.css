@@ -135,6 +135,7 @@ html, body {
 }
 
 .scroll-arrow:hover {
+    text-decoration: none;
     opacity: 1;
 }
 
