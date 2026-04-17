@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { slide } from 'svelte/transition';
+    import { slide, fade } from 'svelte/transition';
     import './page.css';
 
     type Sticker = {
@@ -25,6 +25,7 @@
 
     let topZ = $state(7);
     let dragging: number | null = $state(null);
+    let showHint = $state(false);
     let dragOffset = { x: 0, y: 0 };
     let heroEl: HTMLDivElement;
     let titleEl: HTMLElement;
@@ -150,12 +151,19 @@
             }, 150 + i * 180);
         });
 
+        const lastStickerDelay = 150 + (stickers.length - 1) * 180;
+        setTimeout(() => {
+            showHint = true;
+            setTimeout(() => { showHint = false; }, 5000);
+        }, lastStickerDelay + 600);
+
         return () => {
             if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
         };
     });
 
     function onPointerDown(e: PointerEvent, sticker: Sticker) {
+        showHint = false;
         dragging = sticker.id;
         sticker.z = topZ++;
         const rect = heroEl.getBoundingClientRect();
@@ -204,7 +212,7 @@
             class:placed={sticker.visible}
             src={sticker.src}
             alt="sticker"
-            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size * 0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; transform: rotate({sticker.rotation}deg) scale({dragging === sticker.id ? 1.1 : 1});"
+            style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size * 0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; --r: {sticker.rotation}deg;"
             onpointerdown={(e) => onPointerDown(e, sticker)}
             draggable="false"
         />
@@ -217,6 +225,9 @@
             <button id="submit">rsvp!</button>
         </form>
     </section>
+    {#if showHint}
+        <div class="drag-hint" transition:fade={{ duration: 400 }}>psst! try dragging the stickers</div>
+    {/if}
     <a class="scroll-arrow" href="#steps" aria-label="Scroll to steps" style="opacity: {scrollY > 0 ? 0 : 0.7}; pointer-events: {scrollY > 0 ? 'none' : 'auto'}">
         <span>scroll</span>
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
