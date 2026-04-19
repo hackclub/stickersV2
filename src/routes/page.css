@@ -98,7 +98,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100svh;
+    height: calc(100svh + 0.47vw);
     background-size: var(--grid) var(--grid);
     background-color: #141318;
     background-image:
@@ -298,7 +298,7 @@ html, body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(1rem, 2vw, 2.5rem);
-    padding: clamp(3rem, 5vw, 8rem) clamp(2rem, 5vw, 8rem);
+    padding: clamp(3rem, 5vw, 8rem) clamp(2rem, 5vw, 8rem) clamp(4rem, 7vw, 11rem);
     background-color: white;
     background-image:
         linear-gradient(to right, rgb(240, 240, 240) var(--grid-line), transparent var(--grid-line)),
