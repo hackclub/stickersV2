@@ -4,36 +4,41 @@
     import './page.css';
 
     type StickerAsset = { src: string; size: number };
-    type Slot = { x: number; y: number; rotation: number; z: number };
-    type Sticker = Slot & StickerAsset & { id: number; visible: boolean };
+    type Slot = { x: number; y: number; z: number };
+    type Sticker = Slot & StickerAsset & { id: number; rotation: number; visible: boolean };
 
     const stickerPool: StickerAsset[] = [
-        { src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', size: 14 },
-        { src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', size: 12 },
-        { src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', size: 9 },
-        { src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', size: 9 },
-        { src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', size: 18 },
-        { src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', size: 10 },
-        { src: 'https://cdn.hackclub.com/019d730c-5328-7180-871a-de18bbc5270e/lywHE0oLCvwUT6nrk-nd08O6AjP7XBN0VfMip8cQXjk', size: 19 },
-        { src: 'https://cdn.hackclub.com/019d730b-e3b1-7f9f-ae10-ce24f6270851/3ziK9V5dKzWmFvBVpIWn6IfhVYLkJSILMKsuIhB5UME', size: 13 },
-        { src: 'https://cdn.hackclub.com/019d730b-6891-7e2f-94e7-7ae12c005aa0/kUZDRDYxRQYj81Y58kQx2IGDXuSCAj1HJmtkRtSPMU8', size: 10 },
-        { src: 'https://cdn.hackclub.com/019d730a-e3aa-74d7-9bc3-e2699195ad2a/WT7qHNSIeKcZrJJXdoumXD9r_fyRnG8d0D169XL-xzI', size: 15 },
-        { src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw', size: 10 },
+        { src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', size: 14 }, // nasa
+        { src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', size: 12 }, // juice
+        { src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', size: 9 },  // boba
+        { src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', size: 9 },  // hc inside
+        { src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', size: 18 }, // kawaii
+        { src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', size: 11 }, // drake
+        { src: 'https://cdn.hackclub.com/019d730c-5328-7180-871a-de18bbc5270e/lywHE0oLCvwUT6nrk-nd08O6AjP7XBN0VfMip8cQXjk', size: 19 }, // undertale
+        { src: 'https://cdn.hackclub.com/019d730b-e3b1-7f9f-ae10-ce24f6270851/3ziK9V5dKzWmFvBVpIWn6IfhVYLkJSILMKsuIhB5UME', size: 13 }, // skullpup boba
+        { src: 'https://cdn.hackclub.com/019d730b-6891-7e2f-94e7-7ae12c005aa0/kUZDRDYxRQYj81Y58kQx2IGDXuSCAj1HJmtkRtSPMU8', size: 10 }, // macintosh
+        { src: 'https://cdn.hackclub.com/019d730a-e3aa-74d7-9bc3-e2699195ad2a/WT7qHNSIeKcZrJJXdoumXD9r_fyRnG8d0D169XL-xzI', size: 15 }, // grab
+        { src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw', size: 10 }, // yippee >o<
+        { src: 'https://cdn.hackclub.com/019d730a-664a-745f-b62a-27dec7e0b2db/TB4xpI-OBi6Yb_fcd5D1ql5ucYCAN7s6kX2v5cmf8dg', size: 20 }, // airlines
+        { src: 'https://cdn.hackclub.com/019d730b-58c6-77b6-9893-31b70bf240a5/oS1z7dSNFz23u4Ca2Dl4se7ZXFlt8oxuiXwcd7Iuzl0', size: 11 }, // logo
+        { src: 'https://cdn.hackclub.com/019d730b-237a-7aed-89c3-e60a9f562ae6/47QlTJFkr25F8SM6jxi0ek0aWavxHqHZYRA26PLvgag', size: 11 }, // heidi pleading
+        { src: 'https://cdn.hackclub.com/019d730a-eaf5-711f-9196-c3b5021c5b4f/ZLdwcaB7eVfe6fScCgfdfSWY-XLvp5Ido9JCV4wW8Lw', size: 19 }, // hack cola
     ];
 
     const slots: Slot[] = [
-        { x: 11, y: 28, rotation: -15, z: 1 },
-        { x: 78, y: 16, rotation: 12, z: 2 },
-        { x: 22, y: 67, rotation: -8, z: 3 },
-        { x: 72, y: 65, rotation: 20, z: 4 },
-        { x: 58, y: 5, rotation: -5, z: 5 },
-        { x: 32, y: 5, rotation: -5, z: 6 },
+        { x: 11, y: 28, z: 1 },
+        { x: 78, y: 16, z: 2 },
+        { x: 22, y: 67, z: 3 },
+        { x: 72, y: 65, z: 4 },
+        { x: 58, y: 5, z: 5 },
+        { x: 32, y: 5, z: 6 },
     ];
 
     let stickers = $state<Sticker[]>(slots.map((slot, i) => ({
         id: i + 1,
         ...slot,
         ...stickerPool[i % stickerPool.length],
+        rotation: 0,
         visible: false,
     })));
 
@@ -79,6 +84,7 @@
             const pick = shuffled[i % shuffled.length];
             stickers[i].src = pick.src;
             stickers[i].size = pick.size;
+            stickers[i].rotation = Math.random() * 30 - 15;
         }
 
         (async () => {
