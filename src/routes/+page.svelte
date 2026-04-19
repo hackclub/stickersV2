@@ -56,12 +56,13 @@
     type Faq = { q: string; a: string | FaqPart[] };
 
     const faqs: Faq[] = [
+        { q: 'why stickers?', a: 'we believe every hack clubber should have access to free and high-quality stickers. this program lets you choose what stickers you receive, so you not only get free stickers, but the stickers you actually want.' },
         { q: 'how do i get tokens?', a: 'ship creative, unique, and high-quality projects through our dashboard, and you\'ll receive a set amount of x tokens / hour shipped! if your projects are REALLY cool, you might even get a token boost from your reviewer.' },
         { q: 'what are "sticker boxes?"', a: 'sticker boxes are our plan to bring monthly subscriptions to the YSWS model (lol). every month in the shop, for 10 hours worth of tokens you can buy one "sticker box" that will contain exclusive stickers, signed postcards, and more hack club goodies!' },
         { q: 'is this free?', a: 'yep, completely free! all it takes is your hard work and creativity. we\'ll also cover shipping (except customs fees)!' },
         { q: 'who is eligible?', a: 'to participate, you need to be between the ages of 13 and 18!' },
         { q: 'how many projects can i make?', a: 'there\'s no limit, so you can make as many as you please! mo\' projects, mo\' stickers. and that\'s a good thing!' },
-        { q: 'can i put stickers on my forehead? ', a: 'legally, we can\'t stop you, and truthfully, we\'re not stopping you.' },
+        { q: 'can i put stickers on my forehead? ', a: 'legally, we can\'t stop you, and truthfully, we don\'t want to.' },
         { q: 'is this legit? ', a: [
             "yep! hack club is the world's largest community of teenage makers, and a 501(c)(3) nonprofit. we've hosted programs like ",
             { text: 'high seas', href: 'https://highseas.hackclub.com/' },
