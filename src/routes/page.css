@@ -551,7 +551,7 @@ html, body {
     text-align: center;
     margin: 0 0 clamp(1.5rem, 3vw, 3rem);
     paint-order: stroke fill;
-    -webkit-text-stroke: black clamp(.2rem, .35vw, .6rem);
+    -webkit-text-stroke: black clamp(.3rem, .52vw, .88rem);
 }
 
 .faq-grid {
@@ -589,7 +589,7 @@ html, body {
     font-size: clamp(1.1rem, 1.5vw, 1.6rem);
     font-weight: bold;
     color: white;
-    -webkit-text-stroke: black clamp(0.12rem, 0.2vw, 0.3rem);
+    -webkit-text-stroke: black clamp(0.15rem, 0.25vw, 0.38rem);
     paint-order: stroke fill;
     cursor: pointer;
     display: flex;
