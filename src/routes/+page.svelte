@@ -47,6 +47,7 @@
     let dragOffset = { x: 0, y: 0 };
     let heroEl: HTMLDivElement;
     let titleEl: HTMLElement;
+    let catalogEl: HTMLAnchorElement;
     let scrollY = $state(0);
     let openFaq = $state<number | null>(null);
 
@@ -99,15 +100,16 @@
 
     function placeStickers() {
         const heroRect = heroEl.getBoundingClientRect();
-        const titleRect = titleEl.getBoundingClientRect();
 
         const pad = 3;
-        const zone = {
-            left: ((titleRect.left - heroRect.left) / heroRect.width) * 100 - pad,
-            right: ((titleRect.right - heroRect.left) / heroRect.width) * 100 + pad,
-            top: ((titleRect.top - heroRect.top) / heroRect.height) * 100 - pad,
-            bottom: ((titleRect.bottom - heroRect.top) / heroRect.height) * 100 + pad,
-        };
+        const toZone = (r: DOMRect) => ({
+            left: ((r.left - heroRect.left) / heroRect.width) * 100 - pad,
+            right: ((r.right - heroRect.left) / heroRect.width) * 100 + pad,
+            top: ((r.top - heroRect.top) / heroRect.height) * 100 - pad,
+            bottom: ((r.bottom - heroRect.top) / heroRect.height) * 100 + pad,
+        });
+        const zone = toZone(titleEl.getBoundingClientRect());
+        const catalogZone = toZone(catalogEl.getBoundingClientRect());
 
         const stickerEls = heroEl.querySelectorAll('.sticker') as NodeListOf<HTMLElement>;
 
@@ -121,8 +123,10 @@
             };
         });
 
+        const hitsRect = (x: number, y: number, sW: number, sH: number, r: { left: number; right: number; top: number; bottom: number }) =>
+            x < r.right && x + sW > r.left && y < r.bottom && y + sH > r.top;
         const hitsZone = (x: number, y: number, sW: number, sH: number) =>
-            x < zone.right && x + sW > zone.left && y < zone.bottom && y + sH > zone.top;
+            hitsRect(x, y, sW, sH, zone) || hitsRect(x, y, sW, sH, catalogZone);
 
         const vMargin = 8;
         for (let i = 0; i < stickers.length; i++) {
@@ -156,7 +160,7 @@
                 x >= 0 && y >= vMargin && x + sW <= 100 && y + sH <= 100 - vMargin &&
                 !hitsZone(x, y, sW, sH) && !hitsPlaced(x, y);
 
-            if (hitsPlaced(sticker.x, sticker.y)) {
+            if (hitsPlaced(sticker.x, sticker.y) || hitsZone(sticker.x, sticker.y, sW, sH)) {
                 let bestPos: { x: number; y: number } | null = null;
                 let bestDist = Infinity;
 
@@ -230,7 +234,7 @@
 <!-- <a href="https://hackclub.com"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
-    <a href="https://example.com" class="catalog-link">catalog <span class="catalog-arrow">↗</span></a>
+    <a href="https://example.com" class="catalog-link" bind:this={catalogEl}>catalog <span class="catalog-arrow">↗</span></a>
     {#each stickers as sticker (sticker.id)}
         <img
             class="sticker"

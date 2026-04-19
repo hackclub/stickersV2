@@ -195,11 +195,16 @@ html, body {
     position: absolute;
     top: clamp(1.3rem, 1.8vw, 2.2rem);
     right: clamp(1.6rem, 2.2vw, 2.6rem);
-    z-index: 20;
+    z-index: 99999;
     font-size: clamp(1.2rem, 1.6vw, 1.7rem);
     font-weight: 600;
     color: white;
     text-decoration: none;
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    background: rgba(20, 19, 24, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .catalog-link:hover {
