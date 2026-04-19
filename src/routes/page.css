@@ -458,26 +458,70 @@ html, body {
 }
 
 .faq {
-    --grid: clamp(3rem, 4vw, 7rem);
-    --grid-line: clamp(0.1rem, 0.125vw, 0.2rem);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
     padding: clamp(3rem, 5vw, 8rem) clamp(2rem, 5vw, 8rem);
-    background-color: #141318;
-    background-image:
-        linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
-        linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
-    background-size: var(--grid) var(--grid);
-    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+    background-color: #c7d3f0;
+}
+
+.faq-bg,
+.faq-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.faq-bg {
+    inset: 0 auto 0 0;
+    width: calc(100% + clamp(32rem, 55vw, 64rem));
+    z-index: 0;
+    background-image: url('../lib/assets/bg.png');
+    background-repeat: repeat;
+    background-size: clamp(32rem, 55vw, 64rem);
+    animation: faq-bg-drift 90s linear infinite;
+    will-change: transform;
+}
+
+@keyframes faq-bg-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(calc(-1 * clamp(32rem, 55vw, 64rem)), 0, 0); }
+}
+
+.faq-overlay {
+    z-index: 1;
+    background-color: #c8dcf0b3;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.faq > .faq-content {
+    position: relative;
+    z-index: 2;
+}
+
+.faq-content {
+    width: 100%;
+    max-width: 48rem;
+    background: #c8dcf0b3;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: clamp(3rem, 5vw, 8rem) clamp(2.5rem, 4vw, 4.5rem);
+    margin: calc(-1 * clamp(3rem, 5vw, 8rem)) 0;
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 
 .faq h2 {
     color: white;
-    font-weight: 600;
+    font-weight: bold;
     font-style: italic;
     font-size: clamp(2.5rem, 5vw, 5rem);
     text-align: center;
     margin: 0 0 clamp(1.5rem, 3vw, 3rem);
-    -webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.6rem);
     paint-order: stroke fill;
+    -webkit-text-stroke: black clamp(.2rem, .35vw, .6rem);
 }
 
 .faq-grid {

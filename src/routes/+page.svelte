@@ -274,9 +274,12 @@
 </section>
 
 <section class="faq">
-    <h2>got questions?</h2>
-    <div class="faq-grid">
-        {#each faqs as faq, i (faq.q)}
+    <div class="faq-bg"></div>
+    <div class="faq-overlay"></div>
+    <div class="faq-content">
+        <h2>got questions?</h2>
+        <div class="faq-grid">
+            {#each faqs as faq, i (faq.q)}
             <div class="faq-item">
                 <button class="faq-summary" onclick={() => openFaq = openFaq === i ? null : i}>
                     <span>{faq.q}</span>
@@ -299,6 +302,7 @@
                 {/if}
             </div>
         {/each}
+        </div>
     </div>
 </section>
 
