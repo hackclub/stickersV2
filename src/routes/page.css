@@ -576,6 +576,7 @@ html, body {
 .faq-item:nth-child(5) { background-color: #ed344f; }
 .faq-item:nth-child(6) { background-color: #fff959; }
 .faq-item:nth-child(7) { background-color: #239640; }
+.faq-item:nth-child(8) { background-color: #3758c4; }
 
 .faq-item:hover {
     transform: scale(1.02);
