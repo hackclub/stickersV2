@@ -254,9 +254,9 @@
     <section class="hero-title" bind:this={titleEl}>
         <a href="https://hackclub.com"><img class="hero-flag" src="https://assets.hackclub.com/flag-standalone-wtransparent.svg" alt="Hack Club" /></a>
         <h1>stickers</h1>
-        <form>
-            <input id="email" placeholder="your@email.com" type="email" required>
-            <button id="submit">rsvp!</button>
+        <form method="GET" action="https://forms.hackclub.com/stickers-rsvp">
+            <input id="email" placeholder="your@email.com" type="email" name="email" required>
+            <button id="submit" type="submit">rsvp!</button>
         </form>
     </section>
     <a class="scroll-arrow" href="#steps" aria-label="Scroll to steps" style="opacity: {scrollY > 0 ? 0 : 0.7}; pointer-events: {scrollY > 0 ? 'none' : 'auto'}">
