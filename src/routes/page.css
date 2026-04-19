@@ -205,10 +205,11 @@ html, body {
     background: rgba(20, 19, 24, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    transition: color 0.15s ease;
 }
 
 .catalog-link:hover {
-    opacity: 0.7;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
 }
 

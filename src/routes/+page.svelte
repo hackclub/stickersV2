@@ -143,6 +143,8 @@
                 }
             }
 
+            const hMargin = 1;
+            sticker.x = Math.max(hMargin, Math.min(100 - sW - hMargin, sticker.x));
             sticker.y = Math.max(vMargin, Math.min(100 - sH - vMargin, sticker.y));
         }
 
