@@ -2,6 +2,7 @@
     import { onMount, tick } from 'svelte';
     import { slide } from 'svelte/transition';
     import './page.css';
+    import sepImg from '$lib/assets/sep.png';
 
     type StickerAsset = { src: string; size: number };
     type Slot = { x: number; y: number; z: number };
@@ -265,6 +266,8 @@
     </a>
 </div>
 
+<img src={sepImg} alt="" role="presentation" class="sep sep-top" draggable="false">
+
 <section id="steps" class="steps">
     <h2>make projects. get stickers.</h2>
     <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">make creative projects</div>
@@ -272,6 +275,8 @@
     <div><img alt="Raccoon inside giftbox sticker" src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png">buy stickers from the shop</div>
     <div><img alt='Raccoon hugging parcel sticker with "You got mail!" text' src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
 </section>
+
+<img src={sepImg} alt="" role="presentation" class="sep sep-bottom" draggable="false">
 
 <section class="faq">
     <div class="faq-bg"></div>
