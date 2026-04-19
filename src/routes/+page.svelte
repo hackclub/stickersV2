@@ -1,27 +1,41 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { slide } from 'svelte/transition';
     import './page.css';
 
-    type Sticker = {
-        id: number;
-        src: string;
-        x: number;
-        y: number;
-        rotation: number;
-        size: number;
-        z: number;
-        visible: boolean;
-    };
+    type StickerAsset = { src: string; size: number };
+    type Slot = { x: number; y: number; rotation: number; z: number };
+    type Sticker = Slot & StickerAsset & { id: number; visible: boolean };
 
-    let stickers = $state<Sticker[]>([
-        { id: 1, src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', x: 11, y: 28, rotation: -15, size: 14, z: 1, visible: false },
-        { id: 2, src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', x: 78, y: 16, rotation: 12, size: 13, z: 2, visible: false },
-        { id: 3, src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', x: 22, y: 67, rotation: -8, size: 9, z: 3, visible: false },
-        { id: 4, src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', x: 72, y: 65, rotation: 20, size: 9, z: 4, visible: false },
-        { id: 5, src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', x: 58, y: 5, rotation: -5, size: 18, z: 5, visible: false },
-        { id: 6, src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', x: 32, y: 5, rotation: -5, size: 10, z: 6, visible: false },
-    ]);
+    const stickerPool: StickerAsset[] = [
+        { src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI', size: 14 },
+        { src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28', size: 13 },
+        { src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc', size: 9 },
+        { src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8', size: 9 },
+        { src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M', size: 18 },
+        { src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM', size: 10 },
+        { src: 'https://cdn.hackclub.com/019d730c-5328-7180-871a-de18bbc5270e/lywHE0oLCvwUT6nrk-nd08O6AjP7XBN0VfMip8cQXjk', size: 19 },
+        { src: 'https://cdn.hackclub.com/019d730b-e3b1-7f9f-ae10-ce24f6270851/3ziK9V5dKzWmFvBVpIWn6IfhVYLkJSILMKsuIhB5UME', size: 13 },
+        { src: 'https://cdn.hackclub.com/019d730b-6891-7e2f-94e7-7ae12c005aa0/kUZDRDYxRQYj81Y58kQx2IGDXuSCAj1HJmtkRtSPMU8', size: 10 },
+        { src: 'https://cdn.hackclub.com/019d730a-e3aa-74d7-9bc3-e2699195ad2a/WT7qHNSIeKcZrJJXdoumXD9r_fyRnG8d0D169XL-xzI', size: 15 },
+        { src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw', size: 10 },
+    ];
+
+    const slots: Slot[] = [
+        { x: 11, y: 28, rotation: -15, z: 1 },
+        { x: 78, y: 16, rotation: 12, z: 2 },
+        { x: 22, y: 67, rotation: -8, z: 3 },
+        { x: 72, y: 65, rotation: 20, z: 4 },
+        { x: 58, y: 5, rotation: -5, z: 5 },
+        { x: 32, y: 5, rotation: -5, z: 6 },
+    ];
+
+    let stickers = $state<Sticker[]>(slots.map((slot, i) => ({
+        id: i + 1,
+        ...slot,
+        ...stickerPool[i % stickerPool.length],
+        visible: false,
+    })));
 
     let topZ = $state(7);
     let dragging: number | null = $state(null);
@@ -60,6 +74,24 @@
             window.addEventListener('orientationchange', lockHeroHeight);
         }
 
+        const shuffled = [...stickerPool].sort(() => Math.random() - 0.5);
+        for (let i = 0; i < stickers.length; i++) {
+            const pick = shuffled[i % shuffled.length];
+            stickers[i].src = pick.src;
+            stickers[i].size = pick.size;
+        }
+
+        (async () => {
+            await tick();
+            placeStickers();
+        })();
+
+        return () => {
+            if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
+        };
+    });
+
+    function placeStickers() {
         const heroRect = heroEl.getBoundingClientRect();
         const titleRect = titleEl.getBoundingClientRect();
 
@@ -149,12 +181,7 @@
                 stickers[idx].visible = true;
             }, 150 + i * 180);
         });
-
-
-        return () => {
-            if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
-        };
-    });
+    }
 
     function onPointerDown(e: PointerEvent, sticker: Sticker) {
         dragging = sticker.id;
@@ -183,8 +210,8 @@
 </script>
 
 <svelte:head>
-    {#each stickers as sticker (sticker.id)}
-        <link rel="preload" href={sticker.src} as="image" />
+    {#each stickerPool as asset (asset.src)}
+        <link rel="preload" href={asset.src} as="image" />
     {/each}
     <link rel="preload" href="https://assets.hackclub.com/flag-standalone-wtransparent.svg" as="image" />
     <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
