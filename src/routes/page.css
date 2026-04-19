@@ -503,7 +503,7 @@ html, body {
     width: 100%;
     max-width: 48rem;
     background: #c8dcf0b3;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
     padding: clamp(3rem, 5vw, 8rem) clamp(2.5rem, 4vw, 4.5rem);
     margin: calc(-1 * clamp(3rem, 5vw, 8rem)) 0;
     mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
