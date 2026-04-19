@@ -483,7 +483,7 @@ html, body {
 
 .faq-overlay {
     z-index: 1;
-    background-color: #c8dcf0b3;
+    background-color: #f6f1e4b3;
     backdrop-filter: blur(2px);
 }
 
@@ -495,7 +495,7 @@ html, body {
 .faq-content {
     width: 100%;
     max-width: 48rem;
-    background: #c8dcf0b3;
+    background: #f6f1e4b3;
     backdrop-filter: blur(4px);
     padding: clamp(3rem, 5vw, 8rem) clamp(2.5rem, 4vw, 4.5rem);
     margin: calc(-1 * clamp(3rem, 5vw, 8rem)) 0;
