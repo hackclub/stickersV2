@@ -473,19 +473,12 @@ html, body {
 }
 
 .faq-bg {
-    inset: 0 auto 0 0;
-    width: calc(100% + clamp(32rem, 55vw, 64rem));
+    position: absolute;
+    inset: 0;
     z-index: 0;
     background-image: url('../lib/assets/bg.png');
     background-repeat: repeat;
     background-size: clamp(32rem, 55vw, 64rem);
-    animation: faq-bg-drift 90s linear infinite;
-    will-change: transform;
-}
-
-@keyframes faq-bg-drift {
-    from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(calc(-1 * clamp(32rem, 55vw, 64rem)), 0, 0); }
 }
 
 .faq-overlay {
