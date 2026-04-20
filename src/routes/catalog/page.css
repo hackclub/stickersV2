@@ -1,0 +1,140 @@
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff') format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff') format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff') format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Phantom Sans';
+  src:
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff') format('woff'),
+    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Phantom Sans', sans-serif;
+}
+
+.page {
+    --grid: clamp(3rem, 4vw, 7rem);
+    --grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100svh;
+    background-color: #141318;
+    background-size: var(--grid) var(--grid);
+    background-image:
+        linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
+        linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
+    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+}
+
+.back-link {
+    position: absolute;
+    top: clamp(1.3rem, 1.8vw, 2.2rem);
+    left: clamp(1.6rem, 2.2vw, 2.6rem);
+    z-index: 99;
+    font-size: clamp(1.2rem, 1.6vw, 1.7rem);
+    font-weight: 600;
+    font-family: 'Phantom Sans', sans-serif;
+    color: white;
+    text-decoration: none;
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    background: rgba(20, 19, 24, 0.3);
+    backdrop-filter: blur(8px);
+    transition: color 0.15s ease;
+}
+
+.back-link:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2rem);
+    text-align: center;
+    padding: 0 2rem;
+    z-index: 2;
+}
+
+.page h1 {
+    margin: 0;
+    font-weight: 600;
+    font-style: italic;
+    color: white;
+    -webkit-text-stroke: black clamp(0.35rem, 0.55vw, 1rem);
+    paint-order: stroke fill;
+    font-size: clamp(4rem, 7vw, 10rem);
+    line-height: 1;
+}
+
+.page .subtitle {
+    font-size: clamp(1.1rem, 1.8vw, 2rem);
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+    -webkit-text-stroke: black clamp(0.12rem, 0.2vw, 0.35rem);
+    paint-order: stroke fill;
+    margin: 0;
+}
+
+.page footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: clamp(0.9rem, 1.2vw, 1.8rem);
+    font-size: clamp(0.85rem, 0.9vw, 1.25rem);
+    color: white;
+    box-sizing: border-box;
+}
+
+.page footer a {
+    color: white;
+    text-decoration: wavy underline;
+}
+
+.page footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .page h1 {
+        font-size: clamp(2.8rem, 13vw, 4.5rem);
+        -webkit-text-stroke: black clamp(0.2rem, 0.45vw, 0.5rem);
+    }
+}
