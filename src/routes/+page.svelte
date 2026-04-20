@@ -93,10 +93,16 @@
             stickers[i].rotation = Math.random() * 30 - 15;
         }
 
-        (async () => {
+        const loadPromises = stickers.map(s => new Promise<void>(res => {
+            const img = new Image();
+            img.onload = () => res();
+            img.onerror = () => res();
+            img.src = s.src;
+        }));
+        Promise.all(loadPromises).then(async () => {
             await tick();
             placeStickers();
-        })();
+        });
 
         return () => {
             if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
