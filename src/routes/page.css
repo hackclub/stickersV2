@@ -637,13 +637,13 @@ a:hover {
     text-decoration: underline;
 }
 
-footer {
+.lander-footer {
     text-align: center;
     padding: clamp(0.9rem, 1.2vw, 1.8rem);
     font-size: clamp(0.85rem, 0.9vw, 1.25rem);
     color: black;
 }
 
-footer a {
-    color: black !important;
+.lander-footer a {
+    color: black;
 }

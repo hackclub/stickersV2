@@ -1,8 +1,11 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
+    import { resolve } from '$app/paths';
     import { slide } from 'svelte/transition';
     import './page.css';
     import sepImg from '$lib/assets/sep.png';
+
+    const catalog = resolve("/catalog")
 
     type StickerAsset = { src: string; size: number };
     type Slot = { x: number; y: number; z: number };
@@ -238,7 +241,7 @@
 <!-- <a href="https://hackclub.com"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
-    <a href="https://example.com" class="catalog-link" bind:this={catalogEl}>catalog <span class="catalog-arrow">↗</span></a>
+    <a href="{catalog}" class="catalog-link" bind:this={catalogEl}>catalog <span class="catalog-arrow">↗</span></a>
     {#each stickers as sticker (sticker.id)}
         <img
             class="sticker"
@@ -312,6 +315,6 @@
     </div>
 </section>
 
-<footer>
+<footer class="lander-footer">
     made with &lt;3 by <a href="https://github.com/maxstellar">maxstellar</a> and <a href="https://hackclub.com">hack club</a>
 </footer>
