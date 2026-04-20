@@ -70,6 +70,9 @@ html, body {
     padding: 0;
     font-family: "Phantom Sans";
     scroll-behavior: smooth;
+    overflow-x: clip;
+    --page-grid: clamp(3rem, 4vw, 7rem);
+    --page-grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
 }
 
 .hero h1 {
@@ -91,20 +94,18 @@ html, body {
 }
 
 .hero {
-    --grid: clamp(3rem, 4vw, 7rem);
-    --grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     height: calc(100svh + 0.47vw);
-    background-size: var(--grid) var(--grid);
+    background-size: var(--page-grid) var(--page-grid);
     background-color: #141318;
     background-image:
-        linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
-        linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
-    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+        linear-gradient(to right, #1c1c20 var(--page-grid-line), transparent var(--page-grid-line)),
+        linear-gradient(to bottom, #1c1c20 var(--page-grid-line), transparent var(--page-grid-line));
+    background-position: calc(var(--page-grid) / 2) calc(var(--page-grid) / 2);
 }
 
 .sticker {
@@ -268,7 +269,8 @@ html, body {
 
 .sep {
     display: block;
-    width: 100vw;
+    width: 220vw;
+    margin-left: -60vw;
     position: relative;
     z-index: 5;
     color: transparent;
@@ -278,19 +280,20 @@ html, body {
 }
 
 .sep-top {
-    margin-top: -0.47vw;
-    margin-bottom: -0.47vw;
+    margin-top: -1vw;
+    margin-bottom: -1vw;
 }
 
 .sep-bottom {
-    margin-top: -0.47vw;
-    margin-bottom: -0.47vw;
-    transform: scaleY(-1);
+    display: none;
+}
+
+.sep-footer {
+    margin-top: -1vw;
+    margin-bottom: -1vw;
 }
 
 .steps {
-    --grid: clamp(3rem, 4vw, 7rem);
-    --grid-line: clamp(0.1rem, 0.125vw, 0.2rem);
     counter-reset: step;
     position: relative;
     z-index: 10;
@@ -301,23 +304,22 @@ html, body {
     padding: clamp(3rem, 5vw, 8rem) clamp(2rem, 5vw, 8rem) clamp(4rem, 7vw, 11rem);
     background-color: white;
     background-image:
-        linear-gradient(to right, rgb(240, 240, 240) var(--grid-line), transparent var(--grid-line)),
-        linear-gradient(to bottom, rgb(240, 240, 240) var(--grid-line), transparent var(--grid-line));
-    background-size: var(--grid) var(--grid);
-    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+        linear-gradient(to right, rgb(240, 240, 240) var(--page-grid-line), transparent var(--page-grid-line)),
+        linear-gradient(to bottom, rgb(240, 240, 240) var(--page-grid-line), transparent var(--page-grid-line));
+    background-size: var(--page-grid) var(--page-grid);
+    background-position: calc(var(--page-grid) / 2) calc(var(--page-grid) / 2);
 }
 
 .steps::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(to right, rgb(240, 240, 240) var(--grid-line), transparent var(--grid-line)),
-        linear-gradient(to bottom, rgb(240, 240, 240) var(--grid-line), transparent var(--grid-line));
-    background-size: var(--grid) var(--grid);
-    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(4rem, 9vw, 12rem);
     pointer-events: none;
     z-index: 1;
+    background: linear-gradient(to top, #f6f1e4, rgba(246, 241, 228, 0));
 }
 
 .steps h2 {
@@ -525,6 +527,22 @@ html, body {
     z-index: 1;
     background-color: #f6f1e4b3;
     backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.faq::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: clamp(4rem, 9vw, 12rem);
+    z-index: 2;
+    pointer-events: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    mask-image: linear-gradient(to bottom, black, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent);
 }
 
 .faq > .faq-content {
@@ -642,6 +660,7 @@ a:hover {
     padding: clamp(0.9rem, 1.2vw, 1.8rem);
     font-size: clamp(0.85rem, 0.9vw, 1.25rem);
     color: black;
+    background-color: white;
 }
 
 .lander-footer a {
