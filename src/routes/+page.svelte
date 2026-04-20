@@ -71,7 +71,7 @@
             { text: 'high seas', href: 'https://highseas.hackclub.com/' },
             ' and ',
             { text: 'summer of making', href: 'https://summer.hackclub.com/' },
-            " which gave out prizes for building other sorts of projects. we're supported by donations from companies like GitHub or individual generous donations!",
+            " which gave out prizes like devboards, keyboards, and even 3d printers! we're supported by donations from companies like GitHub or AMD, as well as generous individuals.",
         ]},
     ];
 
