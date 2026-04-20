@@ -129,7 +129,6 @@ html, body {
 }
 
 .page footer a:hover {
-    color: rgba(255,255,255,0.75);
     text-decoration: underline;
 }
 
