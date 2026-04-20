@@ -99,7 +99,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100svh + 0.47vw);
+    height: calc(100svh + 0.67vw);
     background-size: var(--page-grid) var(--page-grid);
     background-color: #141318;
     background-image:
