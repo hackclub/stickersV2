@@ -527,7 +527,6 @@ html, body {
     z-index: 1;
     background-color: #f6f1e4b3;
     backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
 }
 
 .faq::before {
@@ -540,7 +539,6 @@ html, body {
     z-index: 2;
     pointer-events: none;
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     mask-image: linear-gradient(to bottom, black, transparent);
     -webkit-mask-image: linear-gradient(to bottom, black, transparent);
 }

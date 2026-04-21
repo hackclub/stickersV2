@@ -286,8 +286,6 @@
     <div><img alt='Raccoon hugging parcel sticker with "You got mail!" text' src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
 </section>
 
-<img src={sepImg} alt="" role="presentation" class="sep sep-bottom" draggable="false">
-
 <section class="faq">
     <div class="faq-bg"></div>
     <div class="faq-overlay"></div>
