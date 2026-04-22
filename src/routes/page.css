@@ -286,7 +286,7 @@ html, body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(1rem, 2vw, 2.5rem);
-    padding: clamp(3rem, 5vw, 8rem) clamp(2rem, 5vw, 8rem) clamp(4rem, 7vw, 11rem);
+    padding: clamp(2.75rem, 4.7vw, 7.5rem) clamp(2rem, 5vw, 8rem) clamp(8rem, 14vw, 18rem);
     background-color: white;
     background-image:
         linear-gradient(to right, rgb(240, 240, 240) var(--page-grid-line), transparent var(--page-grid-line)),
@@ -547,7 +547,7 @@ html, body {
     max-width: 48rem;
     background: #f6f1e4b3;
     backdrop-filter: blur(4px);
-    padding: clamp(3rem, 5vw, 8rem) clamp(2.5rem, 4vw, 4.5rem);
+    padding: clamp(1.5rem, 2.5vw, 4rem) clamp(2.5rem, 4vw, 4.5rem) clamp(3rem, 5vw, 8rem);
     margin: calc(-1 * clamp(3rem, 5vw, 8rem)) 0;
     mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
