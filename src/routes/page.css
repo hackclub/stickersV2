@@ -230,7 +230,7 @@ html, body {
 }
 
 ::placeholder {
-  color: #37373c;
+  color: #56565d;
   opacity: 1;
 }
 
@@ -340,6 +340,9 @@ html, body {
     transition: filter 0.2s ease, transform 0.2s ease;
     border: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
     counter-increment: step;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .steps div::before {
@@ -371,7 +374,8 @@ html, body {
 
 .steps div:hover {
     filter: brightness(1.1);
-    transform: rotate(0deg) scale(1.04);
+    transform: rotate(0deg) translateY(-6px);
+    z-index: 3;
 }
 
 .steps div img {
@@ -574,6 +578,9 @@ html, body {
     border-radius: 1.5rem;
     overflow: hidden;
     transition: transform 0.2s ease, filter 0.2s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .faq-item:nth-child(2) { background-color: #fff959; }
@@ -585,7 +592,7 @@ html, body {
 .faq-item:nth-child(8) { background-color: #3758c4; }
 
 .faq-item:hover {
-    transform: scale(1.02);
+    transform: translateY(-3px);
     filter: brightness(1.08);
 }
 
