@@ -254,14 +254,17 @@
             class:dragging={dragging === sticker.id}
             class:placed={sticker.visible}
             src={sticker.src}
-            alt="sticker"
+            alt=""
+            role="presentation"
+            decoding="async"
+            fetchpriority="high"
             style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size * 0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; --r: {sticker.rotation}deg;"
             onpointerdown={(e) => onPointerDown(e, sticker)}
             draggable="false"
         />
     {/each}
     <section class="hero-title" bind:this={titleEl}>
-        <a href="https://hackclub.com"><img class="hero-flag" src="https://assets.hackclub.com/flag-standalone-wtransparent.svg" alt="Hack Club" /></a>
+        <a href="https://hackclub.com" aria-label="Hack Club homepage"><img class="hero-flag" src="https://assets.hackclub.com/flag-standalone-wtransparent.svg" alt="Hack Club" decoding="async" /></a>
         <h1>stickers</h1>
         <form method="GET" action="https://forms.hackclub.com/stickers-rsvp">
             <input id="email" placeholder="your@email.com" type="email" name="email" required>
@@ -280,10 +283,10 @@
 
 <section id="steps" class="steps">
     <h2>make projects. get stickers.</h2>
-    <div><img alt="Raccoon looking confused sticker" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">make creative projects</div>
-    <div><img alt="Raccoon with foot on chest of treasure sticker" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">get tokens for your efforts!</div>
-    <div><img alt="Raccoon inside giftbox sticker" src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png">buy stickers from the shop</div>
-    <div><img alt='Raccoon hugging parcel sticker with "You got mail!" text' src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
+    <div><img alt="" role="presentation" loading="lazy" decoding="async" src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM">make creative projects</div>
+    <div><img alt="" role="presentation" loading="lazy" decoding="async" src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo">get tokens for your efforts!</div>
+    <div><img alt="" role="presentation" loading="lazy" decoding="async" src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png">buy stickers from the shop</div>
+    <div><img alt="" role="presentation" loading="lazy" decoding="async" src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o">we'll mail them to you!</div>
 </section>
 
 <section class="faq">
@@ -294,12 +297,18 @@
         <div class="faq-grid">
             {#each faqs as faq, i (faq.q)}
             <div class="faq-item">
-                <button class="faq-summary" onclick={() => openFaq = openFaq === i ? null : i}>
+                <button
+                    class="faq-summary"
+                    aria-expanded={openFaq === i}
+                    aria-controls="faq-panel-{i}"
+                    id="faq-trigger-{i}"
+                    onclick={() => openFaq = openFaq === i ? null : i}
+                >
                     <span>{faq.q}</span>
-                    <span class="faq-icon" class:open={openFaq === i}>+</span>
+                    <span class="faq-icon" class:open={openFaq === i} aria-hidden="true">+</span>
                 </button>
                 {#if openFaq === i}
-                    <p transition:slide={{ duration: 250 }}>
+                    <p id="faq-panel-{i}" role="region" aria-labelledby="faq-trigger-{i}" transition:slide={{ duration: 250 }}>
                         {#if typeof faq.a === 'string'}
                             {faq.a}
                         {:else}

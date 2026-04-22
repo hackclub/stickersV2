@@ -53,17 +53,6 @@
   font-style: italic;
   font-display: swap;
 }
-@font-face {
-  font-family: 'Phantom Sans';
-  src:
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff')
-      format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2')
-      format('woff2');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
-}
 
 html, body {
     margin: 0;
@@ -282,10 +271,6 @@ html, body {
 .sep-top {
     margin-top: -1vw;
     margin-bottom: -1vw;
-}
-
-.sep-bottom {
-    display: none;
 }
 
 .sep-footer {
@@ -663,4 +648,31 @@ a:hover {
 
 .lander-footer a {
     color: black;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html, body {
+        scroll-behavior: auto;
+    }
+
+    .scroll-arrow {
+        animation: none;
+    }
+
+    .sticker,
+    .sticker.placed,
+    .sticker:hover:not(.dragging),
+    .sticker.dragging,
+    .steps div,
+    .faq-item,
+    .faq-icon,
+    .hc-logo,
+    .hc-logo:hover {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .sticker {
+        opacity: 1;
+    }
 }

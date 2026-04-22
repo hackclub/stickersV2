@@ -50,7 +50,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100svh;
+    min-height: 100svh;
     background-color: #141318;
     background-size: var(--grid) var(--grid);
     background-image:
@@ -73,12 +73,41 @@ html, body {
     border-radius: 999px;
     background: rgba(20, 19, 24, 0.3);
     backdrop-filter: blur(8px);
-    transition: color 0.15s ease;
+    transition: color 0.15s ease, background 0.15s ease;
 }
 
 .back-link:hover {
     color: rgba(255, 255, 255, 0.8);
+    background: rgba(20, 19, 24, 0.5);
     text-decoration: none;
+}
+
+.bg-stickers {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bg-sticker {
+    position: absolute;
+    opacity: 0.18;
+    filter: saturate(0.9);
+    transform: rotate(var(--r, 0deg));
+    animation: drift 20s ease-in-out infinite;
+    animation-fill-mode: both;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+@keyframes drift {
+    0%, 100% {
+        transform: rotate(var(--r, 0deg)) translate3d(0, 0, 0);
+    }
+    50% {
+        transform: rotate(calc(var(--r, 0deg) + 6deg)) translate3d(0, -2.2rem, 0);
+    }
 }
 
 .content {
@@ -89,6 +118,7 @@ html, body {
     text-align: center;
     padding: 0 2rem;
     z-index: 2;
+    position: relative;
 }
 
 .page h1 {
@@ -110,6 +140,51 @@ html, body {
     -webkit-text-stroke: black clamp(0.12rem, 0.2vw, 0.35rem);
     paint-order: stroke fill;
     margin: 0;
+    min-height: 1.4em;
+}
+
+.rotating {
+    display: inline-block;
+    animation: fade-up 0.45s ease-out;
+}
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(0.4em); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.ellipsis {
+    display: inline-block;
+    width: 1.3em;
+    text-align: left;
+}
+
+.ellipsis::after {
+    content: '';
+    animation: dots 1.6s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+    100% { content: ''; }
+}
+
+.cta {
+    margin-top: 0.5rem;
+    color: white;
+    text-decoration: wavy underline;
+    font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+    font-weight: bold;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+}
+
+.cta:hover {
+    opacity: 1;
+    text-decoration: underline;
 }
 
 .page footer {
@@ -121,6 +196,7 @@ html, body {
     font-size: clamp(0.85rem, 0.9vw, 1.25rem);
     color: white;
     box-sizing: border-box;
+    z-index: 2;
 }
 
 .page footer a {
@@ -136,5 +212,22 @@ html, body {
     .page h1 {
         font-size: clamp(2.8rem, 13vw, 4.5rem);
         -webkit-text-stroke: black clamp(0.2rem, 0.45vw, 0.5rem);
+    }
+
+    .bg-sticker {
+        opacity: 0.14;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-sticker {
+        animation: none;
+    }
+    .ellipsis::after {
+        animation: none;
+        content: '...';
+    }
+    .rotating {
+        animation: none;
     }
 }
