@@ -364,9 +364,14 @@ html, body {
 .steps div:nth-child(4) { background-color: #239640; }
 .steps div:nth-child(5) { background-color: #3758c4; }
 
+.steps div:nth-child(2) { transform: rotate(-1.8deg); }
+.steps div:nth-child(3) { transform: rotate(1.3deg); }
+.steps div:nth-child(4) { transform: rotate(-1deg); }
+.steps div:nth-child(5) { transform: rotate(2deg); }
+
 .steps div:hover {
     filter: brightness(1.1);
-    transform: scale(1.025);
+    transform: rotate(0deg) scale(1.04);
 }
 
 .steps div img {
