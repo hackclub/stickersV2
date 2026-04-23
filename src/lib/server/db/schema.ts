@@ -1,7 +1,12 @@
-import { pgTable, serial, integer, text } from 'drizzle-orm/pg-core';
+import { pgTable, serial, boolean, text } from 'drizzle-orm/pg-core';
 
-export const task = pgTable('task', {
+export const stickers = pgTable('stickers', {
 	id: serial('id').primaryKey(),
-	title: text('title').notNull(),
-	priority: integer('priority').notNull().default(1)
+	name: text('Sticker Name').notNull(),
+	cdn_url: text('CDN_URL').notNull(),
+	artist: text('Artist').notNull(),
+	event: text('Event').notNull(),
+	event_url: text('event_URL').notNull(),
+	sheet: boolean('Sheet').notNull(),
+	shiny: boolean('Shiny').notNull()
 });

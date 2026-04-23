@@ -42,5 +42,9 @@
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.2",
 		"vite": "^8.0.8"
+	},
+	"dependencies": {
+		"airtable": "^0.12.2",
+		"croner": "^10.0.1"
 	}
 }
