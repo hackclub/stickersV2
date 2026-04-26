@@ -497,6 +497,5 @@
 <img src={sepImg} alt="" role="presentation" class="sep sep-footer" draggable="false" />
 
 <footer class="lander-footer">
-	made with &lt;3 by <a href="https://github.com/maxstellar">maxstellar</a> and
-	<a href="https://hackclub.com">hack club</a>
+	made with &lt;3 <a href="https://hackclub.com">by teenagers, for teenagers</a>
 </footer>
