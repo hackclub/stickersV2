@@ -44,6 +44,7 @@
 		"vite": "^8.0.10"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-node": "^5.5.4",
 		"airtable": "^0.12.2",
 		"croner": "^10.0.1"
 	}

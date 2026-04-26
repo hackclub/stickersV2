@@ -13,11 +13,11 @@ services:
       - .env
     build:
       context: .
-      target: prod
+      target: dev
       dockerfile: Dockerfile
     container_name: svelte_app
     ports:
-      - '3000:3000'
+      - '5173:5173'
     depends_on:
       - db
 volumes:
