@@ -159,8 +159,16 @@ body {
 	padding-left: 7.5vw;
 	background-color: #faf8f5;
 	background-image:
-		linear-gradient(90deg, #0000 0 var(--col), #e8b4b8 var(--col) calc(var(--col) + 2px), #0000 calc(var(--col) + 2px)),
-		repeating-linear-gradient(#0000 0 calc(var(--row) - 2px), #c8d4e0 calc(var(--row) - 2px) var(--row));
+		linear-gradient(
+			90deg,
+			#0000 0 var(--col),
+			#e8b4b8 var(--col) calc(var(--col) + 2px),
+			#0000 calc(var(--col) + 2px)
+		),
+		repeating-linear-gradient(
+			#0000 0 calc(var(--row) - 2px),
+			#c8d4e0 calc(var(--row) - 2px) var(--row)
+		);
 	background-repeat: repeat-y, no-repeat, repeat;
 	color: black;
 	font-weight: semibold;
@@ -208,7 +216,7 @@ body {
 	height: 230px;
 	justify-content: center;
 	align-items: center;
-	transition: transform .2s;
+	transition: transform 0.2s;
 	display: flex;
 }
 

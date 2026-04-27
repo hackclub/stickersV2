@@ -7,7 +7,7 @@ RUN bun install
 FROM base AS dev
 COPY . .
 EXPOSE 5173
-CMD ["bun", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD ["sh", "-c", "bun run db:push --force || echo '[migration] failed, starting dev server anyway'; exec bun run dev -- --host 0.0.0.0"]
 
 #build
 FROM base AS build
