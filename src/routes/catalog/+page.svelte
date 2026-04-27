@@ -9,6 +9,15 @@
 	type Sticker = (typeof data.stickers)[number];
 	let selected = $state<Sticker | null>(null);
 	let dialog = $state<HTMLDialogElement | null>(null);
+	let searchQuery = $state('');
+
+	const filteredStickers = $derived(
+		searchQuery.trim() === ''
+			? data.stickers
+			: data.stickers.filter((s) =>
+					s.name.toLowerCase().includes(searchQuery.toLowerCase())
+				)
+	);
 
 	$effect(() => {
 		if (selected) dialog?.showModal();
@@ -41,8 +50,9 @@
 
 	<div class="content">
 		<h1>catalog</h1>
+		<input class="search" type="search" placeholder="search stickers..." bind:value={searchQuery} />
 		<div class="sticker-grid">
-			{#each data.stickers as sticker (sticker.id)}
+			{#each filteredStickers as sticker (sticker.id)}
 				<div class="sticker-card" onclick={() => selected = sticker} role="button" tabindex="0" onkeydown={(e) => { if (e.key === 'Enter') selected = sticker; }}>
 					<div class="sticker-img">
 						<img src={sticker.cdn_url} alt={sticker.name} loading="lazy"/>
@@ -50,6 +60,9 @@
 					<p class="sticker-name">{sticker.name}</p>
 				</div>
 			{/each}
+			{#if filteredStickers.length == 0}
+				<p class="no-results">We couldn't find the sticker you were looking for  :C</p>
+			{/if}
 		</div>
 	</div>
 

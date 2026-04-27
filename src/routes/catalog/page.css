@@ -120,6 +120,28 @@ body {
 	text-decoration: underline;
 }
 
+.search {
+	width: min(640px, 90%);
+	padding: 0.75em 1.4em;
+	border: none;
+	border-radius: 999px;
+	font-family: 'Phantom Sans', sans-serif;
+	font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+	background: rgba(255, 255, 255, 0.12);
+	color: white;
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+	transition: box-shadow 0.15s ease;
+}
+
+.search::placeholder {
+	color: rgba(255, 255, 255, 0.45);
+}
+
+.search:focus {
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
 .sticker-grid {
 	--col: clamp(48px, 6vw, 96px);
 	--row: clamp(40px, 5vw, 80px);
@@ -140,6 +162,15 @@ body {
 	color: black;
 	font-weight: semibold;
 	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+.no-results {
+	grid-column: 1 / -1;
+	width: 80%;
+	margin: 0.8rem auto 2rem;
+	text-align: center;
+	font-size: clamp(1.4rem, 2.2vw, 2rem);
+	color: #555;
 }
 
 .sticker-card {
