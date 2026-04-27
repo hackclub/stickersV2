@@ -71,7 +71,10 @@
 	</footer>
 </div>
 
-<dialog bind:this={dialog} class="modal" onclose={() => selected = null} onclick={(e) => { if (e.target === dialog) selected = null; }}>
+<dialog bind:this={dialog} class="modal" onclose={() => selected = null} onclick={(e) => {
+		const rect = dialog!.getBoundingClientRect();
+		if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) selected = null;
+	}}>
 	{#if selected}
 		<button class="modal-close" onclick={() => selected = null} aria-label="Close">✕</button>
 		<img src={selected.cdn_url} alt={selected.name} class="modal-img" />
