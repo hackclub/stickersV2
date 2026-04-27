@@ -25,4 +25,4 @@ COPY --from=build /app/drizzle.config.ts ./
 COPY --from=build /app/src/lib/server/db/schema.ts ./src/lib/server/db/schema.ts
 
 EXPOSE 3000
-CMD ["sh", "-c", "bun run db:push --force && exec bun ./build/index.js"]
+CMD ["sh", "-c", "bun run db:push --force || echo '[migration] failed, starting server anyway'; exec bun ./build/index.js"]
