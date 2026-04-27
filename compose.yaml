@@ -1,18 +1,7 @@
 services:
-  db:
-    env_file:
-      - .env
-    image: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    volumes:
-      - pgdata:/var/lib/postgresql
   web:
     env_file:
       - .env
-    environment:
-      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
     build:
       context: .
       target: prod
@@ -20,7 +9,3 @@ services:
     container_name: stickers_frontend
     ports:
       - '3000:3000'
-    depends_on:
-      - db
-volumes:
-  pgdata:
