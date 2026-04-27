@@ -18,8 +18,11 @@ RUN bun run build
 FROM oven/bun:latest AS prod
 WORKDIR /app
 COPY --from=build /app/build ./build
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./
-RUN bun install --production
+COPY --from=build /app/bun.lock ./
+COPY --from=build /app/drizzle.config.ts ./
+COPY --from=build /app/src/lib/server/db/schema.ts ./src/lib/server/db/schema.ts
 
 EXPOSE 3000
-CMD ["bun", "./build/index.js"]
+CMD ["sh", "-c", "bun run db:push --force && exec bun ./build/index.js"]
