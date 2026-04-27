@@ -49,8 +49,10 @@
 	<a href={home} class="back-link">← home</a>
 
 	<div class="content">
-		<h1>catalog</h1>
-		<input class="search" type="search" placeholder="search stickers..." bind:value={searchQuery} />
+		<div class="search-row">
+			<h1>catalog</h1>
+			<input class="search" type="search" placeholder="search stickers..." bind:value={searchQuery} />
+		</div>
 		<div class="sticker-grid">
 			{#each filteredStickers as sticker (sticker.id)}
 				<div class="sticker-card" onclick={() => selected = sticker} role="button" tabindex="0" onkeydown={(e) => { if (e.key === 'Enter') selected = sticker; }}>
