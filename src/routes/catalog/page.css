@@ -52,11 +52,11 @@ body {
 	align-items: center;
 	justify-content: center;
 	min-height: 100svh;
-	background-color: #1c1814;
+	background-color: #141318;
 	background-size: var(--grid) var(--grid);
 	background-image:
-		linear-gradient(to right, #252018 var(--grid-line), transparent var(--grid-line)),
-		linear-gradient(to bottom, #252018 var(--grid-line), transparent var(--grid-line));
+		linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
+		linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
 	background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 
@@ -125,24 +125,19 @@ body {
 	min-width: min(280px, 100%);
 	align-self: flex-end;
 	margin-bottom: 1.5rem;
-	padding: 0.75em 1.4em;
-	border: none;
-	border-radius: 999px;
+	padding: clamp(0.8rem, 1vw, 1.5rem) 1.4em;
+	border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+	border-radius: 99999999px;
 	font-family: 'Phantom Sans', sans-serif;
 	font-size: 1.45rem;
-	background: rgba(255, 255, 255, 0.12);
+	background-color: #1d1c23;
 	color: white;
 	outline: none;
-	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
-	transition: box-shadow 0.15s ease;
 }
 
 .search::placeholder {
-	color: rgba(255, 255, 255, 0.45);
-}
-
-.search:focus {
-	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+	color: #56565d;
+	opacity: 1;
 }
 
 .sticker-grid {
