@@ -12,5 +12,5 @@ if (!dev) {
 	};
 
 	sync();
-	new Cron('0 0 * * *', sync);
+	new Cron('0 */12 * * *', sync);
 }
