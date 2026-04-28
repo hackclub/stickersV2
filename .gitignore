@@ -1,4 +1,7 @@
 node_modules
+.claude
+.vscode
+.claude/settings.local.json
 
 # Output
 .output
@@ -25,3 +28,4 @@ vite.config.ts.timestamp-*
 # IDE
 .claude
 .vscode
+.claude/settings.local.json

@@ -255,6 +255,19 @@ body {
 	cursor: pointer;
 }
 
+.free-note {
+	position: absolute;
+	top: 78%;
+	left: 50%;
+	transform: translateX(-50%);
+	margin: 0;
+	font-size: clamp(0.85rem, 1.2vw, 1.6rem);
+	color: rgba(255, 255, 255, 0.6);
+	text-align: center;
+	white-space: nowrap;
+	z-index: 10;
+}
+
 .sep {
 	display: block;
 	width: 220vw;

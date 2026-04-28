@@ -1,8 +1,0 @@
-{
-	"permissions": {
-		"allow": [
-			"Bash(python3 -c \"from PIL import Image; img = Image.open\\('src/lib/assets/sep.png'\\); print\\(img.size\\)\")",
-			"Bash(python3 -c \"import struct,zlib; d=open\\('src/lib/assets/sep.png','rb'\\).read\\(\\); print\\(struct.unpack\\('>II',d[16:24]\\)\\)\")"
-		]
-	}
-}
