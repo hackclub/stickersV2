@@ -384,7 +384,6 @@
 			<button id="submit" type="submit">rsvp!</button>
 		</form>
 	</section>
-	<p class="free-note">free including shipping for teens 13-18!</p>
 	<a
 		class="scroll-arrow"
 		href="#steps"
