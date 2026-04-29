@@ -385,9 +385,9 @@ function onPointerDown(e: PointerEvent, sticker: Sticker) {
 			/></a
 		>
 		<h1>stickers</h1>
-		<form method="GET" action="https://forms.hackclub.com/stickers-rsvp">
-			<input id="email" placeholder="your@email.com" type="email" name="email" />
-			<button id="submit" type="submit">rsvp!</button>
+		<form method="GET" action="/auth/start">
+			<input id="email" placeholder="your@email.com" type="email" name="login_hint" />
+			<button id="submit" type="submit">Go!</button>
 		</form>
 	</section>
 	<a
