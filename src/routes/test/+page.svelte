@@ -1,0 +1,871 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import '../page.css';
+
+	type Asset = { src: string; size: number; name: string };
+
+	const stickerPool: Asset[] = [
+		{
+			src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI',
+			size: 9,
+			name: 'nasa'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28',
+			size: 8,
+			name: 'juice'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc',
+			size: 7,
+			name: 'boba'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8',
+			size: 7,
+			name: 'hc inside'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M',
+			size: 11,
+			name: 'kawaii'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM',
+			size: 8,
+			name: 'drake'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw',
+			size: 7,
+			name: 'yippee'
+		},
+		{
+			src: 'https://cdn.hackclub.com/019d730a-664a-745f-b62a-27dec7e0b2db/TB4xpI-OBi6Yb_fcd5D1ql5ucYCAN7s6kX2v5cmf8dg',
+			size: 11,
+			name: 'airlines'
+		}
+	];
+
+	type Falling = {
+		id: number;
+		src: string;
+		size: number;
+		name: string;
+		x: number;
+		lx: number;
+		ly: number;
+		es: number;
+		rotStart: number;
+		rotEnd: number;
+		delay: number;
+		duration: number;
+	};
+
+	const TOTAL = 7;
+	const STAGGER = 800;
+	const FALL_BASE = 2100;
+
+	let falling = $state<Falling[]>([]);
+	let envelopeClosed = $state(false);
+	let envelopeFlying = $state(false);
+	let runKey = $state(0);
+	let showConfirm = $state(false);
+	let orderSent = $state(false);
+	let mailStamp = $state(false);
+
+	function start() {
+		envelopeClosed = false;
+		envelopeFlying = false;
+		showConfirm = false;
+		orderSent = false;
+		mailStamp = false;
+		runKey++;
+
+		const shuffled = [...stickerPool].sort(() => Math.random() - 0.5);
+		const list: Falling[] = [];
+		for (let i = 0; i < TOTAL; i++) {
+			const a = shuffled[i % shuffled.length];
+			const rotStart = Math.random() * 50 - 25;
+			list.push({
+				id: runKey * 100 + i,
+				src: a.src,
+				size: a.size,
+				name: a.name,
+				x: 0,
+				lx: 18 + Math.random() * 64,
+				ly: 58 + Math.random() * 34,
+				es: 0.3 + Math.random() * 0.18,
+				rotStart,
+				rotEnd: rotStart + (Math.random() * 70 - 35),
+				delay: 250 + i * STAGGER,
+				duration: FALL_BASE + Math.random() * 200
+			});
+		}
+		falling = list;
+
+		const last = list[list.length - 1];
+		const allLandedAt = last.delay + last.duration;
+		setTimeout(() => (showConfirm = true), allLandedAt + 200);
+	}
+
+	function onConfirm() {
+		showConfirm = false;
+		envelopeClosed = true;
+		setTimeout(() => (mailStamp = true), 850);
+		setTimeout(() => {
+			orderSent = true;
+			envelopeFlying = true;
+		}, 2300);
+	}
+
+	onMount(() => {
+		start();
+	});
+</script>
+
+<svelte:head>
+	<title>test — sticker delivery</title>
+	{#each stickerPool as a (a.src)}
+		<link rel="preload" href={a.src} as="image" />
+	{/each}
+	<link
+		rel="preload"
+		href="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+		as="image"
+	/>
+</svelte:head>
+
+<main class="scene">
+	<svg class="motion-blur-defs" aria-hidden="true">
+		<defs>
+			<filter id="motion-blur" x="-50%" y="-50%" width="200%" height="200%">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="10 0" />
+			</filter>
+		</defs>
+	</svg>
+
+	<aside class="receipt">
+		<div class="receipt-head">
+			<span class="receipt-tag">order #6767</span>
+			<h2>order summary</h2>
+		</div>
+		<ul class="receipt-items">
+			{#each falling as s (s.id)}
+				<li>
+					<img src={s.src} alt="" />
+					<span class="item-name">{s.name}</span>
+					<span class="dots"></span>
+					<span class="qty">×1</span>
+				</li>
+			{/each}
+		</ul>
+		<div class="ship-to">
+			<span class="ship-label">ship to</span>
+			<address>
+				Zach Latta<br />
+				Hack Club HQ0<br />
+				burlington, vt 05401<br />
+				united states
+			</address>
+		</div>
+	</aside>
+
+	<h1 class="headline">
+		we're preparing your order,<br />does this look right?
+	</h1>
+
+	<div class="content">
+		<div class="envelope-column">
+			<div class="flap-reserve" aria-hidden="true"></div>
+			{#if orderSent}
+				<div class="order-sent">
+					<span>
+						your order is on the way!<br />
+						you can track it <a href="/tracking?id=6767">here!</a>
+					</span>
+				</div>
+			{/if}
+
+			<div class="envelope-wrap" class:flying={envelopeFlying}>
+				<div class="envelope" class:closed={envelopeClosed}>
+					<div class="back">
+						<svg
+							class="back-vshadow"
+							viewBox="0 0 100 100"
+							preserveAspectRatio="none"
+							aria-hidden="true"
+						>
+							<polyline
+								points="0,35 50,78 100,35"
+								fill="none"
+								stroke="black"
+								stroke-width="4"
+								vector-effect="non-scaling-stroke"
+							/>
+						</svg>
+					</div>
+
+					<div class="sticker-clip">
+						{#each falling as s (s.id)}
+							<img
+								class="falling-sticker"
+								src={s.src}
+								alt=""
+								role="presentation"
+								draggable="false"
+								style="
+									--x: {s.x};
+									--lx: {s.lx}%;
+									--ly: {s.ly}%;
+									--es: {s.es};
+									--size: {s.size * 3.6}cqw;
+									--rs: {s.rotStart}deg;
+									--re: {s.rotEnd}deg;
+									--delay: {s.delay}ms;
+									--dur: {s.duration}ms;
+								"
+							/>
+						{/each}
+					</div>
+
+					<div class="front"></div>
+					{#if mailStamp}
+						<img
+							class="mail-stamp"
+							src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+							alt=""
+							role="presentation"
+							draggable="false"
+						/>
+					{/if}
+					<div class="flap-group">
+						<div class="flap"></div>
+						<svg
+							class="flap-outline"
+							viewBox="0 0 100 100"
+							preserveAspectRatio="none"
+							aria-hidden="true"
+						>
+							<path d="M 0 0 L 0 44.87 L 50 100 L 100 44.87 L 100 0" />
+						</svg>
+					</div>
+				</div>
+			</div>
+
+			<div class="actions">
+				<button
+					class="confirm"
+					class:visible={showConfirm}
+					onclick={onConfirm}
+					disabled={!showConfirm}
+					aria-hidden={!showConfirm}
+					tabindex={showConfirm ? 0 : -1}
+				>
+					confirm order
+				</button>
+				<button
+					class="change"
+					class:visible={showConfirm}
+					disabled={!showConfirm}
+					aria-hidden={!showConfirm}
+					tabindex={showConfirm ? 0 : -1}
+				>
+					change order
+				</button>
+			</div>
+		</div>
+	</div>
+</main>
+
+<style>
+	.scene {
+		--sidebar-w: clamp(220px, 24vw, 340px);
+		position: fixed;
+		inset: 0;
+		overflow: hidden;
+		background-size: var(--page-grid) var(--page-grid);
+		background-color: #141318;
+		background-image:
+			linear-gradient(to right, #1c1c20 var(--page-grid-line), transparent var(--page-grid-line)),
+			linear-gradient(to bottom, #1c1c20 var(--page-grid-line), transparent var(--page-grid-line));
+		background-position: calc(var(--page-grid) / 2) calc(var(--page-grid) / 2);
+		font-family: 'Phantom Sans', sans-serif;
+	}
+
+	.headline {
+		position: absolute;
+		top: clamp(1.5rem, 5vh, 4rem);
+		left: calc(var(--sidebar-w) + (100% - var(--sidebar-w)) / 2);
+		transform: translateX(-50%);
+		margin: 0;
+		text-align: center;
+		font-weight: bold;
+		font-style: italic;
+		font-size: clamp(1.4rem, 2.6vw, 2.6rem);
+		line-height: 1.15;
+		color: white;
+		-webkit-text-stroke: black clamp(0.18rem, 0.3vw, 0.45rem);
+		paint-order: stroke fill;
+		width: calc(100% - var(--sidebar-w) - 2rem);
+		z-index: 15;
+	}
+
+	.content {
+		position: absolute;
+		top: clamp(7rem, 14vh, 12rem);
+		bottom: 0;
+		left: calc(var(--sidebar-w) + (100% - var(--sidebar-w)) / 2);
+		transform: translateX(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		max-width: calc(100% - var(--sidebar-w) - 2rem);
+		z-index: 20;
+	}
+
+	.envelope-column {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		isolation: isolate;
+	}
+
+	.flap-reserve {
+		width: 1px;
+		height: calc(clamp(260px, 36vw, 440px) * 0.468);
+		pointer-events: none;
+	}
+
+	.envelope-wrap {
+		flex: 0 0 auto;
+		position: relative;
+		width: clamp(260px, 36vw, 440px);
+		aspect-ratio: 5 / 3;
+		z-index: 2;
+		container-type: inline-size;
+	}
+
+	.order-sent {
+		position: absolute;
+		top: calc(clamp(260px, 36vw, 440px) * 0.468);
+		left: 50%;
+		transform: translateX(-50%);
+		width: max-content;
+		max-width: 90vw;
+		height: calc(clamp(260px, 36vw, 440px) * 3 / 5);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		font-weight: bold;
+		font-style: italic;
+		font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+		line-height: 1.4;
+		color: white;
+		-webkit-text-stroke: black clamp(0.18rem, 0.3vw, 0.45rem);
+		paint-order: stroke fill;
+		z-index: 1;
+	}
+
+	.order-sent a {
+		color: #6f8fff;
+		-webkit-text-stroke: 0;
+		text-decoration: underline;
+		text-decoration-thickness: clamp(0.12rem, 0.18vw, 0.28rem);
+		text-underline-offset: 0.1em;
+	}
+
+	.order-sent a:hover {
+		filter: brightness(1.15);
+	}
+
+	.actions {
+		display: flex;
+		gap: clamp(0.5rem, 1vw, 1rem);
+		align-items: center;
+		position: relative;
+		z-index: 3;
+		margin-top: clamp(1rem, 2vw, 2rem);
+	}
+
+	.confirm,
+	.change {
+		padding: 0.7rem 1.8rem;
+		font-family: 'Phantom Sans', sans-serif;
+		font-size: clamp(1rem, 1.3vw, 1.3rem);
+		font-weight: bold;
+		color: white;
+		-webkit-text-stroke: black 0.18rem;
+		paint-order: stroke fill;
+		border: clamp(0.15rem, 0.22vw, 0.35rem) solid black;
+		border-radius: 999px;
+		cursor: pointer;
+		box-shadow: 0 5px 0 black;
+		opacity: 0;
+		transform: scale(0.5);
+		visibility: hidden;
+		pointer-events: none;
+		transition:
+			transform 0.12s ease,
+			filter 0.12s ease,
+			box-shadow 0.12s ease;
+	}
+
+	.confirm {
+		background: #239640;
+	}
+
+	.change {
+		background: white;
+		color: black;
+		-webkit-text-stroke: 0;
+	}
+
+	.confirm.visible,
+	.change.visible {
+		visibility: visible;
+		pointer-events: auto;
+		animation: confirm-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+	}
+
+	.change.visible {
+		animation-delay: 0.08s;
+	}
+
+	@keyframes confirm-pop {
+		from {
+			opacity: 0;
+			transform: scale(0.5);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.confirm.visible:hover,
+	.change.visible:hover {
+		filter: brightness(1.15);
+		transform: translateY(-2px) scale(1);
+		box-shadow: 0 7px 0 black;
+	}
+
+	.confirm.visible:active,
+	.change.visible:active {
+		transform: translateY(2px) scale(1);
+		box-shadow: 0 2px 0 black;
+	}
+
+	.envelope-wrap.flying {
+		animation: fly 1.35s forwards;
+	}
+
+	@keyframes fly {
+		0% {
+			transform: translate3d(0, 0, 0) scale(1, 1);
+			filter: none;
+			animation-timing-function: cubic-bezier(0.4, 0, 0.4, 1);
+		}
+		30% {
+			transform: translate3d(-5vw, 0, 0) scale(1.13, 0.88);
+			filter: none;
+			animation-timing-function: cubic-bezier(0.5, 0, 0.7, 0.45);
+		}
+		55% {
+			transform: translate3d(22vw, 0, 0) scale(1.06, 0.95);
+			filter: none;
+			animation-timing-function: linear;
+		}
+		65% {
+			filter: none;
+		}
+		75% {
+			filter: url(#motion-blur);
+		}
+		100% {
+			transform: translate3d(170vw, 0, 0) scale(1, 1);
+			filter: url(#motion-blur);
+		}
+	}
+
+	.motion-blur-defs {
+		position: absolute;
+		width: 0;
+		height: 0;
+		pointer-events: none;
+	}
+
+	.envelope {
+		--paper-tex: url('/images/envelope_texture.png');
+		position: relative;
+		width: 100%;
+		height: 100%;
+		perspective: 900px;
+		box-sizing: border-box;
+		box-shadow:
+			0 4px 10px rgba(0, 0, 0, 0.4),
+			0 22px 40px rgba(0, 0, 0, 0.55),
+			0 40px 70px rgba(0, 0, 0, 0.35);
+	}
+
+	.envelope::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		border-left: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
+		border-right: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
+		border-bottom: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
+		box-sizing: border-box;
+		z-index: 4;
+	}
+
+	.envelope > div {
+		box-sizing: border-box;
+	}
+
+	.back,
+	.front,
+	.flap {
+		isolation: isolate;
+	}
+
+	.back::before,
+	.front::before,
+	.flap::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 60cqw;
+		height: 100cqw;
+		background-image: var(--paper-tex);
+		background-size: cover;
+		z-index: 0;
+	}
+
+	.back::before {
+		background-position: 30% 70%;
+		transform: translate(-50%, -50%) rotate(90deg);
+	}
+
+	.front::before {
+		background-position: 70% 20%;
+		transform: translate(-50%, -50%) rotate(-90deg) scaleX(-1);
+	}
+
+	.flap::before {
+		background-position: 20% 80%;
+		transform: translate(-50%, -50%) rotate(90deg);
+		transition: transform 0s 0.35s;
+	}
+
+	.envelope.closed .flap::before {
+		transform: translate(-50%, -50%) rotate(270deg);
+	}
+
+	.back {
+		position: absolute;
+		inset: 0;
+		background: #a01f36;
+		z-index: 1;
+	}
+
+	.back::before {
+		opacity: 0.35;
+	}
+
+	.back-vshadow {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		opacity: 0.7;
+		filter: blur(3.5px);
+		z-index: 1;
+	}
+
+	.front {
+		position: absolute;
+		inset: 0;
+		clip-path: polygon(0 100%, 0 35%, 50% 78%, 100% 35%, 100% 100%);
+		z-index: 4;
+		filter: blur(1.2px);
+	}
+
+	.mail-stamp {
+		position: absolute;
+		top: 68%;
+		left: 50%;
+		width: 32cqw;
+		height: auto;
+		transform: translate(-50%, -50%) rotate(-9deg);
+		filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+		z-index: 60;
+		pointer-events: none;
+		animation: stamp-slap 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+	}
+
+	@keyframes stamp-slap {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, -50%) rotate(-9deg) scale(2.2);
+		}
+		60% {
+			opacity: 1;
+			transform: translate(-50%, -50%) rotate(-9deg) scale(0.92);
+		}
+		100% {
+			opacity: 1;
+			transform: translate(-50%, -50%) rotate(-9deg) scale(1);
+		}
+	}
+
+	.flap-group {
+		position: absolute;
+		top: 1.5%;
+		left: 0;
+		width: 100%;
+		height: 78%;
+		transform-origin: top center;
+		transform: rotateX(178deg);
+		transition:
+			transform 0.7s cubic-bezier(0.55, 0.05, 0.4, 1),
+			top 0.7s ease-out;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.envelope.closed .flap-group {
+		top: 0;
+		transform: rotateX(0deg);
+		z-index: 5;
+	}
+
+	.flap {
+		position: absolute;
+		inset: 0;
+		background: #c92842;
+		clip-path: polygon(
+			0 0.5%,
+			11% 0.2%,
+			23% 0.9%,
+			36% 0.3%,
+			50% 0.7%,
+			63% 0.2%,
+			77% 0.8%,
+			89% 0.4%,
+			100% 0.6%,
+			100% 44.87%,
+			50% 100%,
+			0 44.87%
+		);
+		filter: blur(0.6px);
+	}
+
+	.flap::before {
+		opacity: 0.35;
+	}
+
+	.flap::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4cqw;
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent);
+		z-index: 2;
+		pointer-events: none;
+		transition: opacity 0.3s ease-out 0.15s;
+	}
+
+	.envelope.closed .flap::after {
+		opacity: 0;
+	}
+
+	.flap-outline {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		transition: opacity 0.1s ease-out;
+	}
+
+	.envelope.closed .flap-outline {
+		opacity: 0;
+	}
+
+	.flap-outline path {
+		fill: none;
+		stroke: black;
+		stroke-width: clamp(0.15rem, 0.25vw, 0.4rem);
+		vector-effect: non-scaling-stroke;
+		stroke-linejoin: miter;
+		stroke-linecap: butt;
+	}
+
+	.sticker-clip {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: 3;
+		clip-path: polygon(
+			0 -1000%,
+			100% -1000%,
+			100% calc(100% - 0.3rem),
+			0 calc(100% - 0.3rem)
+		);
+	}
+
+	.falling-sticker {
+		position: absolute;
+		top: var(--ly);
+		left: var(--lx);
+		width: var(--size);
+		height: auto;
+		transform: translate3d(calc(-50% + var(--x) * 1vw), calc(-50% - 130vh), 0) rotate(var(--rs));
+		opacity: 0;
+		pointer-events: none;
+		border-radius: 0.5rem;
+		filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+		animation: fall var(--dur) linear var(--delay) forwards;
+		z-index: 3;
+		will-change: transform;
+		backface-visibility: hidden;
+	}
+
+	@keyframes fall {
+		0% {
+			transform: translate3d(calc(-50% + var(--x) * 1vw), calc(-50% - 130vh), 0) rotate(var(--rs));
+			opacity: 0;
+		}
+		8% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate3d(-50%, -50%, 0) rotate(var(--re));
+			opacity: 1;
+		}
+	}
+
+	.receipt {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: var(--sidebar-w);
+		box-sizing: border-box;
+		background: #1d1c23;
+		border-right: clamp(0.15rem, 0.22vw, 0.35rem) solid #37373c;
+		color: white;
+		padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.2rem, 1.8vw, 1.8rem);
+		display: flex;
+		flex-direction: column;
+		gap: clamp(1rem, 1.5vw, 1.5rem);
+		overflow-y: auto;
+		font-size: clamp(0.85rem, 0.95vw, 1.05rem);
+		z-index: 5;
+	}
+
+	.receipt-head {
+		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
+		border-bottom: 1px solid #37373c;
+	}
+
+	.receipt-tag {
+		display: block;
+		font-size: 0.72em;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #56565d;
+		margin-bottom: 0.45rem;
+	}
+
+	.receipt h2 {
+		margin: 0;
+		font-weight: 600;
+		font-style: italic;
+		font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+		color: white;
+	}
+
+	.receipt-items {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(0.55rem, 0.85vw, 0.9rem);
+		flex: 1;
+	}
+
+	.receipt-items li {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+	}
+
+	.receipt-items img {
+		width: clamp(1.6rem, 2vw, 2.2rem);
+		height: clamp(1.6rem, 2vw, 2.2rem);
+		object-fit: contain;
+		flex-shrink: 0;
+	}
+
+	.receipt-items .item-name {
+		font-weight: 500;
+		white-space: nowrap;
+		color: white;
+	}
+
+	.receipt-items .dots {
+		flex: 1;
+		min-width: 1rem;
+		border-bottom: 1px dotted #37373c;
+		transform: translateY(-0.25em);
+	}
+
+	.receipt-items .qty {
+		font-variant-numeric: tabular-nums;
+		color: #56565d;
+	}
+
+	.ship-to {
+		padding-top: clamp(0.8rem, 1.2vw, 1.2rem);
+		border-top: 1px solid #37373c;
+	}
+
+	.ship-label {
+		display: block;
+		font-size: 0.7em;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		font-weight: 600;
+		color: #56565d;
+		margin-bottom: 0.5rem;
+	}
+
+	.ship-to address {
+		font-style: normal;
+		line-height: 1.45;
+		font-weight: 500;
+		color: white;
+	}
+
+	@media (max-width: 720px) {
+		.scene {
+			--sidebar-w: 0px;
+		}
+		.receipt {
+			display: none;
+		}
+		.headline {
+			font-size: clamp(1.1rem, 5vw, 1.6rem);
+		}
+	}
+
+</style>
