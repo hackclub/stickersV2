@@ -293,7 +293,7 @@
 		});
 	}
 
-	function onPointerDown(e: PointerEvent, sticker: Sticker) {
+function onPointerDown(e: PointerEvent, sticker: Sticker) {
 		dragging = sticker.id;
 		sticker.z = topZ++;
 		const rect = heroEl.getBoundingClientRect();
@@ -349,7 +349,13 @@
 
 <!-- <a href="https://hackclub.com"><img id="home" src="https://assets.hackclub.com/flag-orpheus-top.svg" class="hc-logo" loading="lazy" decoding="async" style="position: absolute; top: 0; left: 2vw; height: 7vw; min-height: 7rem; z-index: 20;" alt="Hack Club flag"></a> -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="hero" bind:this={heroEl} onpointermove={onPointerMove} onpointerup={onPointerUp}>
+<div
+	class="hero"
+	bind:this={heroEl}
+	onpointermove={onPointerMove}
+	onpointerup={onPointerUp}
+	style="--bg-offset-y: {scrollY * 0.2}px"
+>
 	<a href={catalog} class="catalog-link" bind:this={catalogEl}
 		>catalog <span class="catalog-arrow">↗</span></a
 	>
@@ -416,7 +422,7 @@
 			role="presentation"
 			loading="lazy"
 			decoding="async"
-			src="https://cdn.hackclub.com/019d730b-6fb1-751a-b3f9-54aa990c66df/6Wif_CyN9v5sKz5jTdOWYP916lhbpjdjbbi4EvztyEM"
+			src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
 		/>make creative projects
 	</div>
 	<div>
@@ -425,7 +431,7 @@
 			role="presentation"
 			loading="lazy"
 			decoding="async"
-			src="https://cdn.hackclub.com/019d730c-5028-7f36-aab8-89f22e8ad348/8vDDsHlYHuYjqLORvS2y6mkL577OQ7Xhegfbesf1Wzo"
+			src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
 		/>get tokens for your efforts!
 	</div>
 	<div>
@@ -446,6 +452,7 @@
 			src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
 		/>we'll mail them to you!
 	</div>
+	<p class="steps-caption">Yes, all for free! Hack Club will send high quality stickers to your door if you are between 13-18 years old.</p>
 </section>
 
 <section class="faq">
