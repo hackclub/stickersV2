@@ -71,6 +71,8 @@ body {
 	margin-bottom: clamp(-2rem, -1.4vw, -0.8rem);
 	height: clamp(2rem, 3.5vw, 5.5rem);
 	width: auto;
+	position: relative;
+	z-index: 1;
 }
 
 .hero {
