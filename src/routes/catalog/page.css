@@ -1,140 +1,379 @@
 @font-face {
-  font-family: 'Phantom Sans';
-  src:
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff') format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Phantom Sans';
+	src:
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff') format('woff'),
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 @font-face {
-  font-family: 'Phantom Sans';
-  src:
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff') format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'Phantom Sans';
+	src:
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff') format('woff'),
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2') format('woff2');
+	font-weight: 600;
+	font-style: italic;
+	font-display: swap;
 }
 @font-face {
-  font-family: 'Phantom Sans';
-  src:
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff') format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2') format('woff2');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Phantom Sans';
+	src:
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff') format('woff'),
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2') format('woff2');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
 }
 @font-face {
-  font-family: 'Phantom Sans';
-  src:
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff') format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2') format('woff2');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'Phantom Sans';
+	src:
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff') format('woff'),
+		url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/BoldItalic.woff2') format('woff2');
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Phantom Sans', sans-serif;
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Phantom Sans', sans-serif;
 }
 
 .page {
-    --grid: clamp(3rem, 4vw, 7rem);
-    --grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100svh;
-    background-color: #141318;
-    background-size: var(--grid) var(--grid);
-    background-image:
-        linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
-        linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
-    background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+	--grid: clamp(3rem, 4vw, 7rem);
+	--grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100svh;
+	background-color: #141318;
+	background-size: var(--grid) var(--grid);
+	background-image:
+		linear-gradient(to right, #1c1c20 var(--grid-line), transparent var(--grid-line)),
+		linear-gradient(to bottom, #1c1c20 var(--grid-line), transparent var(--grid-line));
+	background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 
 .back-link {
-    position: absolute;
-    top: clamp(1.3rem, 1.8vw, 2.2rem);
-    left: clamp(1.6rem, 2.2vw, 2.6rem);
-    z-index: 99;
-    font-size: clamp(1.2rem, 1.6vw, 1.7rem);
-    font-weight: 600;
-    font-family: 'Phantom Sans', sans-serif;
-    color: white;
-    text-decoration: none;
-    padding: 0.3em 0.7em;
-    border-radius: 999px;
-    background: rgba(20, 19, 24, 0.3);
-    backdrop-filter: blur(8px);
-    transition: color 0.15s ease;
+	position: absolute;
+	top: clamp(1.3rem, 1.8vw, 2.2rem);
+	left: clamp(1.6rem, 2.2vw, 2.6rem);
+	z-index: 99;
+	font-size: clamp(1.2rem, 1.6vw, 1.7rem);
+	font-weight: 600;
+	font-family: 'Phantom Sans', sans-serif;
+	color: white;
+	text-decoration: none;
+	padding: 0.3em 0.7em;
+	border-radius: 999px;
+	background: rgba(20, 19, 24, 0.3);
+	backdrop-filter: blur(8px);
+	transition:
+		color 0.15s ease,
+		background 0.15s ease;
 }
 
 .back-link:hover {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
+	color: rgba(255, 255, 255, 0.8);
+	background: rgba(20, 19, 24, 0.5);
+	text-decoration: none;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(1rem, 2vw, 2rem);
-    text-align: center;
-    padding: 0 2rem;
-    z-index: 2;
-}
-
-.page h1 {
-    margin: 0;
-    font-weight: 600;
-    font-style: italic;
-    color: white;
-    -webkit-text-stroke: black clamp(0.35rem, 0.55vw, 1rem);
-    paint-order: stroke fill;
-    font-size: clamp(4rem, 7vw, 10rem);
-    line-height: 1;
-}
-
-.page .subtitle {
-    font-size: clamp(1.1rem, 1.8vw, 2rem);
-    font-weight: bold;
-    font-style: italic;
-    color: white;
-    -webkit-text-stroke: black clamp(0.12rem, 0.2vw, 0.35rem);
-    paint-order: stroke fill;
-    margin: 0;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 7vw 0 5vw 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(0.75rem, 1.5vw, 1.5rem);
+	text-align: center;
+	padding: 0 2rem;
+	z-index: 2;
+	position: relative;
 }
 
 .page footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: clamp(0.9rem, 1.2vw, 1.8rem);
-    font-size: clamp(0.85rem, 0.9vw, 1.25rem);
-    color: white;
-    box-sizing: border-box;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	padding: clamp(0.9rem, 1.2vw, 1.8rem);
+	font-size: clamp(0.85rem, 0.9vw, 1.25rem);
+	color: white;
+	box-sizing: border-box;
+	z-index: 2;
 }
 
 .page footer a {
-    color: white;
-    text-decoration: wavy underline;
+	color: white;
+	text-decoration: wavy underline;
 }
 
 .page footer a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
+}
+
+.search {
+	flex: 1;
+	min-width: min(280px, 100%);
+	align-self: flex-end;
+	margin-bottom: 1.5rem;
+	padding: clamp(0.8rem, 1vw, 1.5rem) 1.4em;
+	border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+	border-radius: 99999999px;
+	font-family: 'Phantom Sans', sans-serif;
+	font-size: 1.45rem;
+	background-color: #1d1c23;
+	color: white;
+	outline: none;
+}
+
+.search::placeholder {
+	color: #56565d;
+	opacity: 1;
+}
+
+.sticker-grid {
+	--col: clamp(48px, 6vw, 96px);
+	--row: clamp(40px, 5vw, 80px);
+	width: 97%;
+	box-sizing: border-box;
+	margin-top: 2.5vw;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+	gap: 2.5rem;
+	padding: 4vw;
+	padding-top: 5vw;
+	padding-left: 7.5vw;
+	background-color: #faf8f5;
+	background-image:
+		linear-gradient(
+			90deg,
+			#0000 0 var(--col),
+			#e8b4b8 var(--col) calc(var(--col) + 2px),
+			#0000 calc(var(--col) + 2px)
+		),
+		repeating-linear-gradient(
+			#0000 0 calc(var(--row) - 2px),
+			#c8d4e0 calc(var(--row) - 2px) var(--row)
+		);
+	background-repeat: repeat-y, no-repeat, repeat;
+	color: black;
+	font-weight: semibold;
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+.no-results {
+	grid-column: 1 / -1;
+	width: 80%;
+	margin: 0.8rem auto 2rem;
+	text-align: center;
+	font-size: clamp(1.4rem, 2.2vw, 2rem);
+	color: #555;
+}
+
+.sticker-card {
+	flex-direction: column;
+	align-items: center;
+	gap: 0.8rem;
+	display: flex;
+	cursor: pointer;
+}
+
+.sticker-card .sticker-img {
+	transform: rotate(var(--rot, 0deg));
+	transition: transform 0.2s;
+}
+
+.sticker-card:hover .sticker-img {
+	transform: rotate(var(--rot, 0deg)) scale(1.05);
+}
+
+.sticker-name {
+	margin: 0;
+	font-size: 1.1rem;
+}
+
+.sticker-artist {
+	margin: 0;
+	font-size: 1rem;
+	color: #666;
+}
+
+.sticker-img {
+	width: 200px;
+	height: 230px;
+	justify-content: center;
+	align-items: center;
+	transition: transform 0.2s;
+	display: flex;
+}
+
+.sticker-img img {
+	object-fit: contain;
+	max-width: 97%;
+	max-height: 97%;
+	user-select: none;
+}
+
+.search-row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 97%;
+	gap: 4rem;
+}
+
+h1 {
+	margin: 0;
+	flex-shrink: 0;
+	font-weight: 600;
+	font-style: italic;
+	color: white;
+	-webkit-text-stroke: clamp(3px, 1.1vw, 10px) black;
+	paint-order: stroke fill;
+	font-size: clamp(2.5rem, 14vw, 125px);
+	position: relative;
+}
+
+.modal {
+	border: none;
+	border-radius: clamp(0.5rem, 1.5vw, 1rem);
+	padding: clamp(0.5rem, 1vw, 0.875rem) clamp(0.5rem, 1vw, 0.875rem) clamp(2rem, 4vw, 3.5rem);
+	width: clamp(260px, 34vw, 500px);
+	background: #faf8f5;
+	box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(0.75rem, 1.5vw, 1.25rem);
+	font-family: 'Phantom Sans', sans-serif;
+	color: black;
+}
+
+.modal-text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: 'Phantom Sans', sans-serif;
+	color: black;
+}
+
+.modal[open] {
+	display: flex;
+}
+
+.modal::backdrop {
+	background: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(4px);
+}
+
+.modal-close {
+	align-self: flex-end;
+	background: none;
+	border: none;
+	font-size: clamp(1rem, 3vw, 1.6rem);
+	cursor: pointer;
+	color: #555;
+	line-height: 1;
+	padding: 0;
+}
+
+.modal-close:hover {
+	color: black;
+}
+
+.modal-img {
+	width: 80%;
+	aspect-ratio: 1;
+	object-fit: contain;
+}
+
+.modal h2 {
+	margin: 0;
+	font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+	font-weight: 600;
+	text-align: center;
+}
+
+.modal-row {
+	margin: 0;
+	display: flex;
+	gap: 0.5rem;
+	font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+}
+
+.modal-row span {
+	font-weight: bold;
+}
+
+.modal-badge {
+	margin: 0;
+	padding: 0.2em 0.7em;
+	border-radius: 999px;
+	font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+	font-weight: bold;
+	background: #e8e4ff;
+	color: #3a2e8f;
+}
+
+.modal-badge.shiny {
+	background: #fff3cd;
+	color: #7a5c00;
+}
+
+.event-link {
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: #1a56db;
+	cursor: pointer;
+	text-decoration: wavy underline;
+}
+
+.event-link:hover {
+	text-decoration: underline;
 }
 
 @media (max-width: 640px) {
-    .page h1 {
-        font-size: clamp(2.8rem, 13vw, 4.5rem);
-        -webkit-text-stroke: black clamp(0.2rem, 0.45vw, 0.5rem);
-    }
+	.search-row {
+		flex-direction: column;
+		gap: 1rem;
+		align-items: stretch;
+	}
+
+	h1 {
+		flex-shrink: 1;
+		text-align: center;
+	}
+
+	.search {
+		align-self: stretch;
+		margin-bottom: 0;
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.sticker-img {
+		width: clamp(110px, 44vw, 160px);
+		height: clamp(130px, 52vw, 190px);
+	}
+
+	.sticker-grid {
+		gap: 1.5rem;
+		padding: 6vw 5vw;
+	}
+
+	.content {
+		padding: 0 1rem;
+	}
 }

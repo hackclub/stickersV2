@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules
+.git
+.gitignore
+.svelte-kit
+.vercel
+.netlify
+.wrangler
+build
+.output
+.vscode
+.claude
+.DS_Store
+Thumbs.db
+README.md

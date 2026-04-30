@@ -1,14 +1,11 @@
 services:
-  db:
-    image: postgres
-    restart: always
+  web:
+    env_file:
+      - .env
+    build:
+      context: .
+      target: prod
+      dockerfile: Dockerfile
+    container_name: stickers_frontend
     ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: local
-    volumes:
-      - pgdata:/var/lib/postgresql
-volumes:
-  pgdata:
+      - '3000:3000'
