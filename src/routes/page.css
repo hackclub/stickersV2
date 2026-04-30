@@ -97,7 +97,7 @@ body {
 	user-select: none;
 	border-radius: 0.75rem;
 	filter: none;
-	transform: rotate(var(--r, 0deg)) scale(1);
+	transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1);
 	transition:
 		filter 0.15s ease,
 		transform 0.15s ease;
@@ -111,13 +111,13 @@ body {
 
 .sticker:hover:not(.dragging) {
 	filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
-	transform: rotate(var(--r, 0deg)) scale(1.04);
+	transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1.04);
 }
 
 .sticker.dragging {
 	cursor: grabbing;
 	filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.7));
-	transform: rotate(var(--r, 0deg)) scale(1.14);
+	transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1.14);
 	transition:
 		filter 0.15s ease,
 		transform 0.1s ease;
@@ -195,12 +195,14 @@ body {
 	padding: 0.3em 0.7em;
 	border-radius: 999px;
 	background: rgba(20, 19, 24, 0.3);
+	border: clamp(0.1rem, 0.12vw, 0.2rem) solid white;
 	backdrop-filter: blur(8px);
-	transition: color 0.15s ease;
+	transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .catalog-link:hover {
 	color: rgba(255, 255, 255, 0.8);
+	border-color: rgba(255, 255, 255, 0.8);
 	text-decoration: none;
 }
 

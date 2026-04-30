@@ -45,7 +45,9 @@
 	},
 	"dependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",
+		"@types/three": "^0.184.0",
 		"airtable": "^0.12.2",
-		"croner": "^10.0.1"
+		"croner": "^10.0.1",
+		"three": "^0.184.0"
 	}
 }

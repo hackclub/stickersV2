@@ -11,67 +11,24 @@
 	type Slot = { x: number; y: number; z: number };
 	type Sticker = Slot & StickerAsset & { id: number; rotation: number; visible: boolean };
 
+	type PeelStageInstance = import('$lib/peel/peel').PeelStage;
+
 	const stickerPool: StickerAsset[] = [
-		{
-			src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI',
-			size: 14
-		}, // nasa
-		{
-			src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28',
-			size: 12
-		}, // juice
-		{
-			src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc',
-			size: 9
-		}, // boba
-		{
-			src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8',
-			size: 9
-		}, // hc inside
-		{
-			src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M',
-			size: 20
-		}, // kawaii
-		{
-			src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM',
-			size: 11
-		}, // drake
-		{
-			src: 'https://cdn.hackclub.com/019d730c-5328-7180-871a-de18bbc5270e/lywHE0oLCvwUT6nrk-nd08O6AjP7XBN0VfMip8cQXjk',
-			size: 19
-		}, // undertale
-		{
-			src: 'https://cdn.hackclub.com/019d730b-e3b1-7f9f-ae10-ce24f6270851/3ziK9V5dKzWmFvBVpIWn6IfhVYLkJSILMKsuIhB5UME',
-			size: 13
-		}, // skullpup boba
-		{
-			src: 'https://cdn.hackclub.com/019d730b-6891-7e2f-94e7-7ae12c005aa0/kUZDRDYxRQYj81Y58kQx2IGDXuSCAj1HJmtkRtSPMU8',
-			size: 10
-		}, // macintosh
-		{
-			src: 'https://cdn.hackclub.com/019d730a-e3aa-74d7-9bc3-e2699195ad2a/WT7qHNSIeKcZrJJXdoumXD9r_fyRnG8d0D169XL-xzI',
-			size: 15
-		}, // grab
-		{
-			src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw',
-			size: 10
-		}, // yippee >o<
-		{
-			src: 'https://cdn.hackclub.com/019d730a-664a-745f-b62a-27dec7e0b2db/TB4xpI-OBi6Yb_fcd5D1ql5ucYCAN7s6kX2v5cmf8dg',
-			size: 20
-		}, // airlines
-		{
-			src: 'https://cdn.hackclub.com/019d730b-58c6-77b6-9893-31b70bf240a5/oS1z7dSNFz23u4Ca2Dl4se7ZXFlt8oxuiXwcd7Iuzl0',
-			size: 11
-		}, // logo
-		{
-			src: 'https://cdn.hackclub.com/019d730b-237a-7aed-89c3-e60a9f562ae6/47QlTJFkr25F8SM6jxi0ek0aWavxHqHZYRA26PLvgag',
-			size: 11
-		}, // heidi pleading
-		{
-			src: 'https://cdn.hackclub.com/019d730a-eaf5-711f-9196-c3b5021c5b4f/ZLdwcaB7eVfe6fScCgfdfSWY-XLvp5Ido9JCV4wW8Lw',
-			size: 19
-		} // hack cola
+		{ src: '/stickers/nasa.svg', size: 14 },
+		{ src: '/stickers/juice.png', size: 12 },
+		{ src: '/stickers/boba.png', size: 9 },
+		{ src: '/stickers/hc-inside.png', size: 9 },
+		{ src: '/stickers/kawaii.png', size: 20 },
+		{ src: '/stickers/drake.svg', size: 11 },
+		{ src: '/stickers/undertale.svg', size: 19 },
+		{ src: '/stickers/skullpup-boba.png', size: 13 },
+		{ src: '/stickers/macintosh.svg', size: 10 },
+		{ src: '/stickers/grab.png', size: 15 },
+		{ src: '/stickers/yippee.png', size: 10 },
+		{ src: '/stickers/airlines.png', size: 20 },
+		{ src: '/stickers/logo.png', size: 11 },
+		{ src: '/stickers/heidi-pleading.png', size: 11 },
+		{ src: '/stickers/hack-cola.svg', size: 19 }
 	];
 
 	const slots: Slot[] = [
@@ -83,7 +40,7 @@
 		{ x: 32, y: 5, z: 6 }
 	];
 
-	let stickers = $state<Sticker[]>(
+	const stickers: Sticker[] = $state(
 		slots.map((slot, i) => ({
 			id: i + 1,
 			...slot,
@@ -93,9 +50,11 @@
 		}))
 	);
 
-	let topZ = $state(7);
+	let peelStage: PeelStageInstance | null = null;
+	let useWebGL = $state(false);
 	let dragging: number | null = $state(null);
 	let dragOffset = { x: 0, y: 0 };
+	let topZ = $state(slots.length + 1);
 	let heroEl: HTMLDivElement;
 	let titleEl: HTMLElement;
 	let catalogEl: HTMLAnchorElement;
@@ -147,6 +106,8 @@
 		const isMobile =
 			/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
 			('ontouchstart' in window && window.innerWidth < 1024);
+		useWebGL = !isMobile;
+
 		const lockHeroHeight = () => {
 			heroEl.style.height = `${window.innerHeight}px`;
 		};
@@ -163,27 +124,152 @@
 			stickers[i].rotation = Math.random() * 30 - 15;
 		}
 
-		const loadPromises = stickers.map(
-			(s) =>
-				new Promise<void>((res) => {
-					const img = new Image();
-					img.onload = () => res();
-					img.onerror = () => res();
-					img.src = s.src;
-				})
-		);
-		Promise.all(loadPromises).then(async () => {
-			await tick();
-			placeStickers();
-		});
+		if (useWebGL) {
+			void start();
+		} else {
+			void startDom();
+		}
 
 		return () => {
 			if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
+			peelStage?.destroy();
+			peelStage = null;
 		};
 	});
 
-	function placeStickers() {
+	const aspects: Record<number, number> = {};
+
+	function preloadAspects(): Promise<void> {
+		return Promise.all(
+			stickers.map(
+				(s) =>
+					new Promise<void>((res) => {
+						const img = new Image();
+						img.onload = () => {
+							aspects[s.id] =
+								img.naturalWidth > 0 && img.naturalHeight > 0
+									? img.naturalWidth / img.naturalHeight
+									: 1;
+							res();
+						};
+						img.onerror = () => {
+							aspects[s.id] = 1;
+							res();
+						};
+						img.src = s.src;
+					})
+			)
+		).then(() => undefined);
+	}
+
+	async function startDom() {
+		await preloadAspects();
+		await tick();
+		layoutStickers();
+		const order = stickers.map((_, i) => i).sort(() => Math.random() - 0.5);
+		order.forEach((idx, i) => {
+			setTimeout(() => {
+				stickers[idx].visible = true;
+			}, 150 + i * 180);
+		});
+	}
+
+	const CLICK_THRESHOLD_PX = 6;
+	let pressStart = { x: 0, y: 0, moved: false };
+
+	function onPointerDown(e: PointerEvent, sticker: Sticker) {
+		dragging = sticker.id;
+		sticker.z = topZ++;
+		const rect = heroEl.getBoundingClientRect();
+		dragOffset = {
+			x: e.clientX - rect.left - (sticker.x / 100) * rect.width,
+			y: e.clientY - rect.top - (sticker.y / 100) * rect.height
+		};
+		pressStart = { x: e.clientX, y: e.clientY, moved: false };
+		(e.target as HTMLElement).setPointerCapture(e.pointerId);
+	}
+
+	function onPointerMove(e: PointerEvent) {
+		if (dragging === null) return;
+		if (
+			!pressStart.moved &&
+			Math.hypot(e.clientX - pressStart.x, e.clientY - pressStart.y) > CLICK_THRESHOLD_PX
+		) {
+			pressStart.moved = true;
+		}
+		if (!pressStart.moved) return;
+		const rect = heroEl.getBoundingClientRect();
+		const sticker = stickers.find((s) => s.id === dragging);
+		if (sticker) {
+			sticker.x = ((e.clientX - rect.left - dragOffset.x) / rect.width) * 100;
+			sticker.y = ((e.clientY - rect.top - dragOffset.y) / rect.height) * 100;
+		}
+	}
+
+	function onPointerUp() {
+		dragging = null;
+	}
+
+	async function start() {
+		const reduceMotion =
+			typeof window !== 'undefined' &&
+			window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+		if (reduceMotion) {
+			console.log('[peel] start skipped: prefers-reduced-motion');
+			return;
+		}
+
+		try {
+			await preloadAspects();
+			await tick();
+			layoutStickers();
+			console.log('[peel] layout done', stickers.map((s) => ({ id: s.id, x: s.x, y: s.y })));
+
+			const mod = await import('$lib/peel/peel');
+			console.log('[peel] module loaded');
+			peelStage = new mod.PeelStage(heroEl);
+			console.log('[peel] PeelStage constructed');
+
+			const adds = stickers.map((s) =>
+				peelStage!
+					.add({
+						id: s.id,
+						src: s.src,
+						xPct: s.x,
+						yPct: s.y,
+						rotationDeg: s.rotation,
+						sizeRem: s.size * 0.65,
+						sizeVw: s.size,
+						sizeScale: stickerScale(),
+						z: s.z
+					})
+					.then(() => console.log('[peel] added', s.id))
+					.catch((err) => console.error('[peel] add failed', s.id, s.src, err))
+			);
+			await Promise.all(adds);
+
+			const order = stickers.map((_, i) => i).sort(() => Math.random() - 0.5);
+			order.forEach((idx, i) => {
+				peelStage!.scheduleAppear(stickers[idx].id, 150 + i * 180);
+			});
+			peelStage!.startIdleWiggleLoop(6000);
+			console.log('[peel] start complete');
+		} catch (err) {
+			console.error('[peel] start failed:', err);
+		}
+	}
+
+	function stickerScale(): number {
+		const w = window.innerWidth;
+		if (w <= 455) return 0.63;
+		if (w <= 640) return 0.77;
+		return 0.9;
+	}
+
+	function layoutStickers() {
 		const heroRect = heroEl.getBoundingClientRect();
+		const rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+		const scale = stickerScale();
 
 		const pad = 3;
 		const toZone = (r: DOMRect) => ({
@@ -195,15 +281,15 @@
 		const zone = toZone(titleEl.getBoundingClientRect());
 		const catalogZone = toZone(catalogEl.getBoundingClientRect());
 
-		const stickerEls = heroEl.querySelectorAll('.sticker') as NodeListOf<HTMLElement>;
-
-		const sizes = stickers.map((_, i) => {
-			const el = stickerEls[i];
-			if (!el) return { sW: 0, sH: 0 };
-			const r = el.getBoundingClientRect();
+		// approximate sticker box size in % of hero, assuming square layout box;
+		// the WebGL stage will use the actual texture aspect when sizing the mesh
+		const sizes = stickers.map((s) => {
+			const wPx = Math.max(s.size * 0.65 * rootFontPx, (s.size / 100) * heroRect.width) * scale;
+			const aspect = aspects[s.id] || 1;
+			const hPx = wPx / aspect;
 			return {
-				sW: (r.width / heroRect.width) * 100,
-				sH: (r.height / heroRect.height) * 100
+				sW: (wPx / heroRect.width) * 100,
+				sH: (hPx / heroRect.height) * 100
 			};
 		});
 
@@ -279,49 +365,17 @@
 				}
 			}
 
+			// shift to box center so stage receives center coords (matches WebGL placement)
 			placedBoxes.push({ x: sticker.x, y: sticker.y, sW, sH });
+			sticker.x = sticker.x + sW / 2;
+			sticker.y = sticker.y + sH / 2;
 		}
-
-		const order = stickers.map((_, i) => i).sort(() => Math.random() - 0.5);
-		order.forEach((idx, i) => {
-			setTimeout(
-				() => {
-					stickers[idx].visible = true;
-				},
-				150 + i * 180
-			);
-		});
-	}
-
-function onPointerDown(e: PointerEvent, sticker: Sticker) {
-		dragging = sticker.id;
-		sticker.z = topZ++;
-		const rect = heroEl.getBoundingClientRect();
-		dragOffset = {
-			x: e.clientX - rect.left - (sticker.x / 100) * rect.width,
-			y: e.clientY - rect.top - (sticker.y / 100) * rect.height
-		};
-		(e.target as HTMLElement).setPointerCapture(e.pointerId);
-	}
-
-	function onPointerMove(e: PointerEvent) {
-		if (dragging === null) return;
-		const rect = heroEl.getBoundingClientRect();
-		const sticker = stickers.find((s) => s.id === dragging);
-		if (sticker) {
-			sticker.x = ((e.clientX - rect.left - dragOffset.x) / rect.width) * 100;
-			sticker.y = ((e.clientY - rect.top - dragOffset.y) / rect.height) * 100;
-		}
-	}
-
-	function onPointerUp() {
-		dragging = null;
 	}
 </script>
 
 <svelte:head>
 	{#each stickerPool as asset (asset.src)}
-		<link rel="preload" href={asset.src} as="image" />
+		<link rel="preload" href={asset.src} as="image" type={asset.src.endsWith('.svg') ? 'image/svg+xml' : 'image/png'} />
 	{/each}
 	<link
 		rel="preload"
@@ -352,29 +406,31 @@ function onPointerDown(e: PointerEvent, sticker: Sticker) {
 <div
 	class="hero"
 	bind:this={heroEl}
-	onpointermove={onPointerMove}
-	onpointerup={onPointerUp}
+	onpointermove={useWebGL ? undefined : onPointerMove}
+	onpointerup={useWebGL ? undefined : onPointerUp}
 	style="--bg-offset-y: {scrollY * 0.2}px"
 >
 	<a href={catalog} class="catalog-link" bind:this={catalogEl}
 		>catalog <span class="catalog-arrow">↗</span></a
 	>
-	{#each stickers as sticker (sticker.id)}
-		<img
-			class="sticker"
-			class:dragging={dragging === sticker.id}
-			class:placed={sticker.visible}
-			src={sticker.src}
-			alt=""
-			role="presentation"
-			decoding="async"
-			fetchpriority="high"
-			style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size *
-				0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; --r: {sticker.rotation}deg;"
-			onpointerdown={(e) => onPointerDown(e, sticker)}
-			draggable="false"
-		/>
-	{/each}
+	{#if !useWebGL}
+		{#each stickers as sticker (sticker.id)}
+			<img
+				class="sticker"
+				class:dragging={dragging === sticker.id}
+				class:placed={sticker.visible}
+				src={sticker.src}
+				alt=""
+				role="presentation"
+				decoding="async"
+				fetchpriority="high"
+				style="left: {sticker.x}%; top: {sticker.y}%; width: calc(max({sticker.size *
+					0.65}rem, {sticker.size}vw) * var(--sticker-scale, 1)); z-index: {sticker.z}; --r: {sticker.rotation}deg;"
+				onpointerdown={(e) => onPointerDown(e, sticker)}
+				draggable="false"
+			/>
+		{/each}
+	{/if}
 	<section class="hero-title" bind:this={titleEl}>
 		<a href="https://hackclub.com" aria-label="Hack Club homepage"
 			><img
