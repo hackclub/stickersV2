@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { randomBytes } from 'node:crypto';
 import { env } from '$env/dynamic/private';
+import { HC_STATE_COOKIE, HC_STATE_COOKIE_PATH } from '$lib/server/hcAuth';
 
 const AUTHORIZE_URL = 'https://auth.hackclub.com/oauth/authorize';
 const SCOPES = 'openid email name profile phone birthdate address verification_status slack_id basic_info';
@@ -13,8 +14,8 @@ export async function GET({ url, cookies }) {
 	const loginHint = url.searchParams.get('login_hint') ?? '';
 	const state = randomBytes(24).toString('hex');
 
-	cookies.set('hc_oauth_state', state, {
-		path: '/auth/callback',
+	cookies.set(HC_STATE_COOKIE, state, {
+		path: HC_STATE_COOKIE_PATH,
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: url.protocol === 'https:',

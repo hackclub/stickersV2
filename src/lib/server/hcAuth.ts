@@ -9,6 +9,9 @@ const ME_URL = 'https://auth.hackclub.com/api/v1/me';
 
 const REFRESH_LEEWAY_MS = 60_000;
 
+export const HC_STATE_COOKIE = 'hc_oauth_state';
+export const HC_STATE_COOKIE_PATH = '/auth/callback';
+
 type TokenResponse = {
 	access_token: string;
 	refresh_token: string;
@@ -97,7 +100,15 @@ export async function fetchIdentity(accessToken: string): Promise<HcMeResponse> 
 	return (await res.json()) as HcMeResponse;
 }
 
-export async function upsertUserFromTokens(tokens: TokenResponse, hcaId: string, email?: string) {
+export async function upsertUserFromTokens(
+	tokens: TokenResponse,
+	hcaId: string,
+	email?: string,
+	firstName?: string | null,
+	slackId?: string | null,
+	slackAvatar?: string | null,
+	slackDisplayName?: string | null
+) {
 	const access = encryptToken(tokens.access_token);
 	const refreshEnc = encryptToken(tokens.refresh_token);
 	const expiresAt = new Date(Date.now() + tokens.expires_in * 1000);
@@ -106,6 +117,10 @@ export async function upsertUserFromTokens(tokens: TokenResponse, hcaId: string,
 	const row = {
 		hca_id: hcaId,
 		email: email ?? null,
+		first_name: firstName ?? null,
+		slack_id: slackId ?? null,
+		slack_avatar_url: slackAvatar ?? null,
+		slack_display_name: slackDisplayName ?? null,
 		access_token_ct: access.ct,
 		access_token_iv: access.iv,
 		access_token_tag: access.tag,
@@ -206,10 +221,28 @@ export async function getValidAccessToken(user: StoredUser): Promise<string> {
 	return tokens.access_token;
 }
 
+type AddressCacheEntry = { addresses: HcAddress[]; expiresAt: number };
+const addressCache = new Map<string, AddressCacheEntry>();
+const ADDRESS_CACHE_TTL_MS = 30_000;
+
+export function invalidateAddressCache(userId: string): void {
+	addressCache.delete(userId);
+}
+
 export async function fetchAddresses(user: StoredUser): Promise<HcAddress[]> {
+	const now = Date.now();
+	const cached = addressCache.get(user.id);
+	if (cached && cached.expiresAt > now) return cached.addresses;
+
 	const token = await getValidAccessToken(user);
 	const res = await fetch(ME_URL, { headers: { Authorization: `Bearer ${token}` } });
 	if (!res.ok) throw new Error(`Failed to fetch addresses: ${res.status}`);
 	const me = (await res.json()) as HcMeResponse;
-	return me.identity.addresses ?? [];
+	const addresses = me.identity.addresses ?? [];
+
+	addressCache.set(user.id, { addresses, expiresAt: now + ADDRESS_CACHE_TTL_MS });
+	if (addressCache.size > 1000) {
+		for (const [k, v] of addressCache) if (v.expiresAt <= now) addressCache.delete(k);
+	}
+	return addresses;
 }
