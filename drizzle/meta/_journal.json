@@ -8,6 +8,48 @@
       "when": 1777494677327,
       "tag": "0000_first_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777518944625,
+      "tag": "0001_material_colleen_wing",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777562721239,
+      "tag": "0002_shiny_shocker",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777563140029,
+      "tag": "0003_complex_zodiak",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1777565868117,
+      "tag": "0004_next_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1777572054464,
+      "tag": "0005_mean_multiple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1777574509863,
+      "tag": "0006_crazy_next_avengers",
+      "breakpoints": true
     }
   ]
 }

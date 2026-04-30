@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "voted_sticker_id" integer;--> statement-breakpoint
+ALTER TABLE "users" ADD CONSTRAINT "users_voted_sticker_id_stickers_id_fk" FOREIGN KEY ("voted_sticker_id") REFERENCES "public"."stickers"("id") ON DELETE set null ON UPDATE no action;
