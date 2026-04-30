@@ -29,3 +29,6 @@ vite.config.ts.timestamp-*
 .claude
 .vscode
 .claude/settings.local.json
+
+# Agent reports
+reports/
