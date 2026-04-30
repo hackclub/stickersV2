@@ -35,9 +35,7 @@ type StickerEntry = {
 	spreadTarget: number;
 	opacity: number;
 	opacityTarget: number;
-	wigglePos: number;
-	wiggleAmt: number;
-	wiggleStart: number;
+	autoPeeling: boolean;
 	state: 'placing' | 'idle' | 'hover' | 'pressed' | 'held' | 'gone';
 	planeW: number;
 	planeH: number;
@@ -48,11 +46,21 @@ const HOVER_CURL = 0.14;
 const HOVER_SPREAD = 0.3;
 const PEEL_CURL = 0.34;
 const PEEL_SPREAD = 0.9;
+const IDLE_PEEL_CURL = 0.42;
+const IDLE_PEEL_SPREAD = 0;
 const ANIM = 0.09;
 const FADE = 0.06;
-const CLICK_THRESHOLD_PX = 6;
+const DRAG_HINT_PX = 8;
 
-const HINGE = new THREE.Vector2(1, -1).normalize();
+const HINGE_CORNERS: ReadonlyArray<THREE.Vector2> = [
+	new THREE.Vector2(1, -1).normalize(),
+	new THREE.Vector2(-1, -1).normalize(),
+	new THREE.Vector2(-1, 1).normalize(),
+	new THREE.Vector2(1, 1).normalize()
+];
+function pickHingeCorner() {
+	return HINGE_CORNERS[Math.floor(Math.random() * HINGE_CORNERS.length)].clone();
+}
 
 function ease(cur: number, target: number, k: number) {
 	return cur + (target - cur) * k;
@@ -101,6 +109,8 @@ export class PeelStage {
 	private pressX = 0;
 	private pressY = 0;
 	private pressMoved = false;
+	private hintEl: HTMLDivElement | null = null;
+	private hintHideTimer = 0;
 	private onResize = () => this.resize();
 	private onPointerDown = (e: PointerEvent) => this.handlePointerDown(e);
 	private onPointerMove = (e: PointerEvent) => this.handlePointerMove(e);
@@ -142,7 +152,49 @@ export class PeelStage {
 		container.addEventListener('pointerup', this.onPointerUp);
 		container.addEventListener('pointercancel', this.onPointerUp);
 
+		this.hintEl = document.createElement('div');
+		this.hintEl.textContent = 'click to pick up a sticker';
+		this.hintEl.style.cssText = [
+			'position: absolute',
+			'pointer-events: none',
+			'z-index: 50',
+			'padding: 0.4em 0.7em',
+			'border-radius: 0.5em',
+			'background: rgba(20, 20, 20, 0.85)',
+			'color: #fff',
+			'font-size: 0.85rem',
+			'font-family: inherit',
+			'white-space: nowrap',
+			'transform: translate(-50%, calc(-100% - 0.6rem))',
+			'opacity: 0',
+			'transition: opacity 0.15s ease',
+			'top: 0',
+			'left: 0'
+		].join(';');
+		container.appendChild(this.hintEl);
+
 		this.tick();
+	}
+
+	private showHint(p: { x: number; y: number }) {
+		if (!this.hintEl) return;
+		this.hintEl.style.left = `${p.x}px`;
+		this.hintEl.style.top = `${p.y}px`;
+		this.hintEl.style.opacity = '1';
+		if (this.hintHideTimer) {
+			clearTimeout(this.hintHideTimer);
+			this.hintHideTimer = 0;
+		}
+	}
+
+	private hideHint(delayMs = 0) {
+		if (!this.hintEl) return;
+		const el = this.hintEl;
+		if (this.hintHideTimer) clearTimeout(this.hintHideTimer);
+		this.hintHideTimer = window.setTimeout(() => {
+			el.style.opacity = '0';
+			this.hintHideTimer = 0;
+		}, delayMs);
 	}
 
 	private viewport() {
@@ -216,7 +268,7 @@ export class PeelStage {
 			uCurl: { value: 0 },
 			uSpread: { value: 0 },
 			uRadius: { value: 1 },
-			uHingeDir: { value: HINGE.clone() },
+			uHingeDir: { value: pickHingeCorner() },
 			uPlaneHalf: { value: 1 },
 			uTargetZ: { value: 1 },
 			uLightDir: { value: new THREE.Vector3(0.25, 0.55, 1.0) },
@@ -268,9 +320,7 @@ export class PeelStage {
 			spreadTarget: 0,
 			opacity: 0,
 			opacityTarget: 0,
-			wigglePos: 0,
-			wiggleAmt: 0,
-			wiggleStart: 0,
+			autoPeeling: false,
 			state: 'placing',
 			planeW: 1,
 			planeH: 1,
@@ -350,6 +400,7 @@ export class PeelStage {
 		if (this.heldId === null) return;
 		const s = this.stickers.find((x) => x.id === this.heldId);
 		this.heldId = null;
+		this.container.style.cursor = '';
 		if (!s) return;
 		s.state = 'idle';
 		s.curlTarget = 0;
@@ -367,8 +418,10 @@ export class PeelStage {
 			y: ((p.y - (hit.yPct / 100) * h) / h) * 100
 		};
 		hit.state = 'pressed';
+		hit.autoPeeling = false;
 		hit.curlTarget = HOVER_CURL;
 		hit.spreadTarget = HOVER_SPREAD;
+		this.container.style.cursor = 'grabbing';
 	}
 
 	private handlePointerDown(e: PointerEvent) {
@@ -405,6 +458,7 @@ export class PeelStage {
 				if (s.state !== 'hover' && s.state !== 'pressed') {
 					s.state = 'hover';
 				}
+				s.autoPeeling = false;
 				s.curlTarget = HOVER_CURL;
 				s.spreadTarget = HOVER_SPREAD;
 			} else if (s.state === 'hover') {
@@ -412,6 +466,17 @@ export class PeelStage {
 				s.curlTarget = 0;
 				s.spreadTarget = 0;
 			}
+		}
+		this.refreshCursor(hit);
+	}
+
+	private refreshCursor(hit: StickerEntry | null) {
+		if (this.heldId !== null || this.potentialPickupId !== null) {
+			this.container.style.cursor = 'grabbing';
+		} else if (hit) {
+			this.container.style.cursor = 'grab';
+		} else {
+			this.container.style.cursor = '';
 		}
 	}
 
@@ -430,60 +495,63 @@ export class PeelStage {
 			return;
 		}
 
-		// In the press-and-release window, watch for movement; on movement past the
-		// threshold, promote the press to a held pickup so the sticker follows the drag.
+		// User is pressing on a sticker and dragging — surface the hint that
+		// dragging isn't the interaction; clicking is. Mark the press as a drag
+		// attempt so pointerup aborts the pickup instead of teleporting the
+		// sticker to the cursor.
 		if (this.potentialPickupId !== null) {
 			const dist = Math.hypot(e.clientX - this.pressX, e.clientY - this.pressY);
-			if (!this.pressMoved && dist > CLICK_THRESHOLD_PX) {
+			if (dist > DRAG_HINT_PX) {
 				this.pressMoved = true;
-				const id = this.potentialPickupId;
-				this.potentialPickupId = null;
-				const s = this.stickers.find((x) => x.id === id);
-				if (s) {
-					s.state = 'held';
-					s.curlTarget = PEEL_CURL;
-					s.spreadTarget = PEEL_SPREAD;
-					this.heldId = id;
-					this.bringToFront(s);
-					this.stopIdleWiggleLoop();
-					// position the newly-held sticker under the cursor immediately
-					const { w, h } = this.viewport();
-					s.xPct = (p.x / w) * 100 - this.heldOffsetPct.x;
-					s.yPct = (p.y / h) * 100 - this.heldOffsetPct.y;
-				}
+				this.showHint(p);
 			}
-			return;
 		}
 
 		this.updateHover(p);
 	}
 
 	private handlePointerUp() {
-		// If the press already promoted into a held drag, nothing to do here —
-		// the sticker stays held and continues to track the cursor.
 		if (this.potentialPickupId === null) {
-			this.pressMoved = false;
+			this.hideHint();
 			return;
 		}
 		const id = this.potentialPickupId;
 		this.potentialPickupId = null;
 		const s = this.stickers.find((x) => x.id === id);
-		if (!s) return;
+		if (!s) {
+			this.hideHint();
+			return;
+		}
 
-		// Press-and-release without movement → click → lift
+		// Drag attempt → abort pickup; the sticker stays put. Leave the hint up
+		// briefly so the user reads "click to pick up a sticker."
+		if (this.pressMoved) {
+			this.pressMoved = false;
+			s.state = 'idle';
+			s.curlTarget = 0;
+			s.spreadTarget = 0;
+			this.container.style.cursor = '';
+			this.hideHint(900);
+			return;
+		}
+
+		// Press-and-release without movement → lift (sticky held). Move the pointer
+		// to reposition, then click again to place.
+		this.hideHint();
 		s.state = 'held';
 		s.curlTarget = PEEL_CURL;
 		s.spreadTarget = PEEL_SPREAD;
+		s.autoPeeling = false;
 		this.heldId = id;
 		this.bringToFront(s);
-		// User discovered the interaction; stop nagging them with the idle wiggle.
-		this.stopIdleWiggleLoop();
+		// User discovered the interaction; stop nagging them with the idle peel.
+		this.stopIdlePeelLoop();
 	}
 
-	stopIdleWiggleLoop() {
-		if (this.idleWiggleTimer) {
-			clearInterval(this.idleWiggleTimer);
-			this.idleWiggleTimer = 0;
+	stopIdlePeelLoop() {
+		if (this.idlePeelTimer) {
+			clearTimeout(this.idlePeelTimer);
+			this.idlePeelTimer = 0;
 		}
 	}
 
@@ -500,44 +568,19 @@ export class PeelStage {
 
 	private tick = () => {
 		if (!this.running) return;
-		const now = performance.now();
 		for (const s of this.stickers) {
 			if (s.state === 'gone') continue;
 			s.curl = ease(s.curl, s.curlTarget, ANIM);
 			s.spread = ease(s.spread, s.spreadTarget, ANIM);
 			s.opacity = ease(s.opacity, s.opacityTarget, FADE);
 
-			// drive wiggle animation if active; only on idle stickers
-			if (s.wiggleStart > 0 && s.state === 'idle') {
-				const dur = 1700;
-				const t = (now - s.wiggleStart) / dur;
-				if (t >= 1) {
-					s.wigglePos = 0;
-					s.wiggleAmt = 0;
-					s.wiggleStart = 0;
-				} else {
-					// position sweeps from 1 (peeled corner) to 0 (opposite); slight ease
-					const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-					s.wigglePos = 1 - ease;
-					// amplitude bell curve so the bump rises and falls as it travels
-					s.wiggleAmt = Math.sin(t * Math.PI) * 1.2;
-				}
-			} else if (s.state !== 'idle') {
-				s.wiggleAmt = 0;
-				s.wiggleStart = 0;
-			}
-
 			const u = s.frontMat.uniforms;
 			u.uCurl.value = s.curl;
 			u.uSpread.value = s.spread;
-			u.uWigglePos.value = s.wigglePos;
-			u.uWiggleAmt.value = s.wiggleAmt;
 			(u.uOpacity as { value: number }).value = s.opacity;
 			const ub = s.backMat.uniforms;
 			ub.uCurl.value = s.curl;
 			ub.uSpread.value = s.spread;
-			ub.uWigglePos.value = s.wigglePos;
-			ub.uWiggleAmt.value = s.wiggleAmt;
 			(ub.uOpacity as { value: number }).value = s.opacity;
 			this.placeMesh(s);
 		}
@@ -545,32 +588,51 @@ export class PeelStage {
 		this.rafId = requestAnimationFrame(this.tick);
 	};
 
-	wiggle(id: number) {
-		const s = this.stickers.find((x) => x.id === id);
-		if (!s || s.state !== 'idle' || s.wiggleStart > 0) return;
-		s.wiggleStart = performance.now();
+	private peelOnce(s: StickerEntry) {
+		if (s.state !== 'idle' || s.autoPeeling) return;
+		s.autoPeeling = true;
+		// Pick a fresh corner so different peels lift different corners.
+		const corner = pickHingeCorner();
+		(s.frontMat.uniforms.uHingeDir.value as THREE.Vector2).copy(corner);
+		s.curlTarget = IDLE_PEEL_CURL;
+		s.spreadTarget = IDLE_PEEL_SPREAD;
+		const upMs = 700 + Math.random() * 500;
+		window.setTimeout(() => {
+			// Bail if the user took over (hover/press/held), so we don't fight their state.
+			if (!s.autoPeeling || s.state !== 'idle') {
+				s.autoPeeling = false;
+				return;
+			}
+			s.curlTarget = 0;
+			s.spreadTarget = 0;
+			s.autoPeeling = false;
+		}, upMs);
 	}
 
-	private idleWiggleTimer = 0;
-	startIdleWiggleLoop(intervalMs = 6000) {
+	private idlePeelTimer = 0;
+	startIdlePeelLoop(minMs = 4500, maxMs = 9000) {
 		const fire = () => {
 			const idle = this.stickers.filter(
-				(s) => s.state === 'idle' && s.opacity > 0.9 && s.wiggleStart === 0
+				(s) => s.state === 'idle' && s.opacity > 0.9 && !s.autoPeeling
 			);
 			if (idle.length > 0) {
 				const pick = idle[Math.floor(Math.random() * idle.length)];
-				this.wiggle(pick.id);
+				this.peelOnce(pick);
 			}
+			const next = minMs + Math.random() * (maxMs - minMs);
+			this.idlePeelTimer = window.setTimeout(fire, next);
 		};
-		this.idleWiggleTimer = window.setInterval(fire, intervalMs);
-		// kick once after a short delay so the first wiggle isn't intervalMs away
-		window.setTimeout(fire, 1800);
+		this.idlePeelTimer = window.setTimeout(fire, 2200);
 	}
 
 	destroy() {
 		this.running = false;
 		cancelAnimationFrame(this.rafId);
-		if (this.idleWiggleTimer) clearInterval(this.idleWiggleTimer);
+		if (this.idlePeelTimer) clearTimeout(this.idlePeelTimer);
+		if (this.hintHideTimer) clearTimeout(this.hintHideTimer);
+		this.hintEl?.parentElement?.removeChild(this.hintEl);
+		this.hintEl = null;
+		this.container.style.cursor = '';
 		window.removeEventListener('resize', this.onResize);
 		this.resizeObserver?.disconnect();
 		this.container.removeEventListener('pointerdown', this.onPointerDown);

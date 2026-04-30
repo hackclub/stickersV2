@@ -255,7 +255,7 @@
 			order.forEach((idx, i) => {
 				peelStage!.scheduleAppear(stickers[idx].id, 150 + i * 180);
 			});
-			peelStage!.startIdleWiggleLoop(6000);
+			peelStage!.startIdlePeelLoop();
 			console.log('[peel] start complete');
 		} catch (err) {
 			console.error('[peel] start failed:', err);
