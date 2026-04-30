@@ -4,6 +4,9 @@
 	import { slide } from 'svelte/transition';
 	import './page.css';
 	import sepImg from '$lib/assets/sep.png';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 
 	const catalog = resolve('/catalog');
 
@@ -442,7 +445,13 @@
 		>
 		<h1>stickers</h1>
 		<form method="GET" action="/auth/start">
-			<input id="email" placeholder="your@email.com" type="email" name="login_hint" />
+			<input
+				id="email"
+				placeholder="your@email.com"
+				type="email"
+				name="login_hint"
+				value={data.email ?? ''}
+			/>
 			<button id="submit" type="submit">Go!</button>
 		</form>
 	</section>
