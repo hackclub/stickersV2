@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "tickets_cost" integer DEFAULT 0 NOT NULL;

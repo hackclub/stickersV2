@@ -1,4 +1,13 @@
-import { pgTable, serial, boolean, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+	pgTable,
+	serial,
+	boolean,
+	integer,
+	text,
+	timestamp,
+	uuid,
+	primaryKey
+} from 'drizzle-orm/pg-core';
 
 export const stickers = pgTable('stickers', {
 	id: serial('id').primaryKey(),
@@ -15,6 +24,18 @@ export const users = pgTable('users', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	hca_id: text('hca_id').notNull().unique(),
 	email: text('email'),
+	first_name: text('first_name'),
+	nickname: text('nickname'),
+	postal_name: text('postal_name'),
+	slack_id: text('slack_id'),
+	slack_avatar_url: text('slack_avatar_url'),
+	slack_display_name: text('slack_display_name'),
+	favorite_sticker_id: integer('favorite_sticker_id').references(() => stickers.id, {
+		onDelete: 'set null'
+	}),
+	voted_sticker_id: integer('voted_sticker_id').references(() => stickers.id, {
+		onDelete: 'set null'
+	}),
 	access_token_ct: text('access_token_ct').notNull(),
 	access_token_iv: text('access_token_iv').notNull(),
 	access_token_tag: text('access_token_tag').notNull(),
@@ -24,9 +45,87 @@ export const users = pgTable('users', {
 	refresh_token_tag: text('refresh_token_tag').notNull(),
 	scope: text('scope'),
 	expires_at: timestamp('expires_at', { withTimezone: true }).notNull(),
+	hackatime_user_id: text('hackatime_user_id'),
+	hackatime_token_ct: text('hackatime_token_ct'),
+	hackatime_token_iv: text('hackatime_token_iv'),
+	hackatime_token_tag: text('hackatime_token_tag'),
+	onboarded_at: timestamp('onboarded_at', { withTimezone: true }),
+	terms_agreed_at: timestamp('terms_agreed_at', { withTimezone: true }),
+	tickets: integer('tickets').notNull().default(0),
 	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 });
+
+export const orders = pgTable('orders', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	user_id: uuid('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	status: text('status', {
+		enum: ['received', 'packed', 'courier', 'delivered', 'cancelled']
+	})
+		.notNull()
+		.default('received'),
+	kind: text('kind', { enum: ['free', 'shop'] }).notNull().default('shop'),
+	address_ct: text('address_ct'),
+	address_iv: text('address_iv'),
+	address_tag: text('address_tag'),
+	notes: text('notes'),
+	tickets_cost: integer('tickets_cost').notNull().default(0),
+	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+export const orderItems = pgTable('order_items', {
+	id: serial('id').primaryKey(),
+	order_id: uuid('order_id')
+		.notNull()
+		.references(() => orders.id, { onDelete: 'cascade' }),
+	sticker_id: integer('sticker_id').references(() => stickers.id, { onDelete: 'set null' }),
+	sticker_name: text('sticker_name').notNull(),
+	sticker_cdn_url: text('sticker_cdn_url').notNull(),
+	count: integer('count').notNull().default(1)
+});
+
+export const shopItems = pgTable('shop_items', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull(),
+	description: text('description'),
+	price: integer('price').notNull(),
+	discount: integer('discount'),
+	image_url: text('image_url').notNull(),
+	sort_order: integer('sort_order').notNull().default(0),
+	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+export const deals = pgTable('deals', {
+	id: serial('id').primaryKey(),
+	title: text('title').notNull(),
+	description: text('description'),
+	color: text('color').notNull().default('#ed344f'),
+	href: text('href').notNull().default('/shop'),
+	sort_order: integer('sort_order').notNull().default(0),
+	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+export const userStickers = pgTable(
+	'user_stickers',
+	{
+		user_id: uuid('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		sticker_id: integer('sticker_id')
+			.notNull()
+			.references(() => stickers.id, { onDelete: 'cascade' }),
+		status: text('status', { enum: ['wishlist', 'owned'] }).notNull(),
+		count: integer('count').notNull().default(1),
+		created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+		updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+	},
+	(t) => [primaryKey({ columns: [t.user_id, t.sticker_id] })]
+);
 
 export const sessions = pgTable('sessions', {
 	id: text('id').primaryKey(),
@@ -43,8 +142,34 @@ export type PublicUser = {
 	id: string;
 	hca_id: string;
 	email: string | null;
+	first_name: string | null;
+	nickname: string | null;
+	postal_name: string | null;
+	slack_id: string | null;
+	slack_avatar_url: string | null;
+	slack_display_name: string | null;
+	favorite_sticker_id: number | null;
+	voted_sticker_id: number | null;
+	onboarded_at: Date | null;
+	tickets: number;
 };
 
 export function toPublicUser(u: StoredUser): PublicUser {
-	return { id: u.id, hca_id: u.hca_id, email: u.email };
+	return {
+		id: u.id,
+		hca_id: u.hca_id,
+		email: u.email,
+		first_name: u.first_name,
+		nickname: u.nickname,
+		postal_name: u.postal_name,
+		slack_id: u.slack_id,
+		slack_avatar_url: u.slack_avatar_url,
+		slack_display_name: u.slack_display_name,
+		favorite_sticker_id: u.favorite_sticker_id,
+		voted_sticker_id: u.voted_sticker_id,
+		onboarded_at: u.onboarded_at,
+		tickets: u.tickets
+	};
 }
+
+export { ORDER_STATUSES, type OrderStatus } from '$lib/orders';
