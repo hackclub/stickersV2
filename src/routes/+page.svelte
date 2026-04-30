@@ -293,7 +293,7 @@
 		});
 	}
 
-function onPointerDown(e: PointerEvent, sticker: Sticker) {
+	function onPointerDown(e: PointerEvent, sticker: Sticker) {
 		dragging = sticker.id;
 		sticker.z = topZ++;
 		const rect = heroEl.getBoundingClientRect();
@@ -354,7 +354,7 @@ function onPointerDown(e: PointerEvent, sticker: Sticker) {
 	bind:this={heroEl}
 	onpointermove={onPointerMove}
 	onpointerup={onPointerUp}
-	style="--bg-offset-y: {scrollY * 0.2}px"
+	style="--bg-offset-y: {scrollY * 0.4}px"
 >
 	<a href={catalog} class="catalog-link" bind:this={catalogEl}
 		>catalog <span class="catalog-arrow">↗</span></a
@@ -452,7 +452,10 @@ function onPointerDown(e: PointerEvent, sticker: Sticker) {
 			src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
 		/>we'll mail them to you!
 	</div>
-	<p class="steps-caption">Yes, all for free! Hack Club will send high quality stickers to your door if you are between 13-18 years old.</p>
+	<p class="steps-caption">
+		Yes, all for free! Hack Club will send high quality stickers to your door if you are between
+		13-18 years old.
+	</p>
 </section>
 
 <section class="faq">
