@@ -40,7 +40,7 @@
 </script>
 
 <svelte:head>
-	<title>home — stickers</title>
+	<title>stickers home</title>
 </svelte:head>
 
 <div class="page">
@@ -57,7 +57,7 @@
 	</header>
 
 	{#if data.recentStickers.length === 0}
-		<p class="empty-hint">no stickers yet — check back soon</p>
+		<p class="empty-hint">no stickers yet check back soon</p>
 	{:else}
 		<section class="group">
 			<h2>fresh off the press</h2>

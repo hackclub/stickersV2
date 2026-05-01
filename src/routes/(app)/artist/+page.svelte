@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>artist portal — stickers</title>
+	<title>stickers artist portal</title>
 </svelte:head>
 
 <div class="page">

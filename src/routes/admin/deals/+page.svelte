@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>admin — deals</title>
+	<title>admin deals</title>
 </svelte:head>
 
 <div class="page">

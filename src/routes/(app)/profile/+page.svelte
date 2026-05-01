@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>profile — stickers</title>
+	<title>stickers profile</title>
 </svelte:head>
 
 <div class="page">

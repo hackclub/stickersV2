@@ -96,7 +96,7 @@
 </script>
 
 <svelte:head>
-	<title>your free stickers — stickers</title>
+	<title>your free stickers</title>
 	{#each data.freeStickers ?? [] as a (a.id)}
 		<link rel="preload" href={a.cdn_url} as="image" />
 	{/each}
@@ -132,7 +132,7 @@
 	<aside class="receipt">
 		<div class="receipt-head">
 			<span class="receipt-tag">welcome gift</span>
-			<h2>3 free stickers</h2>
+			<h2>free sticker pack</h2>
 		</div>
 		<ul class="receipt-items">
 			{#each falling as s (s.id)}

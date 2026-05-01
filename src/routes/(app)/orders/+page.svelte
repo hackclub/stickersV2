@@ -78,7 +78,7 @@
 </script>
 
 <svelte:head>
-	<title>orders — stickers</title>
+	<title>stickers orders</title>
 </svelte:head>
 
 <div class="page">

@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>voting — stickers</title>
+	<title>stickers voting</title>
 </svelte:head>
 
 <div class="page">

@@ -50,7 +50,7 @@
 </script>
 
 <svelte:head>
-	<title>projects — stickers</title>
+	<title>stickers projects</title>
 </svelte:head>
 
 <div class="page">
@@ -65,7 +65,7 @@
 		<div class="alert">{form.error}</div>
 	{/if}
 	{#if form?.success}
-		<div class="alert success">project submitted — check airtable</div>
+		<div class="alert success">project submitted check airtable</div>
 	{/if}
 
 	<div class="grid">

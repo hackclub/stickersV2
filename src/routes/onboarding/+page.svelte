@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>welcome — stickers</title>
+	<title>stickers welcome</title>
 </svelte:head>
 
 <main class="scene">

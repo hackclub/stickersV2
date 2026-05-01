@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-	<title>leaderboard — stickers</title>
+	<title>stickers leaderboard</title>
 </svelte:head>
 
 <div class="page">

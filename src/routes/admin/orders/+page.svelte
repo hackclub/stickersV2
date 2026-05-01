@@ -43,7 +43,7 @@
 </script>
 
 <svelte:head>
-	<title>admin — orders</title>
+	<title>admin orders</title>
 </svelte:head>
 
 <div class="page">

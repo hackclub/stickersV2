@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>admin — users</title>
+	<title>admin users</title>
 </svelte:head>
 
 <div class="page">

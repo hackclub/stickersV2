@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-	<title>shop — stickers</title>
+	<title>stickers shop</title>
 </svelte:head>
 
 <div class="page">

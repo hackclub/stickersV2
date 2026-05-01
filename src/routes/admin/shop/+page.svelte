@@ -69,7 +69,7 @@
 </script>
 
 <svelte:head>
-	<title>admin — shop</title>
+	<title>admin shop</title>
 </svelte:head>
 
 <div class="page">

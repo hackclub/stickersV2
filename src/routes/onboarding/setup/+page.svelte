@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>set your address — stickers</title>
+	<title>stickers set your address</title>
 </svelte:head>
 
 <main class="scene">
@@ -21,7 +21,7 @@
 		<h1 class="headline">first, we need somewhere to send stickers</h1>
 		<p class="body">
 			hack club identity (HCA) holds your shipping address and phone number.
-			set them once on HCA and every hack club service — including this one —
+			set them once on HCA and every hack club service including this one —
 			can ship things to you.
 		</p>
 
@@ -41,7 +41,7 @@
 				open HCA profile ↗
 			</a>
 			<button class="btn secondary" onclick={() => goto('/onboarding/free')}>
-				i've set my address — continue
+				i've set my address continue
 			</button>
 		</div>
 	</div>

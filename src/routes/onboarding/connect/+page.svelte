@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>almost there — stickers</title>
+	<title>stickers almost there</title>
 </svelte:head>
 
 <main class="scene">
