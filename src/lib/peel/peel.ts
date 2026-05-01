@@ -72,8 +72,8 @@ void main() {
 
 const SHADOW_SCALE = 1.22;
 
-const HOVER_CURL = 0.14;
-const HOVER_SPREAD = 0.3;
+const HOVER_CURL = 0.5;
+const HOVER_SPREAD = 0;
 const PEEL_CURL = 0.34;
 const PEEL_SPREAD = 0.9;
 const IDLE_PEEL_CURL = 0.42;
