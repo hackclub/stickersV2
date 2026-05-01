@@ -199,4 +199,12 @@ export function toPublicUser(u: StoredUser): PublicUser {
 	};
 }
 
-export { ORDER_STATUSES, type OrderStatus } from '$lib/orders';
+export type OrderStatus = 'received' | 'packed' | 'courier' | 'delivered' | 'cancelled';
+
+export const ORDER_STATUSES: OrderStatus[] = [
+	'received',
+	'packed',
+	'courier',
+	'delivered',
+	'cancelled'
+];
