@@ -6,8 +6,10 @@ import {
 	text,
 	timestamp,
 	uuid,
-	primaryKey
+	primaryKey,
+	check
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 export const stickers = pgTable('stickers', {
 	id: serial('id').primaryKey(),
@@ -20,84 +22,106 @@ export const stickers = pgTable('stickers', {
 	shiny: boolean('Shiny')
 });
 
-export const users = pgTable('users', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	hca_id: text('hca_id').notNull().unique(),
-	email: text('email'),
-	first_name: text('first_name'),
-	nickname: text('nickname'),
-	postal_name: text('postal_name'),
-	slack_id: text('slack_id'),
-	slack_avatar_url: text('slack_avatar_url'),
-	slack_display_name: text('slack_display_name'),
-	favorite_sticker_id: integer('favorite_sticker_id').references(() => stickers.id, {
-		onDelete: 'set null'
-	}),
-	voted_sticker_id: integer('voted_sticker_id').references(() => stickers.id, {
-		onDelete: 'set null'
-	}),
-	access_token_ct: text('access_token_ct').notNull(),
-	access_token_iv: text('access_token_iv').notNull(),
-	access_token_tag: text('access_token_tag').notNull(),
-	access_token_hash: text('access_token_hash').notNull(),
-	refresh_token_ct: text('refresh_token_ct').notNull(),
-	refresh_token_iv: text('refresh_token_iv').notNull(),
-	refresh_token_tag: text('refresh_token_tag').notNull(),
-	scope: text('scope'),
-	expires_at: timestamp('expires_at', { withTimezone: true }).notNull(),
-	hackatime_user_id: text('hackatime_user_id'),
-	hackatime_token_ct: text('hackatime_token_ct'),
-	hackatime_token_iv: text('hackatime_token_iv'),
-	hackatime_token_tag: text('hackatime_token_tag'),
-	onboarded_at: timestamp('onboarded_at', { withTimezone: true }),
-	terms_agreed_at: timestamp('terms_agreed_at', { withTimezone: true }),
-	tickets: integer('tickets').notNull().default(0),
-	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
-});
+export const users = pgTable(
+	'users',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		hca_id: text('hca_id').notNull().unique(),
+		email: text('email'),
+		first_name: text('first_name'),
+		nickname: text('nickname'),
+		postal_name: text('postal_name'),
+		slack_id: text('slack_id'),
+		slack_avatar_url: text('slack_avatar_url'),
+		slack_display_name: text('slack_display_name'),
+		favorite_sticker_id: integer('favorite_sticker_id').references(() => stickers.id, {
+			onDelete: 'set null'
+		}),
+		voted_sticker_id: integer('voted_sticker_id').references(() => stickers.id, {
+			onDelete: 'set null'
+		}),
+		access_token_ct: text('access_token_ct').notNull(),
+		access_token_iv: text('access_token_iv').notNull(),
+		access_token_tag: text('access_token_tag').notNull(),
+		access_token_hash: text('access_token_hash').notNull(),
+		refresh_token_ct: text('refresh_token_ct').notNull(),
+		refresh_token_iv: text('refresh_token_iv').notNull(),
+		refresh_token_tag: text('refresh_token_tag').notNull(),
+		scope: text('scope'),
+		expires_at: timestamp('expires_at', { withTimezone: true }).notNull(),
+		hackatime_user_id: text('hackatime_user_id'),
+		hackatime_token_ct: text('hackatime_token_ct'),
+		hackatime_token_iv: text('hackatime_token_iv'),
+		hackatime_token_tag: text('hackatime_token_tag'),
+		onboarded_at: timestamp('onboarded_at', { withTimezone: true }),
+		terms_agreed_at: timestamp('terms_agreed_at', { withTimezone: true }),
+		tickets: integer('tickets').notNull().default(0),
+		created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+		updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+	},
+	(t) => [check('users_tickets_non_negative', sql`${t.tickets} >= 0`)]
+);
 
-export const orders = pgTable('orders', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	user_id: uuid('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade' }),
-	status: text('status', {
-		enum: ['received', 'packed', 'courier', 'delivered', 'cancelled']
-	})
-		.notNull()
-		.default('received'),
-	kind: text('kind', { enum: ['free', 'shop'] }).notNull().default('shop'),
-	address_ct: text('address_ct'),
-	address_iv: text('address_iv'),
-	address_tag: text('address_tag'),
-	notes: text('notes'),
-	tickets_cost: integer('tickets_cost').notNull().default(0),
-	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
-});
+export const orders = pgTable(
+	'orders',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		user_id: uuid('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		status: text('status', {
+			enum: ['received', 'packed', 'courier', 'delivered', 'cancelled']
+		})
+			.notNull()
+			.default('received'),
+		kind: text('kind', { enum: ['free', 'shop'] }).notNull().default('shop'),
+		address_ct: text('address_ct'),
+		address_iv: text('address_iv'),
+		address_tag: text('address_tag'),
+		notes: text('notes'),
+		tickets_cost: integer('tickets_cost').notNull().default(0),
+		created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+		updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+	},
+	(t) => [check('orders_tickets_cost_non_negative', sql`${t.tickets_cost} >= 0`)]
+);
 
-export const orderItems = pgTable('order_items', {
-	id: serial('id').primaryKey(),
-	order_id: uuid('order_id')
-		.notNull()
-		.references(() => orders.id, { onDelete: 'cascade' }),
-	sticker_id: integer('sticker_id').references(() => stickers.id, { onDelete: 'set null' }),
-	sticker_name: text('sticker_name').notNull(),
-	sticker_cdn_url: text('sticker_cdn_url').notNull(),
-	count: integer('count').notNull().default(1)
-});
+export const orderItems = pgTable(
+	'order_items',
+	{
+		id: serial('id').primaryKey(),
+		order_id: uuid('order_id')
+			.notNull()
+			.references(() => orders.id, { onDelete: 'cascade' }),
+		sticker_id: integer('sticker_id').references(() => stickers.id, { onDelete: 'set null' }),
+		sticker_name: text('sticker_name').notNull(),
+		sticker_cdn_url: text('sticker_cdn_url').notNull(),
+		count: integer('count').notNull().default(1)
+	},
+	(t) => [check('order_items_count_positive', sql`${t.count} > 0`)]
+);
 
-export const shopItems = pgTable('shop_items', {
-	id: serial('id').primaryKey(),
-	name: text('name').notNull(),
-	description: text('description'),
-	price: integer('price').notNull(),
-	discount: integer('discount'),
-	image_url: text('image_url').notNull(),
-	sort_order: integer('sort_order').notNull().default(0),
-	created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
-});
+export const shopItems = pgTable(
+	'shop_items',
+	{
+		id: serial('id').primaryKey(),
+		name: text('name').notNull(),
+		description: text('description'),
+		price: integer('price').notNull(),
+		discount: integer('discount'),
+		image_url: text('image_url').notNull(),
+		sort_order: integer('sort_order').notNull().default(0),
+		created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+		updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
+	},
+	(t) => [
+		check('shop_items_price_non_negative', sql`${t.price} >= 0`),
+		check(
+			'shop_items_discount_range',
+			sql`${t.discount} IS NULL OR (${t.discount} >= 0 AND ${t.discount} <= 99)`
+		)
+	]
+);
 
 export const deals = pgTable('deals', {
 	id: serial('id').primaryKey(),
@@ -124,7 +148,10 @@ export const userStickers = pgTable(
 		created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 		updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
 	},
-	(t) => [primaryKey({ columns: [t.user_id, t.sticker_id] })]
+	(t) => [
+		primaryKey({ columns: [t.user_id, t.sticker_id] }),
+		check('user_stickers_count_positive', sql`${t.count} > 0`)
+	]
 );
 
 export const sessions = pgTable('sessions', {

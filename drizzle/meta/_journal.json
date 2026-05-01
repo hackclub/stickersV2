@@ -99,6 +99,13 @@
       "when": 1777680000000,
       "tag": "0013_encrypted_addresses",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1777716000000,
+      "tag": "0014_input_bounds",
+      "breakpoints": true
     }
   ]
 }
