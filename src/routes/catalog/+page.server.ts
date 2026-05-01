@@ -1,7 +1,8 @@
 import { db } from '$lib/server/db';
 import { stickers } from '$lib/server/db/schema';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
+export const load: PageServerLoad = async () => {
 	const allStickers = await db
 		.select({
 			id: stickers.id,
@@ -16,4 +17,4 @@ export async function load() {
 		.from(stickers);
 
 	return { stickers: allStickers };
-}
+};
