@@ -1,56 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { enhance } from '$app/forms';
 	import '../../page.css';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	const hasAddress = $derived(!!data.address);
-
-	type Asset = { src: string; size: number; name: string };
-
-	const stickerPool: Asset[] = [
-		{
-			src: 'https://cdn.hackclub.com/019d730b-766a-7cb4-ac34-ec2cdeab9260/e7ibKbv-Wg8ABpJMfnpbIxQcEjWrZATLIyxlq5_tbAI',
-			size: 9,
-			name: 'nasa'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730d-3223-7023-a3d3-5b767cf50c61/n9Fdod5XHsv83GJUtOJYoA5gJtHE2jYvon66s4hvo28',
-			size: 8,
-			name: 'juice'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730a-9c86-70a5-a7b8-5dee27b5f67b/gV2GrpOYYMktbS1RCYmwyzH4G5uEdyzxv0aWYXuhvKc',
-			size: 7,
-			name: 'boba'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730b-44d5-7dff-a0ac-98a3be898a20/mhABU_nGcch7Baek8TdOGxLTZzi0l8oiBBlweCJfKT8',
-			size: 7,
-			name: 'hc inside'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730b-513b-7efa-a4bb-0aebcfb397b7/3wqTb6Vzcjd7HVEovqW7zn7CM7RMwBf-u1nL_eGpR9M',
-			size: 11,
-			name: 'kawaii'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730a-b2f2-7daf-832f-90df3b78e4eb/TItCSknK9qP-XN9oCqAz6kkwVdjDarWU8468JgO1osM',
-			size: 8,
-			name: 'drake'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730b-ad49-752d-b352-3d2476050a80/k9mMHxhtueYKK9F1p7WcTNrplskR78joIsvFkLAWNHw',
-			size: 7,
-			name: 'yippee'
-		},
-		{
-			src: 'https://cdn.hackclub.com/019d730a-664a-745f-b62a-27dec7e0b2db/TB4xpI-OBi6Yb_fcd5D1ql5ucYCAN7s6kX2v5cmf8dg',
-			size: 11,
-			name: 'airlines'
-		}
-	];
+	let claimForm: HTMLFormElement | null = $state(null);
 
 	type Falling = {
 		id: number;
@@ -87,12 +44,13 @@
 		mailStamp = false;
 		runKey++;
 
-		const shuffled = [...stickerPool].sort(() => Math.random() - 0.5);
 		const list: Falling[] = [];
-		for (let i = 0; i < TOTAL; i++) {
-			const a = shuffled[i % shuffled.length];
+		const picks = data.freeStickers ?? [];
+		for (let i = 0; i < Math.min(TOTAL, picks.length); i++) {
+			const a = picks[i];
+			const size = 7 + Math.random() * 4;
 			const rotStart = Math.random() * 50 - 25;
-			const heightPct = a.size * 6;
+			const heightPct = size * 6;
 			const halfH = heightPct / 2;
 			const maxLy = Math.max(50, 100 - halfH - 2);
 			const minLy = Math.min(50, halfH + 2);
@@ -100,8 +58,8 @@
 			const ly = Math.max(minLy, Math.min(proposedLy, maxLy));
 			list.push({
 				id: runKey * 100 + i,
-				src: a.src,
-				size: a.size,
+				src: a.cdn_url,
+				size,
 				name: a.name,
 				x: 0,
 				lx: 18 + Math.random() * 64,
@@ -116,6 +74,7 @@
 		falling = list;
 
 		const last = list[list.length - 1];
+		if (!last) return;
 		const allLandedAt = last.delay + last.duration;
 		setTimeout(() => (showConfirm = true), allLandedAt + 200);
 	}
@@ -123,6 +82,7 @@
 	function onConfirm() {
 		showConfirm = false;
 		envelopeClosed = true;
+		if (hasAddress) claimForm?.requestSubmit();
 		setTimeout(() => (mailStamp = true), 850);
 		setTimeout(() => {
 			orderSent = true;
@@ -137,8 +97,8 @@
 
 <svelte:head>
 	<title>your free stickers — stickers</title>
-	{#each stickerPool as a (a.src)}
-		<link rel="preload" href={a.src} as="image" />
+	{#each data.freeStickers ?? [] as a (a.id)}
+		<link rel="preload" href={a.cdn_url} as="image" />
 	{/each}
 	<link
 		rel="preload"
@@ -148,6 +108,19 @@
 </svelte:head>
 
 <main class="scene">
+	{#if hasAddress}
+		<form
+			bind:this={claimForm}
+			method="POST"
+			action="?/claim"
+			use:enhance={() => {
+				return async () => {};
+			}}
+			class="claim-form"
+			aria-hidden="true"
+		></form>
+	{/if}
+
 	<svg class="motion-blur-defs" aria-hidden="true">
 		<defs>
 			<filter id="motion-blur" x="-50%" y="-50%" width="200%" height="200%">
@@ -328,6 +301,14 @@
 </main>
 
 <style>
+	.claim-form {
+		position: absolute;
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
 	.scene {
 		--sidebar-w: clamp(220px, 24vw, 340px);
 		position: fixed;
