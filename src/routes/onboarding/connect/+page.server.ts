@@ -10,19 +10,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const [row] = await db
 		.select({
 			uid: users.hackatime_user_id,
-			onboarded_at: users.onboarded_at,
 			terms_agreed_at: users.terms_agreed_at
 		})
 		.from(users)
 		.where(eq(users.id, locals.user.id))
 		.limit(1);
-
-	if (!row?.onboarded_at) {
-		await db
-			.update(users)
-			.set({ onboarded_at: new Date(), updated_at: new Date() })
-			.where(eq(users.id, locals.user.id));
-	}
 
 	return {
 		hackatimeLinked: !!row?.uid,
@@ -35,17 +27,25 @@ export const actions: Actions = {
 		if (!locals.user) return fail(401, { error: 'unauthorized' });
 
 		const [row] = await db
-			.select({ terms_agreed_at: users.terms_agreed_at })
+			.select({
+				uid: users.hackatime_user_id,
+				terms_agreed_at: users.terms_agreed_at
+			})
 			.from(users)
 			.where(eq(users.id, locals.user.id))
 			.limit(1);
 
-		if (!row?.terms_agreed_at) {
-			await db
-				.update(users)
-				.set({ terms_agreed_at: new Date(), updated_at: new Date() })
-				.where(eq(users.id, locals.user.id));
-		}
+		if (!row?.uid) return fail(400, { error: 'link hackatime first' });
+
+		const now = new Date();
+		await db
+			.update(users)
+			.set({
+				terms_agreed_at: row.terms_agreed_at ?? now,
+				onboarded_at: now,
+				updated_at: now
+			})
+			.where(eq(users.id, locals.user.id));
 
 		throw redirect(303, '/home');
 	}
