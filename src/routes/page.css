@@ -73,6 +73,11 @@ body {
 	width: auto;
 	position: relative;
 	z-index: 1;
+	pointer-events: none;
+}
+
+.hero-flag path {
+	pointer-events: visiblePainted;
 }
 
 .hero {

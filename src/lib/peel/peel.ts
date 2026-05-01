@@ -20,11 +20,16 @@ type StickerEntry = {
 	id: number;
 	front: THREE.Mesh;
 	back: THREE.Mesh;
+	shadow: THREE.Mesh;
 	frontMat: THREE.ShaderMaterial;
 	backMat: THREE.ShaderMaterial;
+	shadowMat: THREE.ShaderMaterial;
 	xPct: number;
 	yPct: number;
 	rotationRad: number;
+	desiredXPct: number;
+	desiredYPct: number;
+	desiredRotationRad: number;
 	sizeRem: number;
 	sizeVw: number;
 	sizeScale: number;
@@ -35,12 +40,37 @@ type StickerEntry = {
 	spreadTarget: number;
 	opacity: number;
 	opacityTarget: number;
+	shadowOpacity: number;
+	shadowOpacityTarget: number;
 	autoPeeling: boolean;
 	state: 'placing' | 'idle' | 'hover' | 'pressed' | 'held' | 'gone';
 	planeW: number;
 	planeH: number;
 	avoidZones?: ZoneFn;
+	userPlaced: boolean;
 };
+
+const shadowVert = `
+varying vec2 vUv;
+void main() {
+	vUv = uv;
+	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+
+const shadowFrag = `
+varying vec2 vUv;
+uniform float uOpacity;
+void main() {
+	vec2 d = abs(vUv - 0.5) * 2.0;
+	float edge = max(d.x, d.y);
+	float a = smoothstep(1.0, 0.35, edge);
+	if (a <= 0.0) discard;
+	gl_FragColor = vec4(0.0, 0.0, 0.0, a * uOpacity);
+}
+`;
+
+const SHADOW_SCALE = 1.22;
 
 const HOVER_CURL = 0.14;
 const HOVER_SPREAD = 0.3;
@@ -50,6 +80,7 @@ const IDLE_PEEL_CURL = 0.42;
 const IDLE_PEEL_SPREAD = 0;
 const ANIM = 0.09;
 const FADE = 0.06;
+const ZONE_FOLLOW = 0.18;
 const DRAG_HINT_PX = 8;
 
 const HINGE_CORNERS: ReadonlyArray<THREE.Vector2> = [
@@ -246,6 +277,8 @@ export class PeelStage {
 		const geom = new THREE.PlaneGeometry(w, h, 80, 80);
 		s.front.geometry = geom;
 		s.back.geometry = geom;
+		s.shadow.geometry.dispose();
+		s.shadow.geometry = new THREE.PlaneGeometry(w * SHADOW_SCALE, h * SHADOW_SCALE);
 	}
 
 	private placeMesh(s: StickerEntry) {
@@ -258,6 +291,35 @@ export class PeelStage {
 		s.back.position.set(x, y, 0);
 		s.front.rotation.z = -s.rotationRad;
 		s.back.rotation.z = -s.rotationRad;
+
+		const shadowOffsetX = s.planeW * 0.04;
+		const shadowOffsetY = -s.planeH * 0.06;
+		s.shadow.position.set(x + shadowOffsetX, y + shadowOffsetY, 0);
+		s.shadow.rotation.z = -s.rotationRad;
+	}
+
+	private resolveZones(s: StickerEntry): { x: number; y: number } {
+		let x = s.desiredXPct;
+		const y = s.desiredYPct;
+		if (s.userPlaced || !s.avoidZones) return { x, y };
+		const { w, h } = this.viewport();
+		const sWpct = (s.planeW / w) * 100;
+		const sHpct = (s.planeH / h) * 100;
+		const pad = 1;
+		for (const z of s.avoidZones()) {
+			const left = x - sWpct / 2;
+			const right = x + sWpct / 2;
+			const top = y - sHpct / 2;
+			const bottom = y + sHpct / 2;
+			if (right <= z.left || left >= z.right || bottom <= z.top || top >= z.bottom) continue;
+			const zoneCenterX = (z.left + z.right) / 2;
+			if (x < zoneCenterX) {
+				x = Math.max(sWpct / 2 + pad, z.left - sWpct / 2 - pad);
+			} else {
+				x = Math.min(100 - sWpct / 2 - pad, z.right + sWpct / 2 + pad);
+			}
+		}
+		return { x, y };
 	}
 
 	async add(opts: AddOptions): Promise<void> {
@@ -301,15 +363,33 @@ export class PeelStage {
 		this.scene.add(front);
 		this.scene.add(back);
 
+		const shadowMat = new THREE.ShaderMaterial({
+			uniforms: { uOpacity: { value: 0 } },
+			vertexShader: shadowVert,
+			fragmentShader: shadowFrag,
+			transparent: true,
+			depthTest: false,
+			depthWrite: false
+		});
+		const shadowGeom = new THREE.PlaneGeometry(1, 1);
+		const shadow = new THREE.Mesh(shadowGeom, shadowMat);
+		this.scene.add(shadow);
+
+		const rotationRad = (opts.rotationDeg * Math.PI) / 180;
 		const entry: StickerEntry = {
 			id: opts.id,
 			front,
 			back,
+			shadow,
 			frontMat,
 			backMat,
+			shadowMat,
 			xPct: opts.xPct,
 			yPct: opts.yPct,
-			rotationRad: (opts.rotationDeg * Math.PI) / 180,
+			rotationRad,
+			desiredXPct: opts.xPct,
+			desiredYPct: opts.yPct,
+			desiredRotationRad: rotationRad,
 			sizeRem: opts.sizeRem,
 			sizeVw: opts.sizeVw,
 			sizeScale: opts.sizeScale,
@@ -320,11 +400,14 @@ export class PeelStage {
 			spreadTarget: 0,
 			opacity: 0,
 			opacityTarget: 0,
+			shadowOpacity: 0,
+			shadowOpacityTarget: 0,
 			autoPeeling: false,
 			state: 'placing',
 			planeW: 1,
 			planeH: 1,
-			avoidZones: opts.avoidZones
+			avoidZones: opts.avoidZones,
+			userPlaced: false
 		};
 		this.stickers.push(entry);
 		this.recomputeSize(entry);
@@ -335,14 +418,14 @@ export class PeelStage {
 	updatePosition(id: number, xPct: number, yPct: number) {
 		const s = this.stickers.find((x) => x.id === id);
 		if (!s) return;
-		s.xPct = xPct;
-		s.yPct = yPct;
+		s.desiredXPct = xPct;
+		s.desiredYPct = yPct;
 	}
 
 	updateRotation(id: number, deg: number) {
 		const s = this.stickers.find((x) => x.id === id);
 		if (!s) return;
-		s.rotationRad = (deg * Math.PI) / 180;
+		s.desiredRotationRad = (deg * Math.PI) / 180;
 	}
 
 	scheduleAppear(id: number, delayMs: number) {
@@ -355,8 +438,9 @@ export class PeelStage {
 	}
 
 	private setRenderOrder(s: StickerEntry, value: number) {
-		s.front.renderOrder = value * 2 + 1;
-		s.back.renderOrder = value * 2;
+		s.front.renderOrder = value * 3 + 2;
+		s.back.renderOrder = value * 3 + 1;
+		s.shadow.renderOrder = value * 3;
 		s.z = value;
 	}
 
@@ -405,6 +489,7 @@ export class PeelStage {
 		s.state = 'idle';
 		s.curlTarget = 0;
 		s.spreadTarget = 0;
+		s.userPlaced = true;
 	}
 
 	private startPotentialPickup(hit: StickerEntry, e: PointerEvent, p: { x: number; y: number }) {
@@ -559,9 +644,12 @@ export class PeelStage {
 		s.state = 'gone';
 		this.scene.remove(s.front);
 		this.scene.remove(s.back);
+		this.scene.remove(s.shadow);
 		s.front.geometry.dispose();
+		s.shadow.geometry.dispose();
 		s.frontMat.dispose();
 		s.backMat.dispose();
+		s.shadowMat.dispose();
 		const idx = this.stickers.indexOf(s);
 		if (idx >= 0) this.stickers.splice(idx, 1);
 	}
@@ -574,6 +662,21 @@ export class PeelStage {
 			s.spread = ease(s.spread, s.spreadTarget, ANIM);
 			s.opacity = ease(s.opacity, s.opacityTarget, FADE);
 
+			s.shadowOpacityTarget =
+				(s.state === 'held' || s.state === 'pressed') && s.opacity > 0.05 ? 0.55 : 0;
+			s.shadowOpacity = ease(s.shadowOpacity, s.shadowOpacityTarget, ANIM);
+
+			if (s.state === 'held' || s.state === 'pressed') {
+				s.desiredXPct = s.xPct;
+				s.desiredYPct = s.yPct;
+				s.desiredRotationRad = s.rotationRad;
+			} else {
+				const resolved = this.resolveZones(s);
+				s.xPct = ease(s.xPct, resolved.x, ZONE_FOLLOW);
+				s.yPct = ease(s.yPct, resolved.y, ZONE_FOLLOW);
+				s.rotationRad = ease(s.rotationRad, s.desiredRotationRad, ZONE_FOLLOW);
+			}
+
 			const u = s.frontMat.uniforms;
 			u.uCurl.value = s.curl;
 			u.uSpread.value = s.spread;
@@ -582,6 +685,7 @@ export class PeelStage {
 			ub.uCurl.value = s.curl;
 			ub.uSpread.value = s.spread;
 			(ub.uOpacity as { value: number }).value = s.opacity;
+			(s.shadowMat.uniforms.uOpacity as { value: number }).value = s.shadowOpacity;
 			this.placeMesh(s);
 		}
 		this.renderer.render(this.scene, this.camera);
