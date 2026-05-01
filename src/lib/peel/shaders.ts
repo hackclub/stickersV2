@@ -12,6 +12,7 @@ export const vert = /* glsl */ `
 	uniform float uThickness;
 	uniform float uWigglePos;
 	uniform float uWiggleAmt;
+	uniform float uLiftFactor;
 
 	varying vec2  vUv;
 	varying float vSide;
@@ -61,7 +62,7 @@ export const vert = /* glsl */ `
 		p.z += wiggle * uTargetZ * 0.55;
 
 		p -= n * uThickness;
-		p.y += p.z * 0.45;
+		p.y += p.z * uLiftFactor;
 
 		gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 	}

@@ -171,9 +171,12 @@
 		layoutStickers();
 		const order = stickers.map((_, i) => i).sort(() => Math.random() - 0.5);
 		order.forEach((idx, i) => {
-			setTimeout(() => {
-				stickers[idx].visible = true;
-			}, 150 + i * 180);
+			setTimeout(
+				() => {
+					stickers[idx].visible = true;
+				},
+				150 + i * 180
+			);
 		});
 	}
 
@@ -236,10 +239,7 @@
 					top: ((r.top - heroRect.top) / heroRect.height) * 100 - pad,
 					bottom: ((r.bottom - heroRect.top) / heroRect.height) * 100 + pad
 				});
-				return [
-					toZone(titleEl.getBoundingClientRect()),
-					toZone(catalogEl.getBoundingClientRect())
-				];
+				return [toZone(titleEl.getBoundingClientRect()), toZone(catalogEl.getBoundingClientRect())];
 			};
 
 			const adds = stickers.map((s) =>
@@ -386,7 +386,12 @@
 
 <svelte:head>
 	{#each stickerPool as asset (asset.src)}
-		<link rel="preload" href={asset.src} as="image" type={asset.src.endsWith('.svg') ? 'image/svg+xml' : 'image/png'} />
+		<link
+			rel="preload"
+			href={asset.src}
+			as="image"
+			type={asset.src.endsWith('.svg') ? 'image/svg+xml' : 'image/png'}
+		/>
 	{/each}
 	<link
 		rel="preload"
@@ -464,7 +469,7 @@
 				name="login_hint"
 				value={data.email ?? ''}
 			/>
-			<button id="submit" type="submit">Go!</button>
+			<button id="submit" type="submit">go!</button>
 		</form>
 	</section>
 	<a

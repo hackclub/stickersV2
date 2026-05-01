@@ -44,6 +44,8 @@ type StickerEntry = {
 	shadowOpacityTarget: number;
 	autoPeeling: boolean;
 	state: 'placing' | 'idle' | 'hover' | 'pressed' | 'held' | 'gone';
+	scale: number;
+	appearStartTime: number;
 	planeW: number;
 	planeH: number;
 	avoidZones?: ZoneFn;
@@ -74,11 +76,37 @@ const SHADOW_SCALE = 1.22;
 
 const HOVER_CURL = 0.5;
 const HOVER_SPREAD = 0;
-const PEEL_CURL = 0.34;
-const PEEL_SPREAD = 0.9;
+const PEEL_CURL = 0.5;
+const PEEL_SPREAD = 0;
 const IDLE_PEEL_CURL = 0.42;
 const IDLE_PEEL_SPREAD = 0;
 const ANIM = 0.09;
+
+// cubic-bezier(0.2, 0.6, 0.35, 1) — matches the CSS animation-timing-function
+function solveBezierT(x1: number, x2: number, x: number): number {
+	let lo = 0, hi = 1, t = x;
+	for (let i = 0; i < 14; i++) {
+		const bx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;
+		if (Math.abs(bx - x) < 1e-7) break;
+		if (bx < x) lo = t; else hi = t;
+		t = (lo + hi) / 2;
+	}
+	return t;
+}
+function animEase(x: number): number {
+	if (x <= 0) return 0;
+	if (x >= 1) return 1;
+	const t = solveBezierT(0.2, 0.35, x);
+	return 3 * (1 - t) * (1 - t) * t * 0.6 + 3 * (1 - t) * t * t * 1.0 + t * t * t;
+}
+function appearScale(t: number): number {
+	if (t < 0.6) return 1.5 + animEase(t / 0.6) * (0.95 - 1.5);
+	if (t < 0.8) return 0.95 + animEase((t - 0.6) / 0.2) * (1.03 - 0.95);
+	return 1.03 + animEase((t - 0.8) / 0.2) * (1.0 - 1.03);
+}
+function appearOpacity(t: number): number {
+	return t < 0.6 ? animEase(t / 0.6) : 1;
+}
 const FADE = 0.06;
 const ZONE_FOLLOW = 0.18;
 const DRAG_HINT_PX = 8;
@@ -335,7 +363,8 @@ export class PeelStage {
 			uTargetZ: { value: 1 },
 			uLightDir: { value: new THREE.Vector3(0.25, 0.55, 1.0) },
 			uWigglePos: { value: 0 },
-			uWiggleAmt: { value: 0 }
+			uWiggleAmt: { value: 0 },
+			uLiftFactor: { value: 0 }
 		};
 
 		const frontMat = new THREE.ShaderMaterial({
@@ -404,6 +433,8 @@ export class PeelStage {
 			shadowOpacityTarget: 0,
 			autoPeeling: false,
 			state: 'placing',
+			scale: 0,
+			appearStartTime: -1,
 			planeW: 1,
 			planeH: 1,
 			avoidZones: opts.avoidZones,
@@ -433,7 +464,8 @@ export class PeelStage {
 		if (!s) return;
 		setTimeout(() => {
 			s.state = 'idle';
-			s.opacityTarget = 1;
+			s.scale = 1.5;
+			s.appearStartTime = performance.now();
 		}, delayMs);
 	}
 
@@ -517,6 +549,7 @@ export class PeelStage {
 		if (this.heldId !== null) {
 			const sameSticker = hit && hit.id === this.heldId;
 			this.dropHeld();
+			this.updateHover(p);
 			if (hit && !sameSticker && hit.state !== 'gone') {
 				// chained pickup: clicking a different sticker drops the held and lifts the new one
 				this.startPotentialPickup(hit, e, p);
@@ -660,7 +693,9 @@ export class PeelStage {
 			if (s.state === 'gone') continue;
 			s.curl = ease(s.curl, s.curlTarget, ANIM);
 			s.spread = ease(s.spread, s.spreadTarget, ANIM);
-			s.opacity = ease(s.opacity, s.opacityTarget, FADE);
+			if (s.appearStartTime < 0) {
+				s.opacity = ease(s.opacity, s.opacityTarget, FADE);
+			}
 
 			s.shadowOpacityTarget =
 				(s.state === 'held' || s.state === 'pressed') && s.opacity > 0.05 ? 0.55 : 0;
@@ -677,15 +712,37 @@ export class PeelStage {
 				s.rotationRad = ease(s.rotationRad, s.desiredRotationRad, ZONE_FOLLOW);
 			}
 
+			const liftTarget = s.state === 'held' ? 0.45 : 0.0;
 			const u = s.frontMat.uniforms;
 			u.uCurl.value = s.curl;
 			u.uSpread.value = s.spread;
 			(u.uOpacity as { value: number }).value = s.opacity;
+			(u.uLiftFactor as { value: number }).value = ease(
+				(u.uLiftFactor as { value: number }).value,
+				liftTarget,
+				ANIM
+			);
 			const ub = s.backMat.uniforms;
 			ub.uCurl.value = s.curl;
 			ub.uSpread.value = s.spread;
 			(ub.uOpacity as { value: number }).value = s.opacity;
 			(s.shadowMat.uniforms.uOpacity as { value: number }).value = s.shadowOpacity;
+
+			if (s.appearStartTime >= 0) {
+				const t = Math.min(1, (performance.now() - s.appearStartTime) / 400);
+				s.opacity = appearOpacity(t);
+				s.scale = appearScale(t);
+				if (t >= 1) {
+					s.appearStartTime = -1;
+					s.scale = 1;
+					s.opacity = 1;
+					s.opacityTarget = 1;
+				}
+			}
+			s.front.scale.setScalar(s.scale);
+			s.back.scale.setScalar(s.scale);
+			s.shadow.scale.setScalar(s.scale);
+
 			this.placeMesh(s);
 		}
 		this.renderer.render(this.scene, this.camera);

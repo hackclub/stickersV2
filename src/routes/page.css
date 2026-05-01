@@ -66,6 +66,11 @@ body {
 	position: relative;
 }
 
+.hero-title > a {
+	display: inline-block;
+	width: fit-content;
+}
+
 .hero-flag {
 	display: block;
 	margin-bottom: clamp(-2rem, -1.4vw, -0.8rem);

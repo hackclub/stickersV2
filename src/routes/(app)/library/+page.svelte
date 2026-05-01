@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>Catalog - Stickers</title>
+	<title>stickers catalog</title>
 	<link
 		rel="preload"
 		href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2"
@@ -111,10 +111,11 @@
 							<form
 								method="POST"
 								action={inWishlist ? '?/clear' : '?/wishlist'}
-								use:enhance={() => async ({ result, update }) => {
-									if (result.type === 'success') await invalidateAll();
-									else await update();
-								}}
+								use:enhance={() =>
+									async ({ result, update }) => {
+										if (result.type === 'success') await invalidateAll();
+										else await update();
+									}}
 							>
 								<input type="hidden" name="sticker_id" value={sticker.id} />
 								<label class="mark wishlist" title="wishlist">
@@ -129,10 +130,11 @@
 							<form
 								method="POST"
 								action={inOwned ? '?/clear' : '?/owned'}
-								use:enhance={() => async ({ result, update }) => {
-									if (result.type === 'success') await invalidateAll();
-									else await update();
-								}}
+								use:enhance={() =>
+									async ({ result, update }) => {
+										if (result.type === 'success') await invalidateAll();
+										else await update();
+									}}
 							>
 								<input type="hidden" name="sticker_id" value={sticker.id} />
 								<label class="mark owned" title="owned">
@@ -159,6 +161,65 @@
 		made with &lt;3 <a href="https://hackclub.com">by teenagers, for teenagers.</a>
 	</footer>
 </div>
+
+<dialog
+	bind:this={dialog}
+	class="modal"
+	onclose={() => (selected = null)}
+	onclick={(e) => {
+		const rect = dialog!.getBoundingClientRect();
+		if (
+			e.clientX < rect.left ||
+			e.clientX > rect.right ||
+			e.clientY < rect.top ||
+			e.clientY > rect.bottom
+		)
+			selected = null;
+	}}
+>
+	{#if selected}
+		<button class="modal-close" onclick={() => (selected = null)} aria-label="Close">✕</button>
+		<img src={selected.cdn_url} alt={selected.name} class="modal-img" />
+		<div class="modal-text">
+			<h2>{selected.name}</h2>
+			{#if selected.artist}
+				<p class="modal-row"><span>Artist:</span>{selected.artist}</p>
+			{/if}
+			{#if selected.event}
+				<p class="modal-row">
+					<span>Event:</span>
+					{#if selected.event_url}
+						<button
+							class="event-link"
+							onclick={() => window.open(selected!.event_url!, '_blank', 'noopener,noreferrer')}
+						>
+							{selected.event}
+						</button>
+					{:else}
+						{selected.event}
+					{/if}
+				</p>
+			{/if}
+			{#if selected.sheet}
+				<p class="modal-badge">Sheet</p>
+			{/if}
+			{#if selected.shiny}
+				<p class="modal-badge shiny">Shiny! ✨</p>
+			{/if}
+		</div>
+		<form method="POST" action="?/setFavorite" class="favorite-form" use:enhance>
+			<input type="hidden" name="sticker_id" value={selected.id} />
+			<button
+				type="submit"
+				class="favorite-btn"
+				class:on={data.favoriteId === selected.id}
+				disabled={data.favoriteId === selected.id}
+			>
+				{data.favoriteId === selected.id ? '★ favorite' : '☆ set as favorite'}
+			</button>
+		</form>
+	{/if}
+</dialog>
 
 <style>
 	.catalog-page {
@@ -296,7 +357,8 @@
 	}
 
 	:global(.sticker-card .mark input:checked ~ .mark-box) {
-		background-image: linear-gradient(45deg, transparent 45%, white 45% 55%, transparent 55%),
+		background-image:
+			linear-gradient(45deg, transparent 45%, white 45% 55%, transparent 55%),
 			linear-gradient(-45deg, transparent 45%, white 45% 55%, transparent 55%);
 	}
 
@@ -308,62 +370,3 @@
 		background-color: #3758c4;
 	}
 </style>
-
-<dialog
-	bind:this={dialog}
-	class="modal"
-	onclose={() => (selected = null)}
-	onclick={(e) => {
-		const rect = dialog!.getBoundingClientRect();
-		if (
-			e.clientX < rect.left ||
-			e.clientX > rect.right ||
-			e.clientY < rect.top ||
-			e.clientY > rect.bottom
-		)
-			selected = null;
-	}}
->
-	{#if selected}
-		<button class="modal-close" onclick={() => (selected = null)} aria-label="Close">✕</button>
-		<img src={selected.cdn_url} alt={selected.name} class="modal-img" />
-		<div class="modal-text">
-			<h2>{selected.name}</h2>
-			{#if selected.artist}
-				<p class="modal-row"><span>Artist:</span>{selected.artist}</p>
-			{/if}
-			{#if selected.event}
-				<p class="modal-row">
-					<span>Event:</span>
-					{#if selected.event_url}
-						<button
-							class="event-link"
-							onclick={() => window.open(selected!.event_url!, '_blank', 'noopener,noreferrer')}
-						>
-							{selected.event}
-						</button>
-					{:else}
-						{selected.event}
-					{/if}
-				</p>
-			{/if}
-			{#if selected.sheet}
-				<p class="modal-badge">Sheet</p>
-			{/if}
-			{#if selected.shiny}
-				<p class="modal-badge shiny">Shiny! ✨</p>
-			{/if}
-		</div>
-		<form method="POST" action="?/setFavorite" class="favorite-form" use:enhance>
-			<input type="hidden" name="sticker_id" value={selected.id} />
-			<button
-				type="submit"
-				class="favorite-btn"
-				class:on={data.favoriteId === selected.id}
-				disabled={data.favoriteId === selected.id}
-			>
-				{data.favoriteId === selected.id ? '★ favorite' : '☆ set as favorite'}
-			</button>
-		</form>
-	{/if}
-</dialog>
