@@ -92,6 +92,13 @@
       "when": 1777622908407,
       "tag": "0012_clammy_dreadnoughts",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1777680000000,
+      "tag": "0013_encrypted_addresses",
+      "breakpoints": true
     }
   ]
 }

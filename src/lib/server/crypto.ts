@@ -30,3 +30,40 @@ export function decryptToken(parts: { ct: string; iv: string; tag: string }): st
 export function hashToken(token: string): string {
 	return createHash('sha256').update(token).digest('hex');
 }
+
+export type StoredAddress = {
+	recipient_name: string | null;
+	line_1: string | null;
+	line_2: string | null;
+	city: string | null;
+	state: string | null;
+	postal_code: string | null;
+	country: string | null;
+};
+
+export function encryptAddress(addr: StoredAddress): { ct: string; iv: string; tag: string } {
+	return encryptToken(JSON.stringify(addr));
+}
+
+export function decryptAddress(parts: {
+	ct: string | null;
+	iv: string | null;
+	tag: string | null;
+}): StoredAddress | null {
+	if (!parts.ct || !parts.iv || !parts.tag) return null;
+	try {
+		const json = decryptToken({ ct: parts.ct, iv: parts.iv, tag: parts.tag });
+		const obj = JSON.parse(json) as Partial<StoredAddress>;
+		return {
+			recipient_name: obj.recipient_name ?? null,
+			line_1: obj.line_1 ?? null,
+			line_2: obj.line_2 ?? null,
+			city: obj.city ?? null,
+			state: obj.state ?? null,
+			postal_code: obj.postal_code ?? null,
+			country: obj.country ?? null
+		};
+	} catch {
+		return null;
+	}
+}
