@@ -84,11 +84,14 @@ const ANIM = 0.09;
 
 // cubic-bezier(0.2, 0.6, 0.35, 1) — matches the CSS animation-timing-function
 function solveBezierT(x1: number, x2: number, x: number): number {
-	let lo = 0, hi = 1, t = x;
+	let lo = 0,
+		hi = 1,
+		t = x;
 	for (let i = 0; i < 14; i++) {
 		const bx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;
 		if (Math.abs(bx - x) < 1e-7) break;
-		if (bx < x) lo = t; else hi = t;
+		if (bx < x) lo = t;
+		else hi = t;
 		t = (lo + hi) / 2;
 	}
 	return t;
@@ -299,7 +302,7 @@ export class PeelStage {
 		s.backMat.uniforms.uPlaneHalf.value = planeHalf;
 		s.backMat.uniforms.uRadius.value = radius;
 		s.backMat.uniforms.uTargetZ.value = targetZ;
-		s.backMat.uniforms.uThickness.value = Math.max(w, h) * 0.025;
+		s.backMat.uniforms.uThickness.value = 4;
 		// rebuild geometry at the new size; PlaneGeometry is cheap
 		s.front.geometry.dispose();
 		const geom = new THREE.PlaneGeometry(w, h, 80, 80);
@@ -502,10 +505,7 @@ export class PeelStage {
 			const sin = Math.sin(s.rotationRad);
 			const localX = dx * cos + dy * sin;
 			const localY = -dx * sin + dy * cos;
-			if (
-				Math.abs(localX) <= s.planeW / 2 &&
-				Math.abs(localY) <= s.planeH / 2
-			) {
+			if (Math.abs(localX) <= s.planeW / 2 && Math.abs(localY) <= s.planeH / 2) {
 				return s;
 			}
 		}
