@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { enhance } from '$app/forms';
 	import '../../page.css';
 	import type { PageData } from './$types';
@@ -33,14 +34,12 @@
 	let envelopeFlying = $state(false);
 	let runKey = $state(0);
 	let showConfirm = $state(false);
-	let orderSent = $state(false);
 	let mailStamp = $state(false);
 
 	function start() {
 		envelopeClosed = false;
 		envelopeFlying = false;
 		showConfirm = false;
-		orderSent = false;
 		mailStamp = false;
 		runKey++;
 
@@ -85,9 +84,9 @@
 		if (hasAddress) claimForm?.requestSubmit();
 		setTimeout(() => (mailStamp = true), 850);
 		setTimeout(() => {
-			orderSent = true;
 			envelopeFlying = true;
 		}, 2300);
+		setTimeout(() => goto(resolve('/home')), 2300 + 1350);
 	}
 
 	onMount(() => {
@@ -172,14 +171,6 @@
 	<div class="content">
 		<div class="envelope-column">
 			<div class="flap-reserve" aria-hidden="true"></div>
-			{#if orderSent}
-				<div class="order-sent">
-					<span>
-						your stickers are on the way!<br />
-						<a href="/onboarding/connect">head to your dashboard →</a>
-					</span>
-				</div>
-			{/if}
 
 			<div class="envelope-wrap" class:flying={envelopeFlying}>
 				<div class="envelope" class:closed={envelopeClosed}>
@@ -375,40 +366,6 @@
 		aspect-ratio: 5 / 3;
 		z-index: 2;
 		container-type: inline-size;
-	}
-
-	.order-sent {
-		position: absolute;
-		top: calc(clamp(260px, 36vw, 440px) * 0.468);
-		left: 50%;
-		transform: translateX(-50%);
-		width: max-content;
-		max-width: 90vw;
-		height: calc(clamp(260px, 36vw, 440px) * 3 / 5);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		font-weight: bold;
-		font-style: italic;
-		font-size: clamp(1.4rem, 2.4vw, 2.4rem);
-		line-height: 1.4;
-		color: white;
-		-webkit-text-stroke: black clamp(0.18rem, 0.3vw, 0.45rem);
-		paint-order: stroke fill;
-		z-index: 1;
-	}
-
-	.order-sent a {
-		color: #6f8fff;
-		-webkit-text-stroke: 0;
-		text-decoration: underline;
-		text-decoration-thickness: clamp(0.12rem, 0.18vw, 0.28rem);
-		text-underline-offset: 0.1em;
-	}
-
-	.order-sent a:hover {
-		filter: brightness(1.15);
 	}
 
 	.actions {
