@@ -65,6 +65,9 @@ body {
 	top: clamp(1.3rem, 1.8vw, 2.2rem);
 	left: clamp(1.6rem, 2.2vw, 2.6rem);
 	z-index: 99;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
 	font-size: clamp(1.2rem, 1.6vw, 1.7rem);
 	font-weight: 600;
 	font-family: 'Phantom Sans', sans-serif;
