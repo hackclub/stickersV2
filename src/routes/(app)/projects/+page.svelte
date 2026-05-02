@@ -354,7 +354,7 @@
 
 	.card-links a {
 		font-size: 0.85rem;
-		color: #fff959;
+		color: #f5ee49;
 		text-decoration: none;
 	}
 
@@ -378,13 +378,13 @@
 
 	.create-card:hover {
 		background: #1d1c23;
-		border-color: #fff959;
+		border-color: #f5ee49;
 	}
 
 	.plus {
 		font-size: 3rem;
 		font-weight: bold;
-		color: #fff959;
+		color: #f5ee49;
 		line-height: 1;
 	}
 
@@ -492,7 +492,7 @@
 
 	.form-input:focus {
 		outline: none;
-		border-color: #fff959;
+		border-color: #f5ee49;
 	}
 
 	.form-textarea {

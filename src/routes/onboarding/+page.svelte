@@ -336,7 +336,7 @@
 	}
 
 	.step-item--yellow {
-		background-color: #fff959;
+		background-color: #f5ee49;
 	}
 	.step-item--green {
 		background-color: #239640;

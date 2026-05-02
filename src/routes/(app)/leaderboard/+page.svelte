@@ -171,7 +171,7 @@
 	}
 
 	.row.rank-1 {
-		background: #fff959;
+		background: #f5ee49;
 		color: #141318;
 	}
 

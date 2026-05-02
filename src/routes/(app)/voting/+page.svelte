@@ -53,7 +53,7 @@
 		text-transform: uppercase;
 		padding: 0.3rem 0.75rem;
 		border-radius: 999px;
-		background: #fff959;
+		background: #f5ee49;
 		color: black;
 		border: 0.16rem solid black;
 		box-shadow: 0 3px 0 black;

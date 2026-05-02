@@ -22,7 +22,7 @@
 			key: 'packed',
 			label: 'order packed',
 			hint: 'description goes here',
-			color: '#fff959'
+			color: '#f5ee49'
 		},
 		{
 			key: 'courier',
@@ -40,7 +40,7 @@
 
 	const sectionAccents = {
 		tracking: '#ed344f',
-		past: '#fff959',
+		past: '#f5ee49',
 		wishlist: '#239640',
 		owned: '#3758c4'
 	} as const;

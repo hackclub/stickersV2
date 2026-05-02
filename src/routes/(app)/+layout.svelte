@@ -250,7 +250,7 @@
 		color: #ed344f;
 	}
 	nav li:nth-child(4n + 2) .nav-icon {
-		color: #fff959;
+		color: #f5ee49;
 	}
 	nav li:nth-child(4n + 3) .nav-icon {
 		color: #239640;
@@ -308,7 +308,7 @@
 		background: #ed344f;
 	}
 	nav li:nth-child(4n + 2) a.active {
-		background: #fff959;
+		background: #f5ee49;
 	}
 	nav li:nth-child(4n + 3) a.active {
 		background: #239640;

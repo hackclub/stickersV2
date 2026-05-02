@@ -211,7 +211,7 @@
 		position: absolute;
 		top: 0.6rem;
 		right: 0.6rem;
-		background: #fff959;
+		background: #f5ee49;
 		color: black;
 		font-size: 0.65rem;
 		font-weight: 700;
