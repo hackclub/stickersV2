@@ -42,7 +42,7 @@ body {
 	font-family: 'Phantom Sans', sans-serif;
 }
 
-.page {
+.c-page {
 	--grid: clamp(3rem, 4vw, 7rem);
 	--grid-line: clamp(0.2rem, 0.25vw, 0.4rem);
 	position: relative;
@@ -85,7 +85,7 @@ body {
 	text-decoration: none;
 }
 
-.content {
+.catalog-content {
 	width: 100%;
 	box-sizing: border-box;
 	margin: 7vw 0 5vw 0;
@@ -99,7 +99,7 @@ body {
 	position: relative;
 }
 
-.page footer {
+.c-page footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -111,16 +111,16 @@ body {
 	z-index: 2;
 }
 
-.page footer a {
+.c-page footer a {
 	color: white;
 	text-decoration: wavy underline;
 }
 
-.page footer a:hover {
+.c-page footer a:hover {
 	text-decoration: underline;
 }
 
-.search {
+.c-search {
 	flex: 1;
 	min-width: min(280px, 100%);
 	align-self: flex-end;
@@ -135,12 +135,12 @@ body {
 	outline: none;
 }
 
-.search::placeholder {
+.c-search::placeholder {
 	color: #56565d;
 	opacity: 1;
 }
 
-.sticker-grid {
+.c-sticker-grid {
 	--col: clamp(48px, 6vw, 96px);
 	--row: clamp(40px, 5vw, 80px);
 	width: 97%;
@@ -179,7 +179,7 @@ body {
 	color: #555;
 }
 
-.sticker-card {
+.c-sticker-card {
 	flex-direction: column;
 	align-items: center;
 	gap: 0.8rem;
@@ -187,16 +187,16 @@ body {
 	cursor: pointer;
 }
 
-.sticker-card .sticker-img {
+.c-sticker-card .c-sticker-img {
 	transform: rotate(var(--rot, 0deg));
 	transition: transform 0.2s;
 }
 
-.sticker-card:hover .sticker-img {
+.c-sticker-card:hover .c-sticker-img {
 	transform: rotate(var(--rot, 0deg)) scale(1.05);
 }
 
-.sticker-name {
+.c-sticker-name {
 	margin: 0;
 	font-size: 1.1rem;
 }
@@ -207,7 +207,7 @@ body {
 	color: #666;
 }
 
-.sticker-img {
+.c-sticker-img {
 	width: 200px;
 	height: 230px;
 	justify-content: center;
@@ -216,14 +216,14 @@ body {
 	display: flex;
 }
 
-.sticker-img img {
+.c-sticker-img img {
 	object-fit: contain;
 	max-width: 97%;
 	max-height: 97%;
 	user-select: none;
 }
 
-.search-row {
+.c-search-row {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -231,7 +231,7 @@ body {
 	gap: 4rem;
 }
 
-h1 {
+.c-h1 {
 	margin: 0;
 	flex-shrink: 0;
 	font-weight: 600;
@@ -344,7 +344,7 @@ h1 {
 }
 
 @media (max-width: 640px) {
-	.search-row {
+	.c-search-row {
 		flex-direction: column;
 		gap: 1rem;
 		align-items: stretch;
@@ -355,7 +355,7 @@ h1 {
 		text-align: center;
 	}
 
-	.search {
+	.c-search {
 		align-self: stretch;
 		margin-bottom: 0;
 		font-size: 1.2rem;
@@ -363,17 +363,17 @@ h1 {
 }
 
 @media (max-width: 480px) {
-	.sticker-img {
+	.c-sticker-img {
 		width: clamp(110px, 44vw, 160px);
 		height: clamp(130px, 52vw, 190px);
 	}
 
-	.sticker-grid {
+	.c-sticker-grid {
 		gap: 1.5rem;
 		padding: 6vw 5vw;
 	}
 
-	.content {
+	.catalog-content {
 		padding: 0 1rem;
 	}
 }

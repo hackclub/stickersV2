@@ -47,23 +47,23 @@
 	}}
 />
 
-<div class="page">
+<div class="c-page">
 	<a href={home} class="back-link">← home</a>
 
-	<div class="content">
-		<div class="search-row">
-			<h1>catalog</h1>
+	<div class="catalog-content">
+		<div class="c-search-row">
+			<h1 class="c-h1">catalog</h1>
 			<input
-				class="search"
+				class="c-search"
 				type="search"
 				placeholder="search stickers..."
 				bind:value={searchQuery}
 			/>
 		</div>
-		<div class="sticker-grid">
+		<div class="c-sticker-grid">
 			{#each filteredStickers as sticker, i (sticker.id)}
 				<div
-					class="sticker-card"
+					class="c-sticker-card"
 					onclick={() => (selected = sticker)}
 					role="button"
 					tabindex="0"
@@ -71,10 +71,10 @@
 						if (e.key === 'Enter') selected = sticker;
 					}}
 				>
-					<div class="sticker-img" style="--rot: {((i * 17) % 26) - 13}deg">
+					<div class="c-sticker-img" style="--rot: {((i * 17) % 26) - 13}deg">
 						<img src={sticker.cdn_url} alt={sticker.name} loading="lazy" />
 					</div>
-					<p class="sticker-name">{sticker.name}</p>
+					<p class="c-sticker-name">{sticker.name}</p>
 				</div>
 			{/each}
 			{#if filteredStickers.length == 0}
