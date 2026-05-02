@@ -134,6 +134,18 @@ body {
 		transform 0.1s ease;
 }
 
+/* WebGL path: suppress hover on DOM elements when cursor is over a sticker or carrying one */
+.hero.sticker-hover a:not(.catalog-link),
+.hero.sticker-hover a:not(.catalog-link) *,
+.hero.sticker-hover button,
+.hero.sticker-hover input,
+.hero.sticker-held a:not(.catalog-link),
+.hero.sticker-held a:not(.catalog-link) *,
+.hero.sticker-held button,
+.hero.sticker-held input {
+	pointer-events: none;
+}
+
 .scroll-arrow {
 	position: absolute;
 	bottom: clamp(1.2rem, 2.5vw, 2.5rem);
@@ -208,17 +220,15 @@ body {
 	text-decoration: none;
 	padding: clamp(0.5rem, 0.6vw, 1rem) clamp(0.6rem, 0.8vw, 1.2rem);
 	border-radius: 999px;
-	background: #0c0b10;
-	border: clamp(0.12rem, 0.15vw, 0.25rem) solid white;
-	transition:
-		color 0.15s ease,
-		border-color 0.15s ease;
+	background: #1d1c23;
+	border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+	transition: background-color 0.125s linear;
 }
 
 .catalog-link:hover {
-	color: rgba(255, 255, 255, 0.8);
-	border-color: rgba(255, 255, 255, 0.8);
+	background-color: #24242c;
 	text-decoration: none;
+	color: white;
 }
 
 .catalog-link svg {

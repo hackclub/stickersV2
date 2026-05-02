@@ -553,11 +553,10 @@ export class PeelStage {
 			if (hit && !sameSticker && hit.state !== 'gone') {
 				// chained pickup: clicking a different sticker drops the held and lifts the new one
 				this.startPotentialPickup(hit, e, p);
-				e.stopPropagation();
-				e.preventDefault();
 			}
-			// dropping into empty space or onto the same sticker → don't consume,
-			// let the click reach the form/link behind if the user clicked there.
+			// always consume the drop click — never let it reach links/forms below
+			e.stopPropagation();
+			e.preventDefault();
 			return;
 		}
 
@@ -570,6 +569,7 @@ export class PeelStage {
 
 	private updateHover(p: { x: number; y: number }) {
 		const hit = this.hitTest(p.x, p.y);
+		this.container.classList.toggle('sticker-hover', !!hit);
 		for (const s of this.stickers) {
 			if (s.state === 'gone' || s.state === 'placing' || s.state === 'held') continue;
 			if (hit && s.id === hit.id) {
@@ -591,10 +591,13 @@ export class PeelStage {
 	private refreshCursor(hit: StickerEntry | null) {
 		if (this.heldId !== null || this.potentialPickupId !== null) {
 			this.container.style.cursor = 'grabbing';
+			this.container.classList.add('sticker-held');
 		} else if (hit) {
 			this.container.style.cursor = 'grab';
+			this.container.classList.remove('sticker-held');
 		} else {
 			this.container.style.cursor = '';
+			this.container.classList.remove('sticker-held');
 		}
 	}
 
