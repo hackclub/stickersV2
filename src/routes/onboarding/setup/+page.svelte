@@ -13,19 +13,18 @@
 </script>
 
 <svelte:head>
-	<title>stickers set your address</title>
+	<title>stickers - set your address</title>
 </svelte:head>
 
 <main class="scene">
 	<div class="card">
 		<h1 class="headline">first, we need somewhere to send stickers</h1>
 		<p class="body">
-			hack club identity (HCA) holds your shipping address and phone number.
-			set them once on HCA and every hack club service including this one —
-			can ship things to you.
+			hack club auth (HCA) holds your shipping address and phone number. set them once on HCA and
+			every hack club service (including this one) can ship things to you.
 		</p>
 
-		<ol class="steps">
+		<ol class="s-steps">
 			<li>
 				<span class="step-num">1</span>
 				<span>open your HCA profile and add your shipping address + phone number.</span>
@@ -41,7 +40,7 @@
 				open HCA profile ↗
 			</a>
 			<button class="btn secondary" onclick={() => goto('/onboarding/free')}>
-				i've set my address continue
+				i've set my address!
 			</button>
 		</div>
 	</div>
@@ -94,7 +93,7 @@
 		max-width: 38rem;
 	}
 
-	.steps {
+	.s-steps {
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -106,7 +105,7 @@
 		max-width: 36rem;
 	}
 
-	.steps li {
+	.s-steps li {
 		display: flex;
 		align-items: center;
 		gap: 0.9rem;
