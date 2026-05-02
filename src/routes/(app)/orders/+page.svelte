@@ -60,7 +60,20 @@
 		return 0;
 	}
 
-	const monthAbbr = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+	const monthAbbr = [
+		'jan',
+		'feb',
+		'mar',
+		'apr',
+		'may',
+		'jun',
+		'jul',
+		'aug',
+		'sep',
+		'oct',
+		'nov',
+		'dec'
+	];
 
 	function formatDate(d: Date | string): string {
 		const date = d instanceof Date ? d : new Date(d);
@@ -107,7 +120,9 @@
 								class:done={i < currentIndex}
 								class:active={i === currentIndex}
 								class:pending={i > currentIndex}
-								style="--accent: {stage.color}"
+								style="--accent: {stage.color}; --prev-accent: {i > 0
+									? stages[i - 1].color
+									: stage.color}"
 							>
 								<div class="dot">
 									<span class="num">{i + 1}</span>
@@ -123,11 +138,7 @@
 							<div class="active-thumbs">
 								{#each visibleItems as item, i (i)}
 									<div class="active-thumb" title="{item.sticker_name} ×{item.count}">
-										<img
-											src={item.sticker_cdn_url}
-											alt={item.sticker_name}
-											loading="lazy"
-										/>
+										<img src={item.sticker_cdn_url} alt={item.sticker_name} loading="lazy" />
 										{#if item.count > 1}<span class="thumb-qty">×{item.count}</span>{/if}
 									</div>
 								{/each}
@@ -146,9 +157,7 @@
 									{#if order.recipient_name}{order.recipient_name}<br />{/if}
 									{#if order.line_1}{order.line_1}<br />{/if}
 									{#if order.line_2}{order.line_2}<br />{/if}
-									{[order.city, order.state, order.postal_code]
-										.filter(Boolean)
-										.join(', ')}
+									{[order.city, order.state, order.postal_code].filter(Boolean).join(', ')}
 									{#if order.country}<br />{order.country}{/if}
 								</address>
 							{:else}
@@ -462,8 +471,8 @@
 		width: clamp(2.6rem, 4vw, 3.4rem);
 		height: clamp(2.6rem, 4vw, 3.4rem);
 		border-radius: 50%;
-		background: #1d1c23;
-		border: clamp(0.2rem, 0.3vw, 0.4rem) solid #37373c;
+		background: #37373c;
+		border: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -484,7 +493,7 @@
 
 	.stage.done .dot {
 		background: var(--accent);
-		border-color: black;
+		border: none;
 		color: white;
 		-webkit-text-stroke: black 0.14rem;
 		paint-order: stroke fill;
@@ -492,7 +501,7 @@
 
 	.stage.active .dot {
 		background: var(--accent);
-		border-color: black;
+		border: none;
 		color: white;
 		-webkit-text-stroke: black 0.14rem;
 		paint-order: stroke fill;
@@ -673,10 +682,6 @@
 		grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
 		gap: 1.5rem;
 		padding: clamp(1rem, 2vw, 2rem);
-		background-color: #faf8f5;
-		border-radius: 0.6rem;
-		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
-		color: black;
 	}
 
 	.sticker-card {
@@ -767,7 +772,7 @@
 		grid-column: 1 / -1;
 		text-align: center;
 		font-size: 1.1rem;
-		color: #555;
+		color: #a3a3ad;
 		margin: 1rem 0;
 	}
 </style>
