@@ -101,7 +101,7 @@
 
 <style>
 	.app-shell {
-		--sidebar-w: clamp(220px, 22vw, 300px);
+		--sidebar-w: clamp(223px, 23vw, 323px);
 		position: fixed;
 		inset: 0;
 		display: flex;
@@ -125,7 +125,12 @@
 		flex-direction: column;
 		gap: clamp(1.2rem, 1.8vw, 1.8rem);
 		overflow-y: auto;
+		scrollbar-width: none;
 		z-index: 5;
+	}
+
+	.sidebar::-webkit-scrollbar {
+		display: none;
 	}
 
 	.brand {
@@ -135,8 +140,8 @@
 		justify-content: center;
 		gap: clamp(0.7rem, 1vw, 1.1rem);
 		width: auto;
-		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
-		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
 		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		text-decoration: none;
@@ -150,15 +155,15 @@
 	}
 
 	.brand-favicon {
-		width: clamp(2.6rem, 3.2vw, 3.4rem);
-		height: clamp(2.6rem, 3.2vw, 3.4rem);
+		width: clamp(2.6rem, 3.6vw, 3.8rem);
+		height: clamp(2.6rem, 3.6vw, 3.8rem);
 		flex-shrink: 0;
 		transform: rotate(-8deg);
 		transform-origin: center;
 	}
 
 	.brand-tag {
-		font-size: clamp(2.1rem, 2.8vw, 3.1rem);
+		font-size: clamp(2.1rem, 3.2vw, 3.5rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
@@ -167,8 +172,8 @@
 	}
 
 	nav {
-		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
-		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
 	}
 
 	nav ul {
@@ -188,7 +193,7 @@
 		border-radius: 0.9rem;
 		color: white;
 		text-decoration: none;
-		font-size: clamp(1.3rem, 1.6vw, 1.65rem);
+		font-size: clamp(1.3rem, 1.8vw, 1.9rem);
 		font-weight: bold;
 		font-style: italic;
 		background: transparent;
@@ -273,12 +278,12 @@
 
 	.profile-section {
 		margin-top: auto;
-		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
-		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
 		display: flex;
 		flex-direction: column;
 		gap: 0.6rem;
-		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
+		padding-bottom: 1.2rem;
 	}
 
 	.admin-link {
@@ -330,8 +335,8 @@
 	}
 
 	.profile-avatar {
-		width: clamp(3rem, 3.4vw, 3.6rem);
-		height: clamp(3rem, 3.4vw, 3.6rem);
+		width: clamp(2.8rem, 3.4vw, 3.5rem);
+		height: clamp(2.8rem, 3.4vw, 3.5rem);
 		border-radius: 50%;
 		flex-shrink: 0;
 		object-fit: cover;
@@ -345,7 +350,7 @@
 	}
 
 	.profile-name {
-		font-size: clamp(1.15rem, 1.3vw, 1.35rem);
+		font-size: clamp(1.05rem, 1.35vw, 1.4rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
@@ -355,7 +360,7 @@
 	}
 
 	.profile-slack {
-		font-size: clamp(0.9rem, 1vw, 1.05rem);
+		font-size: clamp(0.85rem, 1.05vw, 1.1rem);
 		color: #888;
 		white-space: nowrap;
 		overflow: hidden;
@@ -366,8 +371,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: clamp(2rem, 2.2vw, 2.4rem);
-		height: clamp(2rem, 2.2vw, 2.4rem);
+		width: clamp(1.9rem, 2.3vw, 2.4rem);
+		height: clamp(1.9rem, 2.3vw, 2.4rem);
 		padding: 0;
 		background: #ed344f;
 		border: none;
@@ -379,8 +384,8 @@
 	}
 
 	.logout-btn svg {
-		width: 1.5rem;
-		height: 1.5rem;
+		width: 1.4rem;
+		height: 1.4rem;
 	}
 
 	.logout-btn:hover {
