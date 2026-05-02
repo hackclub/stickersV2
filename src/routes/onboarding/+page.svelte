@@ -1,67 +1,194 @@
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 	import '../page.css';
-	import type { ActionData, PageData } from './$types';
 
-	let { data, form }: { data: PageData; form: ActionData } = $props();
+	const nextHref = resolve('/onboarding/free');
 
-	let selectedId = $state<number | null>(untrack(() => data.votedStickerId));
+	let arenaEl: HTMLElement;
+	let cardEls: HTMLElement[] = [];
+	let pathD = $state('');
+	let arrowD = $state('');
+
+	const TY = [0, 60, 0, 60];
+
+	function catmullRomToBezier(pts: [number, number][]): string {
+		if (pts.length < 2) return '';
+		const segments: string[] = [`M ${pts[0][0]} ${pts[0][1]}`];
+		for (let i = 0; i < pts.length - 1; i++) {
+			const p0 = pts[Math.max(i - 1, 0)];
+			const p1 = pts[i];
+			const p2 = pts[i + 1];
+			const p3 = pts[Math.min(i + 2, pts.length - 1)];
+			const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+			const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+			const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+			const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+			segments.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`);
+		}
+		return segments.join(' ');
+	}
+
+	function buildPath() {
+		if (!arenaEl || cardEls.length < 4) return;
+		const pts: [number, number][] = cardEls.map((el, i) => [
+			el.offsetLeft + el.offsetWidth / 2,
+			el.offsetTop + el.offsetHeight / 2 + TY[i]
+		]);
+
+		pathD = catmullRomToBezier(pts);
+
+		const last = pts[pts.length - 1];
+		const secondLast = pts[pts.length - 2];
+		const dx = last[0] - secondLast[0];
+		const dy = last[1] - secondLast[1];
+		const len = Math.sqrt(dx * dx + dy * dy);
+		const ux = dx / len;
+		const uy = dy / len;
+		const size = 18;
+		const ax = last[0] - ux * size - uy * size * 0.6;
+		const ay = last[1] - uy * size + ux * size * 0.6;
+		const bx = last[0] - ux * size + uy * size * 0.6;
+		const by = last[1] - uy * size - ux * size * 0.6;
+		arrowD = `M ${last[0]} ${last[1]} L ${ax} ${ay} M ${last[0]} ${last[1]} L ${bx} ${by}`;
+	}
+
+	onMount(() => {
+		requestAnimationFrame(() => buildPath());
+		const observer = new ResizeObserver(() => buildPath());
+		observer.observe(arenaEl);
+		return () => observer.disconnect();
+	});
 </script>
 
 <svelte:head>
-	<title>stickers welcome</title>
+	<title>welcome to stickers</title>
+	<link
+		rel="preload"
+		href="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
+		as="image"
+	/>
+	<link
+		rel="preload"
+		href="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+		as="image"
+	/>
+	<link
+		rel="preload"
+		href="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+		as="image"
+	/>
+	<link
+		rel="preload"
+		href="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+		as="image"
+	/>
 </svelte:head>
 
-<main class="scene">
-	<div class="card">
-		<h1 class="headline">welcome!</h1>
-		<p class="sub">
-			Hack Club is an amazing space for teenage creators, our artists regularly produce amazing designs and the favorite ones will be added to the shop and distributed globally! Vote for your favorite!
-		</p>
+<main class="welcome-scene">
+	<div class="welcome-card">
+		<h1 class="welcome-title">welcome!</h1>
+		<p class="welcome-sub">here's how stickers works:</p>
 
-		<div class="stickers">
-			{#each data.stickers as s (s.id)}
-				<button
-					type="button"
-					class="sticker-card"
-					class:picked={selectedId === s.id}
-					class:dim={selectedId !== null && selectedId !== s.id}
-					onclick={() => (selectedId = s.id)}
-					aria-pressed={selectedId === s.id}
-					aria-label={`vote for ${s.name}`}
-				>
-					<div class="sticker-img-wrap">
-						<img src={s.cdn_url} alt={s.name} draggable="false" />
-					</div>
-					<span class="sticker-name">{s.name}</span>
-					{#if s.artist}
-						<span class="sticker-artist">by {s.artist}</span>
-					{/if}
-					<span class="tally">{s.votes} {s.votes === 1 ? 'vote' : 'votes'}</span>
-				</button>
-			{/each}
+		<div class="step-arena" bind:this={arenaEl}>
+			<div class="step-grid">
+				<div class="step-item" bind:this={cardEls[0]}>
+					<img
+						src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
+						alt=""
+						role="presentation"
+						decoding="async"
+					/>
+					make creative projects
+				</div>
+				<div class="step-item step-item--yellow" bind:this={cardEls[1]}>
+					<img
+						src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+						alt=""
+						role="presentation"
+						decoding="async"
+					/>
+					get tokens for your efforts!
+				</div>
+				<div class="step-item step-item--green" bind:this={cardEls[2]}>
+					<img
+						src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+						alt=""
+						role="presentation"
+						decoding="async"
+					/>
+					buy stickers from the shop
+				</div>
+				<div class="step-item step-item--blue" bind:this={cardEls[3]}>
+					<img
+						src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+						alt=""
+						role="presentation"
+						decoding="async"
+					/>
+					we'll mail them to you!
+					<span class="step-tag">FREE · 13–18</span>
+				</div>
+			</div>
+
+			<svg
+				class="step-path"
+				aria-hidden="true"
+				style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;"
+			>
+				<path
+					d={pathD}
+					fill="none"
+					stroke="white"
+					stroke-width="4"
+					stroke-dasharray="10 12"
+					stroke-linecap="round"
+					opacity="0.35"
+				/>
+				<path
+					d={arrowD}
+					fill="none"
+					stroke="white"
+					stroke-width="4"
+					stroke-linecap="round"
+					opacity="0.5"
+				/>
+			</svg>
 		</div>
 
-		{#if form?.error}<p class="status err">{form.error}</p>{/if}
-
-		{#if selectedId !== null}
-			<form method="POST" action="?/vote" class="actions">
-				<input type="hidden" name="sticker_id" value={selectedId} />
-				<button type="submit" class="btn primary">next →</button>
-			</form>
-		{/if}
+		<a href={nextHref} class="welcome-btn">
+			let's go
+			<svg
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+				viewBox="0 0 32 32"
+				preserveAspectRatio="xMidYMid meet"
+				fill="currentColor"
+				class="welcome-btn-icon"
+				><path
+					paint-order="stroke fill"
+					stroke="black"
+					stroke-width="5"
+					stroke-linejoin="round"
+					d="M18.496,10.132c-0.479,-0.274 -1.09,-0.108 -1.364,0.372c-0.274,0.479 -0.108,1.09 0.372,1.364c1.554,0.886 3.031,1.929 4.357,3.132l-13.861,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1l13.861,0c-1.326,1.203 -2.803,2.246 -4.357,3.132c-0.48,0.274 -0.646,0.885 -0.372,1.364c0.274,0.48 0.885,0.646 1.364,0.372c2.16,-1.237 4.859,-2.886 6.237,-5.061c0.076,-0.12 0.267,-0.431 0.267,-0.807c0,-0.376 -0.191,-0.687 -0.267,-0.807c-1.403,-2.215 -4.021,-3.792 -6.237,-5.061Z"
+				/></svg
+			>
+		</a>
 	</div>
 </main>
 
 <style>
-	.scene {
+	.welcome-scene {
 		position: fixed;
 		inset: 0;
 		overflow: auto;
 		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-		padding: clamp(1.5rem, 3vw, 3rem) 2rem;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		padding: clamp(1.5rem, 3vw, 3rem) 2rem clamp(3rem, 5vw, 5rem);
 		background-size: var(--page-grid) var(--page-grid);
 		background-color: #141318;
 		background-image:
@@ -71,177 +198,256 @@
 		font-family: 'Phantom Sans', sans-serif;
 	}
 
-	.card {
-		max-width: 60rem;
+	.welcome-card {
+		max-width: min(90vw, 112rem);
 		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: clamp(1.2rem, 2vw, 2rem);
+		gap: clamp(1.2rem, 2.5vw, 2.5rem);
 		text-align: center;
 	}
 
-	.headline {
+	.welcome-title {
 		margin: 0;
 		font-weight: bold;
 		font-style: italic;
-		font-size: clamp(1.8rem, 3.2vw, 3.2rem);
+		font-size: clamp(1.8rem, 4vw, 4.5rem);
 		line-height: 1.1;
 		color: white;
 		-webkit-text-stroke: black clamp(0.18rem, 0.32vw, 0.45rem);
 		paint-order: stroke fill;
 	}
 
-	.sub {
+	.welcome-sub {
 		margin: 0;
 		color: #c8c8d0;
-		font-size: clamp(1rem, 1.3vw, 1.3rem);
+		font-size: clamp(1rem, 1.5vw, 1.7rem);
 		line-height: 1.5;
-		max-width: 38rem;
 	}
 
-	.stickers {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-		gap: clamp(0.8rem, 1.2vw, 1.4rem);
+	.step-arena {
+		position: relative;
 		width: 100%;
-		margin-top: 0.5rem;
+		overflow: visible;
+		margin-top: clamp(1.5rem, 2.5vw, 3rem);
 	}
 
-	.sticker-card {
-		font-family: 'Phantom Sans', sans-serif;
+	.step-grid {
+		counter-reset: step;
+		width: 100%;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: clamp(2rem, 4vw, 5rem);
+		overflow: visible;
+		padding-bottom: 70px;
+		align-items: start;
+	}
+
+	.step-path {
+		z-index: 1;
+		animation: path-fade-in 800ms ease 400ms both;
+	}
+
+	@keyframes path-fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.step-item {
+		--r: 0deg;
+		--ty: 0px;
+		counter-increment: step;
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.45rem;
-		background: #1d1c23;
-		border: clamp(0.15rem, 0.22vw, 0.35rem) solid black;
-		border-radius: 1rem;
-		padding: clamp(1rem, 1.4vw, 1.4rem);
-		cursor: pointer;
+		justify-content: center;
+		gap: clamp(1.2rem, 2.5vw, 3.5rem);
+		background-color: #ed344f;
+		border: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
+		border-radius: 1.5rem;
+		padding: clamp(1.4rem, 3vw, 4.5rem) clamp(1rem, 1.5vw, 1.8rem);
+		font-weight: bold;
+		font-size: clamp(1rem, 1.5vw, 1.8rem);
 		color: white;
-		box-shadow: 0 5px 0 black;
+		-webkit-text-stroke: black clamp(0.15rem, 0.22vw, 0.35rem);
+		paint-order: stroke fill;
+		text-align: center;
+		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
+		transform: translateY(var(--ty)) rotate(var(--r)) scale(1) translateZ(0);
+		animation: card-in 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+		filter: brightness(1);
 		transition:
-			transform 0.12s ease,
-			filter 0.12s ease,
-			box-shadow 0.12s ease,
-			opacity 0.2s ease;
+			filter 0.2s ease,
+			transform 0.2s ease;
+		will-change: transform, filter;
+		min-width: 0;
+		z-index: 2;
 	}
 
-	.sticker-card:hover:not(:disabled) {
-		filter: brightness(1.15);
-		transform: translateY(-2px);
-		box-shadow: 0 7px 0 black;
+	.step-item:nth-child(1) {
+		--r: -1.8deg;
+		--ty: 0px;
+		animation-delay: 0ms;
+	}
+	.step-item:nth-child(2) {
+		--r: 1.2deg;
+		--ty: 60px;
+		animation-delay: 130ms;
+	}
+	.step-item:nth-child(3) {
+		--r: -1deg;
+		--ty: 0px;
+		animation-delay: 260ms;
+	}
+	.step-item:nth-child(4) {
+		--r: 1.6deg;
+		--ty: 60px;
+		animation-delay: 390ms;
 	}
 
-	.sticker-card:active:not(:disabled) {
-		transform: translateY(2px);
-		box-shadow: 0 2px 0 black;
+	.step-item:hover {
+		filter: brightness(1.1);
+		transform: translateY(calc(var(--ty) - 4px)) rotate(var(--r)) scale(1) translateZ(0);
 	}
 
-	.sticker-card:disabled {
-		cursor: default;
-	}
-
-	.sticker-card.picked {
-		background: #239640;
-		box-shadow: 0 5px 0 black;
-	}
-
-	.sticker-card.dim {
-		opacity: 0.55;
-	}
-
-	.sticker-img-wrap {
-		width: 100%;
-		aspect-ratio: 1 / 1;
-		max-height: clamp(8rem, 22vh, 14rem);
+	.step-item::before {
+		content: counter(step);
+		position: absolute;
+		top: -12px;
+		left: -10px;
+		width: clamp(2.4rem, 3.2vw, 3.8rem);
+		height: clamp(2.4rem, 3.2vw, 3.8rem);
+		background-color: black;
+		color: white;
+		font-size: clamp(1.3rem, 1.7vw, 2rem);
+		font-weight: bold;
+		-webkit-text-stroke: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #141318;
-		border-radius: 0.6rem;
-		padding: 0.5rem;
-		box-sizing: border-box;
+		border-radius: 0.5rem;
+		transform: rotate(-12deg);
 	}
 
-	.sticker-img-wrap img {
-		max-width: 100%;
-		max-height: 100%;
+	.step-item--yellow {
+		background-color: #fff959;
+	}
+	.step-item--green {
+		background-color: #239640;
+	}
+	.step-item--blue {
+		background-color: #3758c4;
+	}
+
+	.step-item img {
+		width: clamp(7rem, 11vw, 15rem);
+		height: clamp(7rem, 11vw, 15rem);
 		object-fit: contain;
+		pointer-events: none;
 		user-select: none;
 		-webkit-user-drag: none;
 	}
 
-	.sticker-name {
-		font-weight: bold;
-		font-size: clamp(0.95rem, 1.1vw, 1.2rem);
-		color: white;
-	}
-
-	.sticker-artist {
-		font-size: clamp(0.75rem, 0.9vw, 0.95rem);
-		color: #a3a3ad;
-	}
-
-	.tally {
-		margin-top: 0.2rem;
-		font-variant-numeric: tabular-nums;
-		font-size: clamp(0.8rem, 0.95vw, 1rem);
-		color: #c8c8d0;
-		font-weight: 600;
-	}
-
-	.sticker-card.picked .tally,
-	.sticker-card.picked .sticker-artist {
-		color: white;
-	}
-
-	.actions {
-		display: flex;
-		gap: clamp(0.6rem, 1vw, 1rem);
-		flex-wrap: wrap;
-		justify-content: center;
-		margin-top: clamp(0.5rem, 1vw, 1rem);
-	}
-
-	.status.err {
-		margin: 0;
-		color: #ed344f;
-		font-size: 0.95rem;
-		text-align: center;
-	}
-
-	.btn {
+	.step-tag {
+		position: absolute;
+		bottom: -14px;
+		right: -10px;
+		transform: rotate(6deg);
+		background-color: white;
+		color: black;
 		font-family: 'Phantom Sans', sans-serif;
-		font-size: clamp(1rem, 1.3vw, 1.3rem);
+		font-size: 1rem;
 		font-weight: bold;
-		padding: 0.8rem 2rem;
+		letter-spacing: 0.1em;
+		padding: 0.35rem 0.8rem;
+		border-radius: 0.5rem;
+		border: 2px solid black;
+		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
+		white-space: nowrap;
+		-webkit-text-stroke-width: 0;
+	}
+
+	.welcome-btn {
+		font-family: 'Phantom Sans', sans-serif;
+		font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+		font-weight: bold;
+		padding: clamp(1rem, 1.4vw, 1.4rem) clamp(2.5rem, 3.5vw, 3.5rem);
 		color: white;
-		-webkit-text-stroke: black 0.18rem;
+		-webkit-text-stroke: black 0.42rem;
 		paint-order: stroke fill;
 		border: clamp(0.15rem, 0.22vw, 0.35rem) solid black;
 		border-radius: 999px;
 		cursor: pointer;
-		box-shadow: 0 5px 0 black;
+		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
+		text-decoration: none;
+		background: #239640;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		margin-top: clamp(1.5rem, 2.5vw, 3rem);
 		transition:
-			transform 0.12s ease,
 			filter 0.12s ease,
 			box-shadow 0.12s ease;
 	}
 
-	.btn.primary {
-		background: #239640;
+	.welcome-btn-icon {
+		width: 1.1em;
+		height: 1.1em;
+		flex-shrink: 0;
 	}
 
-	.btn:hover {
+	.welcome-btn:hover {
 		filter: brightness(1.15);
-		transform: translateY(-2px);
-		box-shadow: 0 7px 0 black;
+		box-shadow: 5px 8px 0 rgba(0, 0, 0, 0.5);
+		text-decoration: none;
+		color: white;
 	}
 
-	.btn:active {
+	.welcome-btn-icon {
+		transition: transform 0.15s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.welcome-btn:hover .welcome-btn-icon {
+		transform: translateX(0.3rem);
+	}
+
+	.welcome-btn:active {
 		transform: translateY(2px);
-		box-shadow: 0 2px 0 black;
+		box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.5);
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			transform: translateY(calc(var(--ty) + 20px)) rotate(var(--r)) scale(0.94) translateZ(0);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.step-grid {
+			grid-template-columns: repeat(2, 1fr);
+			padding-bottom: 0;
+		}
+
+		.step-item {
+			--ty: 0px !important;
+		}
+
+		.step-path {
+			display: none;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.step-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

@@ -86,7 +86,7 @@
 		setTimeout(() => {
 			envelopeFlying = true;
 		}, 2300);
-		setTimeout(() => goto(resolve('/home')), 2300 + 1350);
+		setTimeout(() => goto(resolve('/onboarding/connect')), 2300 + 1350);
 	}
 
 	onMount(() => {
@@ -723,12 +723,7 @@
 		inset: 0;
 		pointer-events: none;
 		z-index: 3;
-		clip-path: polygon(
-			0 -1000%,
-			100% -1000%,
-			100% 100%,
-			0 100%
-		);
+		clip-path: polygon(0 -1000%, 100% -1000%, 100% 100%, 0 100%);
 	}
 
 	.falling-sticker {
@@ -880,7 +875,9 @@
 		text-decoration: none;
 		border-bottom: 1px dotted #56565d;
 		padding-bottom: 1px;
-		transition: color 0.12s ease, border-color 0.12s ease;
+		transition:
+			color 0.12s ease,
+			border-color 0.12s ease;
 	}
 
 	.update-address:hover {
