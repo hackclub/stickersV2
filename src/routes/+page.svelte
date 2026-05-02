@@ -9,7 +9,7 @@
 	let { data }: { data: PageData } = $props();
 
 	const catalog = resolve('/catalog');
-	const home = resolve('/home');
+	const onboarding = resolve('/onboarding');
 
 	type StickerAsset = { src: string; size: number };
 	type Slot = { x: number; y: number; z: number };
@@ -422,7 +422,22 @@
 	style="--bg-offset-y: {scrollY * 0.4}px"
 >
 	<a href={catalog} class="catalog-link" bind:this={catalogEl}
-		>catalog <svg fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414" xmlns="http://www.w3.org/2000/svg" aria-label="expand" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="256" height="256"><path d="M8.26533 22.3155L22.3035 8.27736C21.1495 8.2793 20.2555 8.36029 18.7669 8.49512L18.5569 8.51413C18.0069 8.56413 17.5205 8.15879 17.4705 7.60878C17.4205 7.05876 17.8375 6.64361 18.3763 6.5223C20.2342 6.10404 21.6484 6.10404 24.15 6.35514C24.5244 6.42095 24.908 6.53525 25.1839 6.81113C25.4598 7.08702 25.5741 7.47064 25.6399 7.845C25.891 10.3467 25.891 11.7609 25.4728 13.6176L25.4727 13.6192C25.4227 14.1692 24.9363 14.5745 24.3862 14.5245C23.8362 14.4745 23.4309 13.9881 23.4809 13.4381L23.5092 13.1202C23.6342 11.7164 23.7135 10.8267 23.7167 9.69262L9.68059 23.7287Z"/></svg></a
+		>catalog <svg
+			fill-rule="evenodd"
+			clip-rule="evenodd"
+			stroke-linejoin="round"
+			stroke-miterlimit="1.414"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-label="expand"
+			viewBox="0 0 32 32"
+			preserveAspectRatio="xMidYMid meet"
+			fill="currentColor"
+			width="256"
+			height="256"
+			><path
+				d="M8.26533 22.3155L22.3035 8.27736C21.1495 8.2793 20.2555 8.36029 18.7669 8.49512L18.5569 8.51413C18.0069 8.56413 17.5205 8.15879 17.4705 7.60878C17.4205 7.05876 17.8375 6.64361 18.3763 6.5223C20.2342 6.10404 21.6484 6.10404 24.15 6.35514C24.5244 6.42095 24.908 6.53525 25.1839 6.81113C25.4598 7.08702 25.5741 7.47064 25.6399 7.845C25.891 10.3467 25.891 11.7609 25.4728 13.6176L25.4727 13.6192C25.4227 14.1692 24.9363 14.5745 24.3862 14.5245C23.8362 14.4745 23.4309 13.9881 23.4809 13.4381L23.5092 13.1202C23.6342 11.7164 23.7135 10.8267 23.7167 9.69262L9.68059 23.7287Z"
+			/></svg
+		></a
 	>
 	{#if !useWebGL}
 		{#each stickers as sticker (sticker.id)}
@@ -464,7 +479,7 @@
 		<h1>stickers</h1>
 		{#if data.email}
 			<div class="dashboard-row">
-				<a class="dashboard-link" href={home}
+				<a class="dashboard-link" href={onboarding}
 					>go to dashboard <svg
 						class="dashboard-arrow"
 						fill-rule="evenodd"
