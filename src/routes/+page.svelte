@@ -9,6 +9,7 @@
 	let { data }: { data: PageData } = $props();
 
 	const catalog = resolve('/catalog');
+	const home = resolve('/home');
 
 	type StickerAsset = { src: string; size: number };
 	type Slot = { x: number; y: number; z: number };
@@ -461,16 +462,38 @@
 			</svg>
 		</a>
 		<h1>stickers</h1>
-		<form method="GET" action="/auth/start">
-			<input
-				id="email"
-				placeholder="your@email.com"
-				type="email"
-				name="login_hint"
-				value={data.email ?? ''}
-			/>
-			<button id="submit" type="submit">go!</button>
-		</form>
+		{#if data.email}
+			<div class="dashboard-row">
+				<a class="dashboard-link" href={home}
+					>go to dashboard <svg
+						class="dashboard-arrow"
+						xmlns="http://www.w3.org/2000/svg"
+						width="clamp(1.2rem, 1.5vw, 2.5rem)"
+						height="clamp(1.2rem, 1.5vw, 2.5rem)"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+						<polyline points="12 5 19 12 12 19"></polyline>
+					</svg></a
+				>
+			</div>
+		{:else}
+			<form method="GET" action="/auth/start">
+				<input
+					id="email"
+					placeholder="your@email.com"
+					type="email"
+					name="login_hint"
+					value={data.email ?? ''}
+				/>
+				<button id="submit" type="submit">go!</button>
+			</form>
+		{/if}
 	</section>
 	<a
 		class="scroll-arrow"

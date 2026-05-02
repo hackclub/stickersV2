@@ -208,7 +208,9 @@ body {
 	background: rgba(20, 19, 24, 0.3);
 	border: clamp(0.1rem, 0.12vw, 0.2rem) solid white;
 	backdrop-filter: blur(8px);
-	transition: color 0.15s ease, border-color 0.15s ease;
+	transition:
+		color 0.15s ease,
+		border-color 0.15s ease;
 }
 
 .catalog-link:hover {
@@ -268,6 +270,66 @@ body {
 #submit:hover {
 	background-color: #24242c;
 	cursor: pointer;
+}
+
+.dashboard-row {
+	margin-top: clamp(0.5rem, 0.8vw, 1.2rem);
+	height: clamp(3.5rem, 4.2vw, 6rem);
+	width: 100%;
+	display: flex;
+}
+
+.dashboard-link {
+	flex: 1;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Phantom Sans';
+	font-weight: 600;
+	font-style: italic;
+	color: white;
+	background-color: #1d1c23;
+	border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
+	font-size: clamp(1.2rem, 1.5vw, 2.5rem);
+	padding: clamp(0.5rem, 0.6vw, 1rem) clamp(0.6rem, 0.8vw, 1.2rem);
+	border-radius: 99999999px;
+	text-decoration: none;
+	transition: background-color 0.125s linear;
+	gap: 0.5rem;
+}
+
+.dashboard-link:hover {
+	background-color: #24242c;
+	text-decoration: none;
+	color: white;
+}
+
+.dashboard-arrow {
+	transition: transform 0.15s;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-link:hover .dashboard-arrow {
+	transform: translateX(0.3rem);
+}
+
+@media (max-width: 640px) {
+	.dashboard-row {
+		height: auto;
+	}
+
+	.dashboard-link {
+		font-size: 1rem;
+		padding: 0.75rem 1rem;
+	}
+}
+
+@media (max-width: 455px) {
+	.dashboard-link {
+		font-size: 0.9rem;
+		padding: 0.65rem 0.85rem;
+	}
 }
 
 .sep {

@@ -80,8 +80,7 @@ body {
 .search {
 	flex: 1;
 	min-width: min(280px, 100%);
-	align-self: flex-end;
-	margin-bottom: 1.5rem;
+	align-self: center;
 	padding: clamp(0.8rem, 1vw, 1.5rem) 1.4em;
 	border: clamp(0.12rem, 0.15vw, 0.25rem) solid #37373c;
 	border-radius: 99999999px;
@@ -199,7 +198,7 @@ body {
 	color: white;
 	-webkit-text-stroke: clamp(0.14rem, 0.22vw, 0.32rem) black;
 	paint-order: stroke fill;
-	font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+	font-size: clamp(3rem, 4.5vw, 4.5rem);
 	position: relative;
 }
 
