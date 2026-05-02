@@ -51,10 +51,8 @@
 <div class="app-shell">
 	<aside class="sidebar">
 		<a href="/" class="brand" aria-label="back to root">
+			<img class="brand-favicon" src="/favicon.ico" alt="" />
 			<span class="brand-tag">stickers</span>
-			{#if data.user?.email}
-				<span class="brand-email">{data.user.email}</span>
-			{/if}
 		</a>
 		<nav>
 			<ul>
@@ -121,8 +119,7 @@
 		width: var(--sidebar-w);
 		flex-shrink: 0;
 		box-sizing: border-box;
-		background: #1d1c23;
-		border-right: clamp(0.15rem, 0.22vw, 0.35rem) solid #37373c;
+		background: #0c0b10;
 		padding: clamp(1.5rem, 2.2vw, 2.2rem) clamp(1.2rem, 1.6vw, 1.6rem) 0;
 		display: flex;
 		flex-direction: column;
@@ -133,10 +130,15 @@
 
 	.brand {
 		display: flex;
-		flex-direction: column;
-		gap: 0.3rem;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(0.7rem, 1vw, 1.1rem);
+		width: auto;
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
 		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
-		border-bottom: 1px solid #37373c;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		text-decoration: none;
 		color: inherit;
 		transition: opacity 0.12s ease;
@@ -147,25 +149,26 @@
 		text-decoration: none;
 	}
 
+	.brand-favicon {
+		width: clamp(2.6rem, 3.2vw, 3.4rem);
+		height: clamp(2.6rem, 3.2vw, 3.4rem);
+		flex-shrink: 0;
+		transform: rotate(-8deg);
+		transform-origin: center;
+	}
+
 	.brand-tag {
-		font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+		font-size: clamp(2.1rem, 2.8vw, 3.1rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
-		-webkit-text-stroke: black clamp(0.12rem, 0.2vw, 0.3rem);
+		-webkit-text-stroke: black clamp(0.15rem, 0.24vw, 0.36rem);
 		paint-order: stroke fill;
 	}
 
-	.brand-email {
-		font-size: 0.78rem;
-		letter-spacing: 0.06em;
-		color: #56565d;
-		word-break: break-all;
-	}
-
 	nav {
-		margin-left: calc(-1 * clamp(1.2rem, 1.6vw, 1.6rem));
-		margin-right: calc(-1 * clamp(1.2rem, 1.6vw, 1.6rem));
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
 	}
 
 	nav ul {
@@ -174,24 +177,27 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		gap: 0.6rem;
 	}
 
 	nav a {
 		display: flex;
 		align-items: center;
 		overflow: hidden;
-		padding: 1.1rem clamp(1.2rem, 1.6vw, 1.6rem);
-		border-radius: 0;
+		padding: 0.9rem 0.75rem 0.9rem 1.35rem;
+		border-radius: 0.9rem;
 		color: white;
 		text-decoration: none;
 		font-size: clamp(1.3rem, 1.6vw, 1.65rem);
 		font-weight: bold;
 		font-style: italic;
-		background: #2a2a32;
+		background: transparent;
 		-webkit-text-stroke: black 0.18rem;
 		paint-order: stroke fill;
-		transition: background 0.3s ease;
+		transition:
+			background 0.3s ease,
+			color 0.2s ease,
+			-webkit-text-stroke 0.2s ease;
 	}
 
 	nav a:hover {
@@ -206,24 +212,32 @@
 		flex-shrink: 0;
 		width: 1.8rem;
 		height: 1.8rem;
-		margin-left: calc(-1.8rem - 0.6rem);
-		margin-right: 0.6rem;
+		margin-left: calc(-1.8rem - 0.72rem);
+		margin-right: 0.72rem;
 		opacity: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition:
 			margin-left 0.2s ease,
-			opacity 0.15s ease;
+			opacity 0.15s ease,
+			color 0.2s ease;
+	}
+
+	nav li:nth-child(4n + 1) .nav-icon { color: #ed344f; }
+	nav li:nth-child(4n + 2) .nav-icon { color: #fff959; }
+	nav li:nth-child(4n + 3) .nav-icon { color: #239640; }
+	nav li:nth-child(4n)     .nav-icon { color: #3758c4; }
+
+	nav a.active .nav-icon {
+		color: #0c0b10;
 	}
 
 	.nav-icon :global(svg) {
 		width: 1.8rem;
 		height: 1.8rem;
 		flex-shrink: 0;
-		stroke: black;
-		stroke-width: 3.5px;
-		paint-order: stroke fill;
+		stroke: none;
 	}
 
 	nav a:hover .nav-icon,
@@ -236,24 +250,15 @@
 		white-space: nowrap;
 	}
 
-	nav li:nth-child(5) .nav-icon,
 	nav li:nth-child(5) .nav-icon :global(svg) {
 		width: 2.4rem;
 		height: 2.4rem;
 	}
 
-	nav li:nth-child(5) .nav-icon {
-		margin-left: calc(-2.4rem - 0.6rem);
-	}
-
-	nav li:nth-child(5) a:hover .nav-icon,
-	nav li:nth-child(5) a.active .nav-icon {
-		margin-left: 0;
-	}
-
 	nav a.active {
 		font-weight: bold;
-		-webkit-text-stroke: black 0.2rem;
+		color: #0c0b10;
+		-webkit-text-stroke: 0;
 	}
 
 	nav li:nth-child(4n + 1) a:not(.active):hover { background: rgba(237, 52, 79, 0.18); }
@@ -268,20 +273,21 @@
 
 	.profile-section {
 		margin-top: auto;
-		margin-left: calc(-1 * clamp(1.2rem, 1.6vw, 1.6rem));
-		margin-right: calc(-1 * clamp(1.2rem, 1.6vw, 1.6rem));
+		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
+		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 0.6rem));
 		display: flex;
 		flex-direction: column;
-		gap: 0;
-		border-top: 1px solid #37373c;
+		gap: 0.6rem;
+		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
 	}
 
 	.admin-link {
-		padding: 0.45rem clamp(1.2rem, 1.6vw, 1.6rem);
-		font-size: 0.8rem;
+		padding: 0.4rem 0.5rem;
+		font-size: 0.85rem;
 		color: #56565d;
 		text-decoration: none;
-		display: block;
+		display: inline-block;
+		align-self: flex-start;
 	}
 
 	.admin-link:hover {
@@ -292,7 +298,16 @@
 	.profile-row {
 		display: flex;
 		flex-direction: row;
-		align-items: stretch;
+		align-items: center;
+		gap: 0.5rem;
+		background: #1b1a21;
+		border-radius: 0.9rem;
+		padding: 0.8rem 1rem 0.8rem 1.05rem;
+		transition: background 0.15s ease;
+	}
+
+	.profile-row:has(.profile-info:hover) {
+		background: #25242c;
 	}
 
 	.profile-row form {
@@ -304,11 +319,9 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 0.75rem;
+		gap: 0.9rem;
 		text-decoration: none;
 		color: inherit;
-		padding: 0.95rem clamp(1.2rem, 1.6vw, 1.6rem);
-		background: #2a2a32;
 		min-width: 0;
 	}
 
@@ -317,8 +330,8 @@
 	}
 
 	.profile-avatar {
-		width: 2.6rem;
-		height: 2.6rem;
+		width: clamp(3rem, 3.4vw, 3.6rem);
+		height: clamp(3rem, 3.4vw, 3.6rem);
 		border-radius: 50%;
 		flex-shrink: 0;
 		object-fit: cover;
@@ -327,12 +340,12 @@
 	.profile-text {
 		display: flex;
 		flex-direction: column;
-		gap: 0.15rem;
+		gap: 0.2rem;
 		min-width: 0;
 	}
 
 	.profile-name {
-		font-size: clamp(1.1rem, 1.25vw, 1.3rem);
+		font-size: clamp(1.15rem, 1.3vw, 1.35rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
@@ -342,7 +355,7 @@
 	}
 
 	.profile-slack {
-		font-size: 0.9rem;
+		font-size: clamp(0.9rem, 1vw, 1.05rem);
 		color: #888;
 		white-space: nowrap;
 		overflow: hidden;
@@ -353,19 +366,21 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0 1rem;
+		width: clamp(2rem, 2.2vw, 2.4rem);
+		height: clamp(2rem, 2.2vw, 2.4rem);
+		padding: 0;
 		background: #ed344f;
 		border: none;
-		border-left: 1px solid #c02040;
-		color: white;
+		border-radius: 0.5rem;
+		color: #0c0b10;
 		cursor: pointer;
 		flex-shrink: 0;
 		transition: filter 0.1s ease;
 	}
 
 	.logout-btn svg {
-		width: 1.4rem;
-		height: 1.4rem;
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 
 	.logout-btn:hover {
@@ -387,8 +402,6 @@
 
 		.sidebar {
 			width: 100%;
-			border-right: none;
-			border-bottom: clamp(0.15rem, 0.22vw, 0.35rem) solid #37373c;
 			padding: 1rem 1rem 0;
 			gap: 0.8rem;
 		}
@@ -396,21 +409,16 @@
 		nav ul {
 			flex-direction: row;
 			flex-wrap: wrap;
-		}
-
-		nav {
-			margin-left: -1rem;
-			margin-right: -1rem;
+			gap: 0.3rem;
 		}
 
 		nav a {
-			padding: 0.75rem 1rem;
+			padding: 0.6rem 1rem 0.6rem 1.2rem;
 			font-size: 1.05rem;
 		}
 
 		.profile-section {
-			margin-left: -1rem;
-			margin-right: -1rem;
+			padding-bottom: 0.8rem;
 		}
 	}
 </style>

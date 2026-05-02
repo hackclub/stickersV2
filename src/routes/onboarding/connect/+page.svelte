@@ -26,9 +26,7 @@
 					<span class="tick" aria-label="linked">✓</span>
 				{/if}
 			</header>
-			<p>
-				hackatime tracks your coding time. linking it lets us reward you for projects you ship.
-			</p>
+			<p>hackatime tracks your coding time. linking it lets us reward you for projects you ship.</p>
 			{#if data.hackatimeLinked}
 				<p class="status linked">hackatime is linked.</p>
 			{:else}
@@ -47,18 +45,17 @@
 				<label class="check">
 					<input type="checkbox" bind:checked={agreed} />
 					<span>
-						i agree to not cheat the time tracking system. no bots, no fake key presses, no UI
-						manipulation. i recognize that if i do, i may be banned from hackatime and other
-						participating YSWS / events / programs.
+						i agree to not cheat the time tracking system. that includes bots, fake key presses, or
+						UI manipulation. i agree not to submit projects completely generated using AI. i
+						recognize that if i do, i may be banned from hackatime and other participating YSWS /
+						events / programs.
 					</span>
 				</label>
 			</section>
 		{/if}
 
 		<form method="POST" action="?/agree">
-			<button type="submit" class="btn continue" disabled={!canContinue}>
-				continue →
-			</button>
+			<button type="submit" class="btn continue" disabled={!canContinue}> continue → </button>
 		</form>
 	</div>
 </main>
@@ -169,27 +166,72 @@
 	.step p {
 		margin: 0;
 		color: #c8c8d0;
-		font-size: 0.95rem;
+		font-size: clamp(1rem, 1.15vw, 1.15rem);
 		line-height: 1.45;
 	}
 
 	.check {
 		display: flex;
 		align-items: flex-start;
-		gap: 0.5rem;
+		gap: 0.85rem;
 		color: #c8c8d0;
-		font-size: 0.95rem;
+		font-size: clamp(1rem, 1.15vw, 1.15rem);
 		cursor: pointer;
 		user-select: none;
-		line-height: 1.4;
+		line-height: 1.45;
 	}
 
 	.check input {
 		flex-shrink: 0;
-		margin-top: 0.15rem;
-		width: 1rem;
-		height: 1rem;
-		accent-color: #239640;
+		appearance: none;
+		-webkit-appearance: none;
+		margin: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		border: clamp(0.12rem, 0.18vw, 0.28rem) solid #37373c;
+		border-radius: 0.6rem;
+		background: #141318;
+		cursor: pointer;
+		position: relative;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.12s ease;
+	}
+
+	.check input::after {
+		content: '';
+		position: absolute;
+		top: 48%;
+		left: 50%;
+		width: 0.65rem;
+		height: 1.3rem;
+		border: solid white;
+		border-width: 0 0.32rem 0.32rem 0;
+		transform: translate(-50%, -55%) rotate(45deg) scale(0);
+		transform-origin: center;
+		opacity: 0;
+		transition:
+			transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.15s ease;
+	}
+
+	.check input:hover {
+		border-color: #56565d;
+	}
+
+	.check input:checked {
+		background: #239640;
+		border-color: #239640;
+	}
+
+	.check input:checked::after {
+		transform: translate(-50%, -55%) rotate(45deg) scale(1);
+		opacity: 1;
+	}
+
+	.check input:active {
+		transform: scale(0.92);
 	}
 
 	.btn {
@@ -214,7 +256,7 @@
 	}
 
 	.btn.primary {
-		background: #3758c4;
+		background: #ed344f;
 		align-self: flex-start;
 	}
 

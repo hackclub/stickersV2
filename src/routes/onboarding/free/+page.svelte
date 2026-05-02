@@ -302,6 +302,7 @@
 
 	.scene {
 		--sidebar-w: clamp(220px, 24vw, 340px);
+		--env-w: clamp(260px, min(36vw, 65vh), 760px);
 		position: fixed;
 		inset: 0;
 		overflow: hidden;
@@ -323,10 +324,10 @@
 		text-align: center;
 		font-weight: bold;
 		font-style: italic;
-		font-size: clamp(1.4rem, 2.6vw, 2.6rem);
+		font-size: clamp(1.4rem, min(2.6vw, 5vh), 4rem);
 		line-height: 1.15;
 		color: white;
-		-webkit-text-stroke: black clamp(0.18rem, 0.3vw, 0.45rem);
+		-webkit-text-stroke: black clamp(0.18rem, 0.3vw, 0.6rem);
 		paint-order: stroke fill;
 		width: calc(100% - var(--sidebar-w) - 2rem);
 		z-index: 15;
@@ -355,14 +356,14 @@
 
 	.flap-reserve {
 		width: 1px;
-		height: calc(clamp(260px, 36vw, 440px) * 0.468);
+		height: calc(var(--env-w) * 0.468);
 		pointer-events: none;
 	}
 
 	.envelope-wrap {
 		flex: 0 0 auto;
 		position: relative;
-		width: clamp(260px, 36vw, 440px);
+		width: var(--env-w);
 		aspect-ratio: 5 / 3;
 		z-index: 2;
 		container-type: inline-size;
@@ -379,12 +380,12 @@
 
 	.confirm,
 	.change {
-		padding: 0.7rem 1.8rem;
+		padding: clamp(0.7rem, 0.9vw, 1.1rem) clamp(1.8rem, 2.2vw, 2.8rem);
 		font-family: 'Phantom Sans', sans-serif;
-		font-size: clamp(1rem, 1.3vw, 1.3rem);
+		font-size: clamp(1rem, 1.3vw, 1.7rem);
 		font-weight: bold;
 		color: white;
-		-webkit-text-stroke: black 0.18rem;
+		-webkit-text-stroke: black clamp(0.18rem, 0.22vw, 0.3rem);
 		paint-order: stroke fill;
 		border: clamp(0.15rem, 0.22vw, 0.35rem) solid black;
 		border-radius: 999px;
