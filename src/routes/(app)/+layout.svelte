@@ -140,7 +140,7 @@
 		padding: clamp(1.5rem, 2.2vw, 2.2rem) clamp(1.2rem, 1.6vw, 1.6rem) 0;
 		display: flex;
 		flex-direction: column;
-		gap: clamp(1.2rem, 1.8vw, 1.8rem);
+		gap: clamp(1.5rem, 2.2vw, 2.2rem);
 		overflow-y: auto;
 		scrollbar-width: none;
 		z-index: 5;
@@ -159,8 +159,8 @@
 		width: auto;
 		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
 		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
-		padding-bottom: clamp(0.8rem, 1.2vw, 1.2rem);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		padding-bottom: clamp(1.5rem, 2.2vw, 2.2rem);
+		border-bottom: 2px solid #1e1c24;
 		text-decoration: none;
 		color: inherit;
 		transition: opacity 0.12s ease;
@@ -172,15 +172,15 @@
 	}
 
 	.brand-favicon {
-		width: clamp(2.6rem, 3.6vw, 3.8rem);
-		height: clamp(2.6rem, 3.6vw, 3.8rem);
+		width: clamp(1.9rem, 2.7vw, 2.8rem);
+		height: clamp(1.9rem, 2.7vw, 2.8rem);
 		flex-shrink: 0;
 		transform: rotate(-8deg);
 		transform-origin: center;
 	}
 
 	.brand-tag {
-		font-size: clamp(2.1rem, 3.2vw, 3.5rem);
+		font-size: clamp(1.6rem, 2.4vw, 2.6rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
