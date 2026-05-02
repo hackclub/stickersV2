@@ -93,7 +93,7 @@
 			</span>
 		</div>
 		<div class="sticker-grid">
-			{#each filteredStickers as sticker, i (sticker.id)}
+			{#each filteredStickers as sticker (sticker.id)}
 				{@const inWishlist = wishlistSet.has(sticker.id)}
 				{@const inOwned = ownedSet.has(sticker.id)}
 				<div
@@ -105,7 +105,7 @@
 						if (e.key === 'Enter') selected = sticker;
 					}}
 				>
-					<div class="sticker-img" style="--rot: {((i * 17) % 26) - 13}deg">
+					<div class="sticker-img" style="--rot: {((sticker.id * 17) % 26) - 13}deg">
 						<img src={sticker.cdn_url} alt={sticker.name} loading="lazy" />
 						<div class="marks" onclick={(e) => e.stopPropagation()} role="presentation">
 							<form

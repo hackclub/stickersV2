@@ -61,7 +61,7 @@
 			/>
 		</div>
 		<div class="c-sticker-grid">
-			{#each filteredStickers as sticker, i (sticker.id)}
+			{#each filteredStickers as sticker (sticker.id)}
 				<div
 					class="c-sticker-card"
 					onclick={() => (selected = sticker)}
@@ -71,7 +71,7 @@
 						if (e.key === 'Enter') selected = sticker;
 					}}
 				>
-					<div class="c-sticker-img" style="--rot: {((i * 17) % 26) - 13}deg">
+					<div class="c-sticker-img" style="--rot: {((sticker.id * 17) % 26) - 13}deg">
 						<img src={sticker.cdn_url} alt={sticker.name} loading="lazy" />
 					</div>
 					<p class="c-sticker-name">{sticker.name}</p>
