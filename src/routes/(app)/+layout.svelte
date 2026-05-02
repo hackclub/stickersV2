@@ -206,11 +206,11 @@
 		display: flex;
 		align-items: center;
 		overflow: hidden;
-		padding: 1.05rem 0.75rem 1.05rem 1.35rem;
+		padding: 0.9rem 0.75rem 0.9rem 1.35rem;
 		border-radius: 0.9rem;
 		color: white;
 		text-decoration: none;
-		font-size: clamp(1.15rem, 1.55vw, 1.6rem);
+		font-size: clamp(1.1rem, 1.45vw, 1.55rem);
 		font-weight: bold;
 		font-style: italic;
 		background: transparent;
