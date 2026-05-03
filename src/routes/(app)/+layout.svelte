@@ -219,14 +219,14 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
+		gap: 0.8rem;
 	}
 
 	nav a {
 		display: flex;
 		align-items: center;
 		padding: 1.1rem 0.75rem 1.1rem 1.3rem;
-		border-radius: 0.9rem;
+		border-radius: 9999px;
 		color: white;
 		text-decoration: none;
 		font-size: clamp(1.25rem, 1.45vw, 1.55rem);
@@ -244,7 +244,7 @@
 		inset: 0;
 		left: 0px;
 		right: 0px;
-		border-radius: 0.9rem;
+		border-radius: 9999px;
 		background: #131218;
 		border: 0.18rem solid transparent;
 		box-shadow: 0 4px 0 transparent;
@@ -464,7 +464,7 @@
 		pointer-events: none;
 		left: 0px;
 		right: 0px;
-		border-radius: 0.9rem;
+		border-radius: 9999px;
 		border: 0.18rem solid black;
 		box-shadow: 0 2px 0 black;
 		transition:
