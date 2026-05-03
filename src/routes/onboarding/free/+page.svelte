@@ -157,7 +157,7 @@
 						.join(', ')}
 					{#if data.address.country}<br />{data.address.country}{/if}
 				</address>
-				<a class="update-address" href="/onboarding/setup">update my address →</a>
+				<a class="update-address" href={resolve('/onboarding/setup')}>update my address →</a>
 			{:else}
 				<address class="no-address">no address on file yet.</address>
 			{/if}
