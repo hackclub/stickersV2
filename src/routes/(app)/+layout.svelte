@@ -36,6 +36,28 @@
 			icon: `<svg fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414" xmlns="http://www.w3.org/2000/svg" aria-label="moon-star" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="256" height="256"><path d="M23.6092 6.13958C23.4536 5.82987 23.3348 5.45086 23.2301 4.97851C23.2273 4.96719 23.2248 4.95587 23.2224 4.94455C23.2199 4.93324 23.2174 4.92194 23.2146 4.91063C23.2082 4.88023 23.2019 4.84982 23.1955 4.818C23.1163 4.43475 22.5273 4.43404 22.4495 4.81588C22.4382 4.87103 22.4269 4.92477 22.4156 4.9771C22.3116 5.4544 22.1928 5.83765 22.0365 6.14948C21.9538 6.31565 21.8591 6.46132 21.7502 6.59142C21.6802 6.67557 21.6038 6.75194 21.5204 6.82265C21.3917 6.93296 21.2467 7.02842 21.0812 7.11327C20.7708 7.27237 20.3897 7.3947 19.9124 7.5043C19.8728 7.51393 19.8324 7.52276 19.7915 7.53169C19.7783 7.53456 19.7651 7.53744 19.7519 7.54036C19.37 7.62238 19.3785 8.2107 19.7625 8.28636C19.7763 8.28904 19.79 8.29169 19.8037 8.29431C19.8441 8.30207 19.8839 8.30973 19.923 8.31818C20.3911 8.41717 20.7673 8.53031 21.0742 8.68022C21.2396 8.76083 21.3846 8.85204 21.5133 8.9567C21.6087 9.03518 21.6943 9.12074 21.7735 9.2155C21.8796 9.34278 21.9715 9.48703 22.0535 9.65108C22.207 9.95725 22.3236 10.3327 22.4276 10.7987C22.4343 10.8283 22.4406 10.858 22.4469 10.8879C22.4519 10.9115 22.4569 10.9352 22.4622 10.9592C22.5414 11.3425 23.1297 11.3439 23.2082 10.9613C23.2188 10.9069 23.2301 10.8532 23.2415 10.8008C23.3447 10.3285 23.4621 9.94947 23.6162 9.64117C23.6982 9.47571 23.7916 9.33146 23.8984 9.20348C23.9726 9.11367 24.0539 9.03236 24.143 8.95882C24.271 8.85204 24.4153 8.75871 24.5807 8.67668C24.889 8.52253 25.268 8.40515 25.7404 8.30191C25.7927 8.2906 25.8464 8.27929 25.9016 8.26797C26.2834 8.19019 26.2827 7.60117 25.8995 7.52198C25.8451 7.51138 25.7921 7.49937 25.7391 7.48736L25.739 7.48733C25.2666 7.38268 24.8883 7.26459 24.5793 7.10973C24.4131 7.02559 24.2675 6.93225 24.1388 6.82477C24.049 6.75052 23.9669 6.6685 23.8927 6.5787C23.7852 6.45 23.6912 6.30505 23.6092 6.13958ZM22.5303 23.4697H22.5317C20.8593 24.7267 18.7817 25.4697 16.5303 25.4697C11.0074 25.4697 6.53027 20.9926 6.53027 15.4697C6.53027 13.2183 7.2733 11.1407 8.53027 9.46827V9.46974C8.53027 17.2017 14.7983 23.4697 22.5303 23.4697ZM26.1197 22.6849C26.6747 21.9485 25.8563 21.0399 24.9529 21.2251C24.1704 21.3855 23.3602 21.4697 22.5303 21.4697C15.9029 21.4697 10.5303 16.0972 10.5303 9.46974C10.5303 8.63981 10.6145 7.82957 10.7749 7.04709C10.9601 6.14376 10.0515 5.32532 9.3151 5.88028C6.40906 8.07026 4.53027 11.5506 4.53027 15.4697C4.53027 22.0972 9.90286 27.4697 16.5303 27.4697C20.4494 27.4697 23.9298 25.591 26.1197 22.6849Z"/></svg>`
 		}
 	];
+
+	const ACCENT = ['#ed344f', '#f5ee49', '#239640', '#3758c4'];
+
+	const activeIndex = $derived(
+		links.findIndex(
+			(l) => page.url.pathname === l.href || page.url.pathname.startsWith(l.href + '/')
+		)
+	);
+
+	const activeColor = $derived(activeIndex >= 0 ? ACCENT[activeIndex % 4] : ACCENT[0]);
+
+	let navListEl = $state<HTMLUListElement | null>(null);
+	let indicatorTop = $state(0);
+	let indicatorHeight = $state(44);
+
+	$effect(() => {
+		if (!navListEl || activeIndex < 0) return;
+		const li = navListEl.querySelectorAll<HTMLLIElement>(':scope > li')[activeIndex];
+		if (!li) return;
+		indicatorTop = li.offsetTop;
+		indicatorHeight = li.offsetHeight;
+	});
 </script>
 
 <div class="app-shell">
@@ -45,20 +67,32 @@
 			<span class="brand-tag">stickers</span>
 		</a>
 		<nav>
-			<ul>
-				{#each links as link (link.href)}
-					<li>
-						<a
-							href={link.href}
-							class:active={page.url.pathname === link.href ||
-								page.url.pathname.startsWith(link.href + '/')}
-						>
-							<span class="nav-icon">{@html link.icon}</span>
-							<span class="nav-label">{link.label}</span>
-						</a>
-					</li>
-				{/each}
-			</ul>
+			<div class="nav-rail">
+				{#if activeIndex >= 0}
+					<div
+						class="indicator-pill"
+						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:linear-gradient(90deg,{activeColor}33,{activeColor}08);"
+					></div>
+					<div
+						class="indicator-bar"
+						style="top:{indicatorTop + 8}px;height:{indicatorHeight - 16}px;background:{activeColor};box-shadow:0 0 12px {activeColor}AA;"
+					></div>
+				{/if}
+				<ul bind:this={navListEl}>
+					{#each links as link (link.href)}
+						<li>
+							<a
+								href={link.href}
+								class:active={page.url.pathname === link.href ||
+									page.url.pathname.startsWith(link.href + '/')}
+							>
+								<span class="nav-icon">{@html link.icon}</span>
+								<span class="nav-label">{link.label}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
 		</nav>
 		<div class="profile-section">
 			{#if data.isAdmin}
@@ -130,7 +164,7 @@
 		padding: clamp(1.5rem, 2.2vw, 2.2rem) clamp(1.2rem, 1.6vw, 1.6rem) 0;
 		display: flex;
 		flex-direction: column;
-		gap: clamp(1.5rem, 2.2vw, 2.2rem);
+		gap: clamp(1.1rem, 1.6vw, 1.6rem);
 		overflow-y: auto;
 		scrollbar-width: none;
 		z-index: 5;
@@ -189,14 +223,14 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
+		gap: 0.45rem;
 	}
 
 	nav a {
 		display: flex;
 		align-items: center;
 		overflow: hidden;
-		padding: 0.9rem 0.75rem 0.9rem 1.35rem;
+		padding: 1.1rem 0.75rem 1.1rem 1.75rem;
 		border-radius: 0.9rem;
 		color: white;
 		text-decoration: none;
@@ -204,12 +238,27 @@
 		font-weight: bold;
 		font-style: italic;
 		background: transparent;
-		-webkit-text-stroke: black 0.18rem;
-		paint-order: stroke fill;
-		transition:
-			background 0.3s ease,
-			color 0.2s ease,
-			-webkit-text-stroke 0.2s ease;
+		position: relative;
+		isolation: isolate;
+		transition: all 240ms ease;
+	}
+
+	nav a::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		left: 10px;
+		right: 10px;
+		border-radius: 0.9rem;
+		background: #141318;
+		opacity: 0;
+		pointer-events: none;
+		z-index: -1;
+		transition: opacity 240ms ease;
+	}
+
+	nav a:not(.active):hover::before {
+		opacity: 1;
 	}
 
 	nav a:hover {
@@ -224,33 +273,10 @@
 		flex-shrink: 0;
 		width: 1.8rem;
 		height: 1.8rem;
-		margin-left: calc(-1.8rem - 0.72rem);
-		margin-right: 0.72rem;
-		opacity: 0;
+		margin-right: 1.1rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition:
-			margin-left 0.2s ease,
-			opacity 0.15s ease,
-			color 0.2s ease;
-	}
-
-	nav li:nth-child(4n + 1) .nav-icon {
-		color: #ed344f;
-	}
-	nav li:nth-child(4n + 2) .nav-icon {
-		color: #f5ee49;
-	}
-	nav li:nth-child(4n + 3) .nav-icon {
-		color: #239640;
-	}
-	nav li:nth-child(4n) .nav-icon {
-		color: #3758c4;
-	}
-
-	nav a.active .nav-icon {
-		color: #0c0b10;
 	}
 
 	.nav-icon :global(svg) {
@@ -258,12 +284,6 @@
 		height: 1.8rem;
 		flex-shrink: 0;
 		stroke: none;
-	}
-
-	nav a:hover .nav-icon,
-	nav a.active .nav-icon {
-		margin-left: 0;
-		opacity: 1;
 	}
 
 	.nav-label {
@@ -277,35 +297,18 @@
 
 	nav a.active {
 		font-weight: bold;
-		color: #0c0b10;
 		-webkit-text-stroke: 0;
+		background: transparent;
 	}
 
-	nav li:nth-child(4n + 1) a:not(.active):hover {
-		background: rgba(237, 52, 79, 0.18);
-	}
-	nav li:nth-child(4n + 2) a:not(.active):hover {
-		background: rgba(255, 249, 89, 0.12);
-	}
-	nav li:nth-child(4n + 3) a:not(.active):hover {
-		background: rgba(35, 150, 64, 0.18);
-	}
-	nav li:nth-child(4n) a:not(.active):hover {
-		background: rgba(55, 88, 196, 0.22);
-	}
-
-	nav li:nth-child(4n + 1) a.active {
-		background: #ed344f;
-	}
-	nav li:nth-child(4n + 2) a.active {
-		background: #f5ee49;
-	}
-	nav li:nth-child(4n + 3) a.active {
-		background: #239640;
-	}
-	nav li:nth-child(4n) a.active {
-		background: #3758c4;
-	}
+	nav li:nth-child(4n + 1) a:not(.active):hover,
+	nav li:nth-child(4n + 1) a.active { color: #ed344f; }
+	nav li:nth-child(4n + 2) a:not(.active):hover,
+	nav li:nth-child(4n + 2) a.active { color: #f5ee49; }
+	nav li:nth-child(4n + 3) a:not(.active):hover,
+	nav li:nth-child(4n + 3) a.active { color: #239640; }
+	nav li:nth-child(4n) a:not(.active):hover,
+	nav li:nth-child(4n) a.active { color: #3758c4; }
 
 	.profile-section {
 		margin-top: auto;
@@ -428,6 +431,34 @@
 		min-width: 0;
 		overflow-y: auto;
 		position: relative;
+	}
+
+	.nav-rail {
+		position: relative;
+		isolation: isolate;
+	}
+
+	.indicator-pill,
+	.indicator-bar {
+		position: absolute;
+		z-index: -1;
+		pointer-events: none;
+		transition:
+			top 380ms cubic-bezier(0.5, 1.5, 0.5, 1),
+			background 280ms ease,
+			box-shadow 280ms ease;
+	}
+
+	.indicator-pill {
+		left: 10px;
+		right: 10px;
+		border-radius: 0.9rem;
+	}
+
+	.indicator-bar {
+		left: 0;
+		width: 3px;
+		border-radius: 2px;
 	}
 
 	@media (max-width: 720px) {
