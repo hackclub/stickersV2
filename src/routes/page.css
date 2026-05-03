@@ -370,10 +370,11 @@ body {
 	position: relative;
 	z-index: 10;
 	color: black;
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: clamp(1rem, 2vw, 2.5rem);
-	padding: clamp(2.75rem, 4.7vw, 7.5rem) clamp(2rem, 5vw, 8rem) clamp(8rem, 14vw, 18rem);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(1rem, 1.8vw, 2.2rem);
+	padding: clamp(2.3rem, 3.85vw, 6.25rem) clamp(2rem, 5vw, 8rem) clamp(10rem, 17vw, 22rem);
 	background-color: white;
 	background-image:
 		linear-gradient(
@@ -388,6 +389,27 @@ body {
 		);
 	background-size: var(--page-grid) var(--page-grid);
 	background-position: calc(var(--page-grid) / 2) calc(var(--page-grid) / 2);
+}
+
+.step-arena {
+	position: relative;
+	width: 100%;
+	overflow: visible;
+	margin-top: clamp(2rem, 4vw, 5rem);
+}
+
+.step-grid {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: clamp(2rem, 3vw, 4rem);
+	overflow: visible;
+	padding-bottom: 70px;
+	align-items: start;
+}
+
+.step-path {
+	z-index: 1;
 }
 
 .steps::after {
@@ -405,96 +427,111 @@ body {
 .steps h2 {
 	position: relative;
 	z-index: 2;
-	grid-column: 1 / -1;
+	width: 100%;
 	color: black;
 	font-weight: bold;
 	font-style: italic;
 	font-size: clamp(2.5rem, 5vw, 5rem);
 	text-align: center;
-	margin: 0 0 calc(clamp(3rem, 5vw, 8rem) - clamp(1rem, 2vw, 2.5rem));
+	margin: 0;
 	paint-order: stroke fill;
 }
 
-.steps div {
-	-webkit-text-stroke: black clamp(0.2rem, 0.35vw, 0.55rem);
-	font-weight: bold;
-	paint-order: stroke fill;
+.step-item {
+	--ty: 0px;
+	--r: 0deg;
+	counter-increment: step;
 	position: relative;
-	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	font-size: clamp(1.3rem, 2vw, 2.4rem);
+	gap: clamp(1.2rem, 2.5vw, 3.5rem);
 	background-color: #ed344f;
-	padding: clamp(1.5rem, 2.5vw, 3.5rem);
-	color: white;
-	gap: clamp(2rem, 3.5vw, 5rem);
-	text-align: center;
-	border-radius: 2rem;
-	transition:
-		filter 0.2s ease,
-		transform 0.2s ease;
 	border: clamp(0.15rem, 0.25vw, 0.4rem) solid black;
-	counter-increment: step;
+	border-radius: 1.5rem;
+	padding: clamp(1.4rem, 2.5vw, 4rem) clamp(1rem, 1.5vw, 1.8rem);
+	font-weight: bold;
+	font-size: clamp(1rem, 1.5vw, 1.8rem);
+	color: white;
+	-webkit-text-stroke: black clamp(0.15rem, 0.22vw, 0.35rem);
+	paint-order: stroke fill;
+	text-align: center;
+	transform: translateY(var(--ty)) rotate(var(--r)) scale(1) translateZ(0);
+	transition: transform 0.2s ease;
 	will-change: transform;
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+	min-width: 0;
+	z-index: 2;
 }
 
-.steps div::before {
+.step-item:nth-child(1) {
+	--r: -1.8deg;
+}
+.step-item:nth-child(2) {
+	--r: 1.2deg;
+	--ty: 60px;
+}
+.step-item:nth-child(3) {
+	--r: -1deg;
+}
+.step-item:nth-child(4) {
+	--r: 1.6deg;
+	--ty: 60px;
+}
+
+.step-item:hover {
+	transform: translateY(calc(var(--ty) - 6px)) rotate(var(--r)) scale(1) translateZ(0);
+}
+
+.step-item::before {
 	content: counter(step);
 	position: absolute;
-	top: clamp(-0.7rem, -1vw, -1rem);
-	left: clamp(-0.5rem, -0.7vw, -0.8rem);
-	width: clamp(2rem, 3vw, 3.5rem);
-	height: clamp(2rem, 3vw, 3.5rem);
+	top: -12px;
+	left: -10px;
+	width: clamp(2.4rem, 3.2vw, 3.8rem);
+	height: clamp(2.4rem, 3.2vw, 3.8rem);
 	background-color: black;
 	color: white;
-	font-size: clamp(1.1rem, 1.5vw, 1.9rem);
+	font-size: clamp(1.3rem, 1.7vw, 2rem);
 	font-weight: bold;
 	-webkit-text-stroke: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 0.5rem;
+	transform: rotate(-12deg);
 }
 
-.steps div:nth-child(3) {
+.step-item--yellow {
 	background-color: #f5ee49;
 }
-.steps div:nth-child(4) {
+.step-item--green {
 	background-color: #239640;
 }
-.steps div:nth-child(5) {
+.step-item--blue {
 	background-color: #3758c4;
 }
 
-.steps div:hover {
-	filter: brightness(1.1);
-	transform: translateY(-6px);
-	z-index: 3;
-}
-
-.steps div img {
-	width: clamp(9rem, 16vw, 22rem);
-	height: clamp(9rem, 16vw, 22rem);
+.step-item img {
+	width: clamp(7rem, 11vw, 15rem);
+	height: clamp(7rem, 11vw, 15rem);
 	object-fit: contain;
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-drag: none;
 }
 
 .steps-caption {
 	position: relative;
 	z-index: 2;
-	grid-column: 1 / -1;
+	width: 100%;
 	text-align: center;
-	margin: clamp(0.5rem, 1vw, 1.25rem) 0 0;
+	margin: 0;
 	font-size: clamp(1.1rem, 1.6vw, 1.9rem);
 	font-weight: 500;
 	color: black;
-}
-
-.steps div p {
-	margin: 0;
 }
 
 @media (max-width: 640px) {
@@ -536,12 +573,25 @@ body {
 
 @media (max-width: 1024px) {
 	.steps {
-		grid-template-columns: repeat(2, 1fr);
 		padding: 2.5rem 2rem;
-		gap: 1.5rem;
+		gap: 2rem;
 	}
 
-	.steps div::before {
+	.step-grid {
+		grid-template-columns: repeat(2, 1fr);
+		padding-bottom: 0;
+	}
+
+	.step-item {
+		--ty: 0px !important;
+		--r: 0deg !important;
+	}
+
+	.step-path {
+		display: none;
+	}
+
+	.step-item::before {
 		width: 2.8rem;
 		height: 2.8rem;
 		font-size: 1.5rem;
@@ -575,16 +625,19 @@ body {
 	}
 
 	.steps {
-		grid-template-columns: 1fr;
 		padding: 2rem 1.5rem;
-		gap: 1rem;
+		gap: 1.5rem;
 	}
 
-	.steps div {
+	.step-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.step-item {
 		font-size: 1rem;
 	}
 
-	.steps div::before {
+	.step-item::before {
 		width: 2.5rem;
 		height: 2.5rem;
 		font-size: 1.3rem;
@@ -725,7 +778,6 @@ body {
 
 .faq-item:hover {
 	transform: translateY(-3px);
-	filter: brightness(1.08);
 }
 
 .faq-summary {
@@ -808,7 +860,7 @@ a:hover {
 	.sticker.placed,
 	.sticker:hover:not(.dragging),
 	.sticker.dragging,
-	.steps div,
+	.step-item,
 	.faq-item,
 	.faq-icon,
 	.hc-logo,

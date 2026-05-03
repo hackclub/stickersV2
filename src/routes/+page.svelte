@@ -65,6 +65,52 @@
 	let scrollY = $state(0);
 	let openFaq = $state<number | null>(null);
 
+	let stepsArenaEl!: HTMLElement;
+	let stepCardEls: HTMLElement[] = [];
+	let stepsPathD = $state('');
+	let stepsArrowD = $state('');
+
+	const STEPS_TY = [0, 60, 0, 60];
+
+	function catmullRomToBezier(pts: [number, number][]): string {
+		if (pts.length < 2) return '';
+		const segments: string[] = [`M ${pts[0][0]} ${pts[0][1]}`];
+		for (let i = 0; i < pts.length - 1; i++) {
+			const p0 = pts[Math.max(i - 1, 0)];
+			const p1 = pts[i];
+			const p2 = pts[i + 1];
+			const p3 = pts[Math.min(i + 2, pts.length - 1)];
+			const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+			const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+			const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+			const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+			segments.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`);
+		}
+		return segments.join(' ');
+	}
+
+	function buildStepsPath() {
+		if (!stepsArenaEl || stepCardEls.length < 4) return;
+		const pts: [number, number][] = stepCardEls.map((el, i) => [
+			el.offsetLeft + el.offsetWidth / 2,
+			el.offsetTop + el.offsetHeight / 2 + STEPS_TY[i]
+		]);
+		stepsPathD = catmullRomToBezier(pts);
+		const last = pts[pts.length - 1];
+		const secondLast = pts[pts.length - 2];
+		const dx = last[0] - secondLast[0];
+		const dy = last[1] - secondLast[1];
+		const len = Math.sqrt(dx * dx + dy * dy);
+		const ux = dx / len;
+		const uy = dy / len;
+		const size = 18;
+		const ax = last[0] - ux * size - uy * size * 0.6;
+		const ay = last[1] - uy * size + ux * size * 0.6;
+		const bx = last[0] - ux * size + uy * size * 0.6;
+		const by = last[1] - uy * size - ux * size * 0.6;
+		stepsArrowD = `M ${last[0]} ${last[1]} L ${ax} ${ay} M ${last[0]} ${last[1]} L ${bx} ${by}`;
+	}
+
 	type FaqPart = string | { text: string; href: string };
 	type Faq = { q: string; a: string | FaqPart[] };
 
@@ -134,10 +180,15 @@
 			void startDom();
 		}
 
+		requestAnimationFrame(() => buildStepsPath());
+		const stepsObserver = new ResizeObserver(() => buildStepsPath());
+		if (stepsArenaEl) stepsObserver.observe(stepsArenaEl);
+
 		return () => {
 			if (isMobile) window.removeEventListener('orientationchange', lockHeroHeight);
 			peelStage?.destroy();
 			peelStage = null;
+			stepsObserver.disconnect();
 		};
 	});
 
@@ -538,46 +589,77 @@
 
 <section id="steps" class="steps">
 	<h2>make projects. get stickers.</h2>
-	<div>
-		<img
-			alt=""
-			role="presentation"
-			loading="lazy"
-			decoding="async"
-			src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
-		/>make creative projects
-	</div>
-	<div>
-		<img
-			alt=""
-			role="presentation"
-			loading="lazy"
-			decoding="async"
-			src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
-		/>get tokens for your efforts!
-	</div>
-	<div>
-		<img
-			alt=""
-			role="presentation"
-			loading="lazy"
-			decoding="async"
-			src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
-		/>buy stickers from the shop
-	</div>
-	<div>
-		<img
-			alt=""
-			role="presentation"
-			loading="lazy"
-			decoding="async"
-			src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
-		/>we'll mail them to you!
-	</div>
 	<p class="steps-caption">
-		Yes, all for free! Hack Club will send high quality stickers to your door if you are between
-		13-18 years old.
+		yep, all for free! we'll send high-quality stickers to your door at zero cost if you're 13-18
+		years old.
 	</p>
+	<div class="step-arena" bind:this={stepsArenaEl}>
+		<div class="step-grid">
+			<div class="step-item" bind:this={stepCardEls[0]}>
+				<img
+					alt=""
+					role="presentation"
+					loading="lazy"
+					decoding="async"
+					src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
+				/>
+				make creative projects
+			</div>
+			<div class="step-item step-item--yellow" bind:this={stepCardEls[1]}>
+				<img
+					alt=""
+					role="presentation"
+					loading="lazy"
+					decoding="async"
+					src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+				/>
+				get tokens for your efforts!
+			</div>
+			<div class="step-item step-item--green" bind:this={stepCardEls[2]}>
+				<img
+					alt=""
+					role="presentation"
+					loading="lazy"
+					decoding="async"
+					src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+				/>
+				buy stickers from the shop
+			</div>
+			<div class="step-item step-item--blue" bind:this={stepCardEls[3]}>
+				<img
+					alt=""
+					role="presentation"
+					loading="lazy"
+					decoding="async"
+					src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+				/>
+				we'll mail them to you!
+			</div>
+		</div>
+		<svg
+			class="step-path"
+			aria-hidden="true"
+			style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;"
+		>
+			<path
+				d={stepsPathD}
+				fill="none"
+				stroke="black"
+				stroke-width="4"
+				stroke-dasharray="10 12"
+				stroke-linecap="round"
+				opacity="0.35"
+			/>
+			<path
+				d={stepsArrowD}
+				fill="none"
+				stroke="black"
+				stroke-width="4"
+				stroke-linecap="round"
+				opacity="0.45"
+			/>
+		</svg>
+	</div>
 </section>
 
 <section class="faq">
