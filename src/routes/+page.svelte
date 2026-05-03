@@ -459,7 +459,7 @@
 		type="font/woff2"
 		crossorigin="anonymous"
 	/>
-	<title>Stickers - Hack Club</title>
+	<title>stickers - hack club</title>
 </svelte:head>
 
 <svelte:window bind:scrollY />

@@ -95,7 +95,7 @@
 </script>
 
 <svelte:head>
-	<title>your free stickers</title>
+	<title>stickers - welcome gift</title>
 	{#each data.freeStickers ?? [] as a (a.id)}
 		<link rel="preload" href={a.cdn_url} as="image" />
 	{/each}

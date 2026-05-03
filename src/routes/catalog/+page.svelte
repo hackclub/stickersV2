@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>Catalog - Stickers</title>
+	<title>stickers - catalog</title>
 	<link
 		rel="preload"
 		href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/SemiboldItalic.woff2"
