@@ -25,7 +25,7 @@
 			label: 'catalog',
 			icon: `<svg fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414" xmlns="http://www.w3.org/2000/svg" aria-label="docs" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="256" height="256"><path d="M21.048 6.291C19.836 6.05 18.256 6 16 6c-2.256 0-3.836.05-5.048.291-1.11.216-1.577.533-1.853.864-.32.384-.641 1.094-.844 2.597C8.046 11.283 8 13.274 8 16c0 2.725.046 4.717.255 6.248.203 1.503.524 2.213.844 2.597.276.331.743.648 1.853.864C12.164 25.95 13.744 26 16 26c2.256 0 3.836-.05 5.048-.291 1.11-.216 1.577-.533 1.853-.864.32-.384.641-1.094.843-2.597.21-1.531.256-3.523.256-6.248 0-2.726-.046-4.717-.256-6.248-.202-1.503-.523-2.213-.843-2.597-.276-.331-.743-.648-1.853-.864zM26 16c0-11-.833-12-10-12S6 5 6 16s.833 12 10 12 10-1 10-12z"/><path d="M9.5 11a1 1 0 0 1 1-1h11a1 1 0 0 1 0 2h-11a1 1 0 0 1-1-1zM9.5 16a1 1 0 0 1 1-1h11a1 1 0 0 1 0 2h-11a1 1 0 0 1-1-1zM9.5 21a1 1 0 0 1 1-1h8a1 1 0 0 1 0 2h-8a1 1 0 0 1-1-1z"/></svg>`
 		},
-{
+		{
 			href: '/orders',
 			label: 'orders',
 			icon: `<svg fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414" xmlns="http://www.w3.org/2000/svg" aria-label="package-seam" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="256" height="256"><path d="M14.398 4.57901C15.3766 3.96097 16.6234 3.96097 17.602 4.57901L25.102 9.31586C25.9723 9.86551 26.5 10.823 26.5 11.8523V20.5969C26.5 21.6674 25.9296 22.6568 25.0031 23.1932L17.5031 27.5353C16.5733 28.0736 15.4267 28.0736 14.4969 27.5353L6.99686 23.1932C6.07041 22.6568 5.49997 21.6674 5.49997 20.5969V11.8523C5.49997 10.823 6.0277 9.86551 6.89799 9.31585L14.398 4.57901ZM16.534 6.26999C16.2078 6.06398 15.7922 6.06397 15.466 6.26999L8.46355 10.6926L11.2329 12.223L18.8338 7.72248L16.534 6.26999ZM20.7332 8.92211L13.2633 13.3451L16 14.8575L23.5364 10.6926L20.7332 8.92211ZM7.49997 20.5969V12.4452L15 16.5899V25.5155L7.99894 21.4623C7.69012 21.2835 7.49997 20.9537 7.49997 20.5969ZM24.001 21.4623L17 25.5155V16.5899L24.5 12.4452V20.5969C24.5 20.9537 24.3098 21.2835 24.001 21.4623Z"/></svg>`
@@ -219,17 +219,17 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.45rem;
+		gap: 0.6rem;
 	}
 
 	nav a {
 		display: flex;
 		align-items: center;
-		padding: 1.1rem 0.75rem 1.1rem 1.75rem;
+		padding: 1.1rem 0.75rem 1.1rem 1.3rem;
 		border-radius: 0.9rem;
 		color: white;
 		text-decoration: none;
-		font-size: clamp(1.1rem, 1.45vw, 1.55rem);
+		font-size: clamp(1.25rem, 1.45vw, 1.55rem);
 		font-weight: bold;
 		font-style: italic;
 		background: transparent;
@@ -242,8 +242,8 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		left: 10px;
-		right: 10px;
+		left: 0px;
+		right: 0px;
 		border-radius: 0.9rem;
 		background: #131218;
 		border: 0.18rem solid transparent;
@@ -314,11 +314,21 @@
 		transform: translateY(2px);
 	}
 
-	nav li:nth-child(4n + 1) a:not(.active):hover { color: #ed344f; }
-	nav li:nth-child(4n + 2) a:not(.active):hover { color: #f5ee49; }
-	nav li:nth-child(4n + 3) a:not(.active):hover { color: #239640; }
-	nav li:nth-child(4n) a:not(.active):hover     { color: #3758c4; }
-	nav a.active { color: #0f0e13; }
+	nav li:nth-child(4n + 1) a:not(.active):hover {
+		color: #ed344f;
+	}
+	nav li:nth-child(4n + 2) a:not(.active):hover {
+		color: #f5ee49;
+	}
+	nav li:nth-child(4n + 3) a:not(.active):hover {
+		color: #239640;
+	}
+	nav li:nth-child(4n) a:not(.active):hover {
+		color: #3758c4;
+	}
+	nav a.active {
+		color: #0f0e13;
+	}
 
 	.profile-section {
 		margin-top: auto;
@@ -452,8 +462,8 @@
 		position: absolute;
 		z-index: -1;
 		pointer-events: none;
-		left: 10px;
-		right: 10px;
+		left: 0px;
+		right: 0px;
 		border-radius: 0.9rem;
 		border: 0.18rem solid black;
 		box-shadow: 0 2px 0 black;
