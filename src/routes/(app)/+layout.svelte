@@ -46,7 +46,7 @@
 <div class="app-shell">
 	<aside class="sidebar">
 		<a href="/" class="brand" aria-label="back to root">
-			<img class="brand-favicon" src="/favicon.ico" alt="" />
+			<img class="brand-favicon" src="/images/alt-logo.png" alt="" />
 			<span class="brand-tag">stickers</span>
 		</a>
 		<nav>
@@ -150,7 +150,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: clamp(0.7rem, 1vw, 1.1rem);
+		gap: clamp(0.9rem, 1.1vw, 1.2rem);
 		width: auto;
 		margin-left: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));
 		margin-right: calc(-1 * (clamp(1.2rem, 1.6vw, 1.6rem) - 1.2rem));

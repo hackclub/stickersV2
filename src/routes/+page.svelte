@@ -601,7 +601,7 @@
 					role="presentation"
 					loading="lazy"
 					decoding="async"
-					src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
+					src="https://cdn.hackclub.com/019debde-4fbd-792e-b04c-cf7d389f9baa/hampter-s1.png"
 				/>
 				make creative projects
 			</div>
@@ -611,7 +611,7 @@
 					role="presentation"
 					loading="lazy"
 					decoding="async"
-					src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+					src="https://cdn.hackclub.com/019debab-836a-7077-9081-fe1b95b764a3/hampter-s2.png"
 				/>
 				get tokens for your efforts!
 			</div>
@@ -621,7 +621,7 @@
 					role="presentation"
 					loading="lazy"
 					decoding="async"
-					src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+					src="https://cdn.hackclub.com/019debae-dc58-7f1c-a343-591454574143/hampter-s3.png"
 				/>
 				buy stickers from the shop
 			</div>
@@ -631,7 +631,7 @@
 					role="presentation"
 					loading="lazy"
 					decoding="async"
-					src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+					src="https://cdn.hackclub.com/019debd8-f3bb-72ed-b514-a1e3c0a9adbf/hampter-s4.png"
 				/>
 				we'll mail them to you!
 			</div>

@@ -218,7 +218,7 @@
 									--lx: {s.lx}%;
 									--ly: {s.ly}%;
 									--es: {s.es};
-									--size: {s.size * 3.6}cqw;
+									--size: {s.size * 2.1}cqw;
 									--rs: {s.rotStart}deg;
 									--re: {s.rotEnd}deg;
 									--delay: {s.delay}ms;
@@ -392,7 +392,7 @@
 		cursor: pointer;
 		box-shadow: 0 5px 0 black;
 		opacity: 0;
-		transform: scale(0.5);
+		scale: 0.5;
 		visibility: hidden;
 		pointer-events: none;
 		transition:
@@ -425,24 +425,24 @@
 	@keyframes confirm-pop {
 		from {
 			opacity: 0;
-			transform: scale(0.5);
+			scale: 0.5;
 		}
 		to {
 			opacity: 1;
-			transform: scale(1);
+			scale: 1;
 		}
 	}
 
 	.confirm.visible:hover,
 	.change.visible:hover {
 		filter: brightness(1.15);
-		transform: translateY(-2px) scale(1);
+		transform: translateY(-2px);
 		box-shadow: 0 7px 0 black;
 	}
 
 	.confirm.visible:active,
 	.change.visible:active {
-		transform: translateY(2px) scale(1);
+		transform: translateY(2px);
 		box-shadow: 0 2px 0 black;
 	}
 

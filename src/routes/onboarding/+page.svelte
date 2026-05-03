@@ -70,17 +70,17 @@
 	/>
 	<link
 		rel="preload"
-		href="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+		href="https://cdn.hackclub.com/019debab-836a-7077-9081-fe1b95b764a3/hampter-s2.png"
 		as="image"
 	/>
 	<link
 		rel="preload"
-		href="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+		href="https://cdn.hackclub.com/019debae-dc58-7f1c-a343-591454574143/hampter-s3.png"
 		as="image"
 	/>
 	<link
 		rel="preload"
-		href="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+		href="https://cdn.hackclub.com/019debd8-f3bb-72ed-b514-a1e3c0a9adbf/hampter-s4.png"
 		as="image"
 	/>
 </svelte:head>
@@ -94,7 +94,7 @@
 			<div class="step-grid">
 				<div class="step-item" bind:this={cardEls[0]}>
 					<img
-						src="https://cdn.hackclub.com/019dd9d6-0ef3-7e31-845b-efe8427006b8/image.png"
+						src="https://cdn.hackclub.com/019debde-4fbd-792e-b04c-cf7d389f9baa/hampter-s1.png"
 						alt=""
 						role="presentation"
 						decoding="async"
@@ -103,7 +103,7 @@
 				</div>
 				<div class="step-item step-item--yellow" bind:this={cardEls[1]}>
 					<img
-						src="https://cdn.hackclub.com/019dd9e8-3c94-7e2e-bec9-1da4f429cf12/image.png"
+						src="https://cdn.hackclub.com/019debab-836a-7077-9081-fe1b95b764a3/hampter-s2.png"
 						alt=""
 						role="presentation"
 						decoding="async"
@@ -112,7 +112,7 @@
 				</div>
 				<div class="step-item step-item--green" bind:this={cardEls[2]}>
 					<img
-						src="https://cdn.hackclub.com/019d93f7-1a10-7a99-8c05-abed82ea42f9/me%20when%20remove%20bg.png"
+						src="https://cdn.hackclub.com/019debae-dc58-7f1c-a343-591454574143/hampter-s3.png"
 						alt=""
 						role="presentation"
 						decoding="async"
@@ -121,13 +121,13 @@
 				</div>
 				<div class="step-item step-item--blue" bind:this={cardEls[3]}>
 					<img
-						src="https://cdn.hackclub.com/019d730c-5d3c-7aa7-8b2c-bc6a123cba01/0gH7FoPip8sxo_GVALeVgz4DR2qHd0s1HHVEn8NlO0o"
+						src="https://cdn.hackclub.com/019debd8-f3bb-72ed-b514-a1e3c0a9adbf/hampter-s4.png"
 						alt=""
 						role="presentation"
 						decoding="async"
 					/>
 					we'll mail them to you!
-					<span class="step-tag">FREE · 13–18</span>
+					<span class="step-tag">FREE · 13-18</span>
 				</div>
 			</div>
 
@@ -386,14 +386,40 @@
 		cursor: pointer;
 		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
 		text-decoration: none;
-		background: #239640;
+		background: #f0f0f0;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.35rem;
 		margin-top: clamp(1.5rem, 2.5vw, 3rem);
-		transition:
-			filter 0.12s ease,
-			box-shadow 0.12s ease;
+		position: relative;
+		isolation: isolate;
+		transition: box-shadow 0.12s ease;
+	}
+
+	.welcome-btn::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			90deg,
+			#ed344f,
+			#f5ee49,
+			#239640,
+			#3758c4,
+			#ed344f,
+			#f5ee49,
+			#239640
+		);
+		background-size: 300% 100%;
+		animation: rainbow-shift 2s linear infinite;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+		z-index: -1;
+	}
+
+	.welcome-btn:hover::after {
+		opacity: 1;
 	}
 
 	.welcome-btn-icon {
@@ -403,10 +429,18 @@
 	}
 
 	.welcome-btn:hover {
-		filter: brightness(1.15);
 		box-shadow: 5px 8px 0 rgba(0, 0, 0, 0.5);
 		text-decoration: none;
 		color: white;
+	}
+
+	@keyframes rainbow-shift {
+		0% {
+			background-position: 0% 50%;
+		}
+		100% {
+			background-position: 100% 50%;
+		}
 	}
 
 	.welcome-btn-icon {
