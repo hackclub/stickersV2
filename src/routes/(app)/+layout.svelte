@@ -160,7 +160,7 @@
 		width: var(--sidebar-w);
 		flex-shrink: 0;
 		box-sizing: border-box;
-		background: #0c0b10;
+		background: #0f0e13;
 		padding: clamp(1.5rem, 2.2vw, 2.2rem) clamp(1.2rem, 1.6vw, 1.6rem) 0;
 		display: flex;
 		flex-direction: column;
@@ -339,14 +339,14 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0.5rem;
-		background: #1b1a21;
+		background: #17161b;
 		border-radius: 0.9rem;
 		padding: 0.8rem 1rem 0.8rem 1.05rem;
 		transition: background 0.15s ease;
 	}
 
 	.profile-row:has(.profile-info:hover) {
-		background: #25242c;
+		background: #1c1b20;
 	}
 
 	.profile-row form {
