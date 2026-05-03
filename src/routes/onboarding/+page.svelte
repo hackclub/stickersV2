@@ -283,11 +283,8 @@
 		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
 		transform: translateY(var(--ty)) rotate(var(--r)) scale(1) translateZ(0);
 		animation: card-in 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-		filter: brightness(1);
-		transition:
-			filter 0.2s ease,
-			transform 0.2s ease;
-		will-change: transform, filter;
+		transition: transform 0.2s ease;
+		will-change: transform;
 		min-width: 0;
 		z-index: 2;
 	}
@@ -314,7 +311,6 @@
 	}
 
 	.step-item:hover {
-		filter: brightness(1.1);
 		transform: translateY(calc(var(--ty) - 4px)) rotate(var(--r)) scale(1) translateZ(0);
 	}
 
