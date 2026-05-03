@@ -71,7 +71,7 @@
 				{#if activeIndex >= 0}
 					<div
 						class="indicator-pill"
-						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:linear-gradient(90deg,{activeColor}33,{activeColor}08);"
+						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:linear-gradient(90deg,{activeColor}40,{activeColor}0e);"
 					></div>
 					<div
 						class="indicator-bar"
