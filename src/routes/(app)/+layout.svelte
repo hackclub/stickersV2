@@ -71,11 +71,7 @@
 				{#if activeIndex >= 0}
 					<div
 						class="indicator-pill"
-						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:linear-gradient(90deg,{activeColor}40,{activeColor}0e);"
-					></div>
-					<div
-						class="indicator-bar"
-						style="top:{indicatorTop + 8}px;height:{indicatorHeight - 16}px;background:{activeColor};box-shadow:0 0 12px {activeColor}AA;"
+						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:{activeColor};"
 					></div>
 				{/if}
 				<ul bind:this={navListEl}>
@@ -229,7 +225,6 @@
 	nav a {
 		display: flex;
 		align-items: center;
-		overflow: hidden;
 		padding: 1.1rem 0.75rem 1.1rem 1.75rem;
 		border-radius: 0.9rem;
 		color: white;
@@ -250,23 +245,40 @@
 		left: 10px;
 		right: 10px;
 		border-radius: 0.9rem;
-		background: #141318;
+		background: #131218;
+		border: 0.18rem solid transparent;
+		box-shadow: 0 4px 0 transparent;
 		opacity: 0;
 		pointer-events: none;
 		z-index: -1;
-		transition: opacity 240ms ease;
+		transition:
+			opacity 240ms ease,
+			box-shadow 100ms ease,
+			border-color 100ms ease;
 	}
 
 	nav a:not(.active):hover::before {
 		opacity: 1;
+		box-shadow: 0 6px 0 black;
+		border-color: black;
+	}
+
+	nav a:not(.active):active::before {
+		opacity: 1;
+		box-shadow: 0 2px 0 black;
+		border-color: black;
 	}
 
 	nav a:hover {
 		text-decoration: none;
 	}
 
-	nav a:active {
-		filter: brightness(0.85);
+	nav a:not(.active):hover {
+		transform: translateY(-2px);
+	}
+
+	nav a:not(.active):active {
+		transform: translateY(2px);
 	}
 
 	.nav-icon {
@@ -299,16 +311,14 @@
 		font-weight: bold;
 		-webkit-text-stroke: 0;
 		background: transparent;
+		transform: translateY(2px);
 	}
 
-	nav li:nth-child(4n + 1) a:not(.active):hover,
-	nav li:nth-child(4n + 1) a.active { color: #ed344f; }
-	nav li:nth-child(4n + 2) a:not(.active):hover,
-	nav li:nth-child(4n + 2) a.active { color: #f5ee49; }
-	nav li:nth-child(4n + 3) a:not(.active):hover,
-	nav li:nth-child(4n + 3) a.active { color: #239640; }
-	nav li:nth-child(4n) a:not(.active):hover,
-	nav li:nth-child(4n) a.active { color: #3758c4; }
+	nav li:nth-child(4n + 1) a:not(.active):hover { color: #ed344f; }
+	nav li:nth-child(4n + 2) a:not(.active):hover { color: #f5ee49; }
+	nav li:nth-child(4n + 3) a:not(.active):hover { color: #239640; }
+	nav li:nth-child(4n) a:not(.active):hover     { color: #3758c4; }
+	nav a.active { color: #0f0e13; }
 
 	.profile-section {
 		margin-top: auto;
@@ -438,27 +448,18 @@
 		isolation: isolate;
 	}
 
-	.indicator-pill,
-	.indicator-bar {
+	.indicator-pill {
 		position: absolute;
 		z-index: -1;
 		pointer-events: none;
-		transition:
-			top 380ms cubic-bezier(0.5, 1.5, 0.5, 1),
-			background 280ms ease,
-			box-shadow 280ms ease;
-	}
-
-	.indicator-pill {
 		left: 10px;
 		right: 10px;
 		border-radius: 0.9rem;
-	}
-
-	.indicator-bar {
-		left: 0;
-		width: 3px;
-		border-radius: 2px;
+		border: 0.18rem solid black;
+		box-shadow: 0 2px 0 black;
+		transition:
+			top 380ms cubic-bezier(0.5, 1.5, 0.5, 1),
+			background 280ms ease;
 	}
 
 	@media (max-width: 720px) {
