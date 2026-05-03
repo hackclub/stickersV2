@@ -470,7 +470,6 @@
 	bind:this={heroEl}
 	onpointermove={useWebGL ? undefined : onPointerMove}
 	onpointerup={useWebGL ? undefined : onPointerUp}
-	style="--bg-offset-y: {scrollY * 0.4}px"
 >
 	<a href={catalog} class="catalog-link" bind:this={catalogEl}
 		>catalog <svg
