@@ -311,7 +311,7 @@
 	}
 
 	.step-item:hover {
-		transform: translateY(calc(var(--ty) - 4px)) rotate(var(--r)) scale(1) translateZ(0);
+		transform: translateY(calc(var(--ty) - 10px)) rotate(var(--r)) scale(1) translateZ(0);
 	}
 
 	.step-item::before {
@@ -377,7 +377,7 @@
 		font-weight: bold;
 		padding: clamp(1rem, 1.4vw, 1.4rem) clamp(2.5rem, 3.5vw, 3.5rem);
 		color: white;
-		-webkit-text-stroke: black 0.42rem;
+		-webkit-text-stroke: black clamp(0.22rem, 0.35vw, 0.42rem);
 		paint-order: stroke fill;
 		border: clamp(0.15rem, 0.22vw, 0.35rem) solid black;
 		border-radius: 999px;

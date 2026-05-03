@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import '../page.css';
+	import { resolve } from '$app/paths';
 
 	let { children, data } = $props();
 
@@ -62,7 +63,7 @@
 
 <div class="app-shell">
 	<aside class="sidebar">
-		<a href="/" class="brand" aria-label="back to root">
+		<a href={resolve('/')} class="brand" aria-label="back to root">
 			<img class="brand-favicon" src="/images/alt-logo.png" alt="" />
 			<span class="brand-tag">stickers</span>
 		</a>
@@ -92,10 +93,10 @@
 		</nav>
 		<div class="profile-section">
 			{#if data.isAdmin}
-				<a class="admin-link" href="/admin">admin →</a>
+				<a class="admin-link" href={resolve('/admin')}>admin →</a>
 			{/if}
 			<div class="profile-row">
-				<a href="/profile" class="profile-info">
+				<a href={resolve('/profile')} class="profile-info">
 					{#if data.user.slack_avatar_url}
 						<img class="profile-avatar" src={data.user.slack_avatar_url} alt="avatar" />
 					{/if}
@@ -468,7 +469,7 @@
 		border: 0.18rem solid black;
 		box-shadow: 0 2px 0 black;
 		transition:
-			top 380ms cubic-bezier(0.5, 1.5, 0.5, 1),
+			top 380ms cubic-bezier(0.5, 1.35, 0.5, 1),
 			background 280ms ease;
 	}
 

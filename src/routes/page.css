@@ -482,7 +482,7 @@ body {
 }
 
 .step-item:hover {
-	transform: translateY(calc(var(--ty) - 6px)) rotate(var(--r)) scale(1) translateZ(0);
+	transform: translateY(calc(var(--ty) - 10px)) rotate(var(--r)) scale(1) translateZ(0);
 }
 
 .step-item::before {
