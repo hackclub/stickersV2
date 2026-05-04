@@ -386,13 +386,6 @@
 		box-shadow: 0 2px 0 black;
 	}
 
-	.profile-row.active {
-		cursor: default;
-	}
-
-	.profile-row.active .profile-info {
-		pointer-events: none;
-	}
 
 	.profile-row form {
 		display: contents;
@@ -460,7 +453,7 @@
 		color: #0c0b10;
 		cursor: pointer;
 		flex-shrink: 0;
-		box-shadow: 0 4px 0 black;
+		box-shadow: 0 3px 0 black;
 		transition:
 			transform 240ms ease,
 			box-shadow 100ms ease,
@@ -475,12 +468,12 @@
 	.logout-btn:hover {
 		filter: brightness(1.15);
 		transform: translateY(-2px);
-		box-shadow: 0 6px 0 black;
+		box-shadow: 0 5px 0 black;
 	}
 
 	.logout-btn:active {
 		transform: translateY(2px);
-		box-shadow: 0 2px 0 black;
+		box-shadow: 0 1px 0 black;
 	}
 
 	.content {
