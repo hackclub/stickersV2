@@ -64,6 +64,11 @@
 				</header>
 				<label class="check">
 					<input type="checkbox" bind:checked={agreed} />
+					<span class="check-box" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="5,13 10,18 20,7" />
+						</svg>
+					</span>
 					<span>
 						i agree to not cheat the time tracking system. that includes bots, fake key presses, or
 						UI manipulation. i agree not to submit projects completely generated using AI. i
@@ -202,12 +207,17 @@
 	}
 
 	.check input {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		pointer-events: none;
+	}
+
+	.check-box {
 		flex-shrink: 0;
-		appearance: none;
-		-webkit-appearance: none;
-		margin: 0;
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 1.9rem;
+		height: 1.9rem;
 		border: clamp(0.12rem, 0.18vw, 0.28rem) solid #37373c;
 		border-radius: 0.6rem;
 		background: #141318;
@@ -219,39 +229,34 @@
 			transform 0.12s ease;
 	}
 
-	.check input::after {
-		content: '';
-		position: absolute;
-		top: 48%;
-		left: 50%;
-		width: 0.65rem;
-		height: 1.3rem;
-		border: solid white;
-		border-width: 0 0.32rem 0.32rem 0;
-		transform: translate(-50%, -55%) rotate(45deg) scale(0);
-		transform-origin: center;
-		opacity: 0;
-		transition:
-			transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-			opacity 0.15s ease;
-	}
-
-	.check input:hover {
+	.check:hover .check-box {
 		border-color: #56565d;
 	}
 
-	.check input:checked {
+	.check:active .check-box {
+		transform: scale(0.92);
+	}
+
+	.check input:checked ~ .check-box {
 		background: #239640;
 		border-color: #239640;
 	}
 
-	.check input:checked::after {
-		transform: translate(-50%, -55%) rotate(45deg) scale(1);
-		opacity: 1;
+	.check-box svg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
 	}
 
-	.check input:active {
-		transform: scale(0.92);
+	.check-box svg polyline {
+		stroke-dasharray: 24;
+		stroke-dashoffset: 24;
+		transition: stroke-dashoffset 0.3s ease-out;
+	}
+
+	.check input:checked ~ .check-box svg polyline {
+		stroke-dashoffset: 0;
 	}
 
 	.btn {
