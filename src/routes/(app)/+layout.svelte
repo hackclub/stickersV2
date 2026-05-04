@@ -48,6 +48,10 @@
 
 	const activeColor = $derived(activeIndex >= 0 ? ACCENT[activeIndex % 4] : ACCENT[0]);
 
+	const profileActive = $derived(
+		page.url.pathname === '/profile' || page.url.pathname.startsWith('/profile/')
+	);
+
 	let navListEl = $state<HTMLUListElement | null>(null);
 	let indicatorTop = $state(0);
 	let indicatorHeight = $state(44);
@@ -95,7 +99,7 @@
 			{#if data.isAdmin}
 				<a class="admin-link" href={resolve('/admin')}>admin →</a>
 			{/if}
-			<div class="profile-row">
+			<div class="profile-row" class:active={profileActive}>
 				<a href={resolve('/profile')} class="profile-info">
 					{#if data.user.slack_avatar_url}
 						<img class="profile-avatar" src={data.user.slack_avatar_url} alt="avatar" />
@@ -236,38 +240,24 @@
 		background: transparent;
 		position: relative;
 		isolation: isolate;
-		transition: all 240ms ease;
+		transition:
+			color 240ms ease,
+			transform 240ms ease,
+			background 240ms ease;
 	}
 
 	nav a::before {
 		content: '';
 		position: absolute;
 		inset: 0;
-		left: 0px;
-		right: 0px;
 		border-radius: 9999px;
-		background: #131218;
 		border: 0.18rem solid transparent;
 		box-shadow: 0 4px 0 transparent;
-		opacity: 0;
 		pointer-events: none;
 		z-index: -1;
 		transition:
-			opacity 240ms ease,
 			box-shadow 100ms ease,
 			border-color 100ms ease;
-	}
-
-	nav a:not(.active):hover::before {
-		opacity: 1;
-		box-shadow: 0 6px 0 black;
-		border-color: black;
-	}
-
-	nav a:not(.active):active::before {
-		opacity: 1;
-		box-shadow: 0 2px 0 black;
-		border-color: black;
 	}
 
 	nav a:hover {
@@ -275,11 +265,23 @@
 	}
 
 	nav a:not(.active):hover {
+		background: #131218;
 		transform: translateY(-2px);
 	}
 
+	nav a:not(.active):hover::before {
+		box-shadow: 0 6px 0 black;
+		border-color: black;
+	}
+
 	nav a:not(.active):active {
+		background: #131218;
 		transform: translateY(2px);
+	}
+
+	nav a:not(.active):active::before {
+		box-shadow: 0 2px 0 black;
+		border-color: black;
 	}
 
 	.nav-icon {
@@ -360,14 +362,36 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0.5rem;
-		background: #17161b;
-		border-radius: 0.9rem;
+		background: #131218;
+		border-radius: 9999px;
 		padding: 0.8rem 1rem 0.8rem 1.05rem;
-		transition: background 0.15s ease;
+		border: 0.18rem solid black;
+		box-shadow: 0 4px 0 black;
+		transition:
+			background 0.15s ease,
+			transform 240ms ease,
+			box-shadow 100ms ease;
 	}
 
-	.profile-row:has(.profile-info:hover) {
-		background: #1c1b20;
+	.profile-row:hover:not(.active) {
+		background: #1a1920;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 0 black;
+	}
+
+	.profile-row:active:not(.active),
+	.profile-row.active {
+		transform: translateY(2px);
+		background: #1a1920;
+		box-shadow: 0 2px 0 black;
+	}
+
+	.profile-row.active {
+		cursor: default;
+	}
+
+	.profile-row.active .profile-info {
+		pointer-events: none;
 	}
 
 	.profile-row form {
@@ -395,6 +419,7 @@
 		border-radius: 50%;
 		flex-shrink: 0;
 		object-fit: cover;
+		outline: 2px solid black;
 	}
 
 	.profile-text {
@@ -430,12 +455,16 @@
 		height: clamp(1.9rem, 2.3vw, 2.4rem);
 		padding: 0;
 		background: #ed344f;
-		border: none;
-		border-radius: 0.5rem;
+		border: 0.18rem solid black;
+		border-radius: 9999px;
 		color: #0c0b10;
 		cursor: pointer;
 		flex-shrink: 0;
-		transition: filter 0.1s ease;
+		box-shadow: 0 4px 0 black;
+		transition:
+			transform 240ms ease,
+			box-shadow 100ms ease,
+			filter 0.1s ease;
 	}
 
 	.logout-btn svg {
@@ -445,6 +474,13 @@
 
 	.logout-btn:hover {
 		filter: brightness(1.15);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 0 black;
+	}
+
+	.logout-btn:active {
+		transform: translateY(2px);
+		box-shadow: 0 2px 0 black;
 	}
 
 	.content {

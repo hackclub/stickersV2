@@ -391,7 +391,7 @@
 		margin-top: clamp(1.5rem, 2.5vw, 3rem);
 		position: relative;
 		isolation: isolate;
-		transition: box-shadow 0.12s ease;
+		transition: box-shadow 0.12s ease, transform 240ms ease;
 	}
 
 	.welcome-btn::after {
@@ -427,6 +427,7 @@
 	}
 
 	.welcome-btn:hover {
+		transform: translateY(-2px);
 		box-shadow: 5px 8px 0 rgba(0, 0, 0, 0.5);
 		text-decoration: none;
 		color: white;
