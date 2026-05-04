@@ -23,7 +23,11 @@
 				<span class="badge">1</span>
 				<h2>link hackatime</h2>
 				{#if data.hackatimeLinked}
-					<span class="tick" aria-label="linked">✓</span>
+					<span class="tick" aria-label="linked">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="5,13 10,18 20,7" />
+						</svg>
+					</span>
 				{/if}
 			</header>
 			<p>hackatime tracks your coding time. linking it lets us reward you for projects you ship.</p>
@@ -141,6 +145,7 @@
 		flex-direction: column;
 		gap: 0.7rem;
 		color: white;
+		transition: border-color 0.4s ease;
 	}
 
 	.step header {
@@ -149,15 +154,23 @@
 		gap: 0.6rem;
 	}
 
-	.step.done {
+	.step.done,
+	.step:has(input:checked) {
 		border-color: #239640;
 	}
 
 	.tick {
 		margin-left: auto;
 		color: #239640;
-		font-weight: bold;
-		font-size: 1.2rem;
+		width: 1.8rem;
+		height: 1.8rem;
+		flex-shrink: 0;
+		display: flex;
+	}
+
+	.tick svg {
+		width: 100%;
+		height: 100%;
 	}
 
 	.status.linked {
