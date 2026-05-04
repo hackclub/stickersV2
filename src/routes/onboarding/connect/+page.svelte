@@ -84,7 +84,10 @@
 		{/if}
 
 		<form method="POST" action="?/agree">
-			<button type="submit" class="btn continue" disabled={!canContinue}> continue → </button>
+			<button type="submit" class="btn continue" disabled={!canContinue}>
+				continue
+				<svg fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" fill="currentColor" style="width:1em;height:1em;flex-shrink:0"><path paint-order="stroke fill" stroke="black" stroke-width="5" stroke-linejoin="round" d="M18.496,10.132c-0.479,-0.274 -1.09,-0.108 -1.364,0.372c-0.274,0.479 -0.108,1.09 0.372,1.364c1.554,0.886 3.031,1.929 4.357,3.132l-13.861,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1l13.861,0c-1.326,1.203 -2.803,2.246 -4.357,3.132c-0.48,0.274 -0.646,0.885 -0.372,1.364c0.274,0.48 0.885,0.646 1.364,0.372c2.16,-1.237 4.859,-2.886 6.237,-5.061c0.076,-0.12 0.267,-0.431 0.267,-0.807c0,-0.376 -0.191,-0.687 -0.267,-0.807c-1.403,-2.215 -4.021,-3.792 -6.237,-5.061Z"/></svg>
+			</button>
 		</form>
 	</div>
 </main>
@@ -176,8 +179,8 @@
 	.status.linked {
 		margin: 0;
 		color: #239640;
-		font-weight: 600;
-		font-size: 0.95rem;
+		font-size: clamp(1rem, 1.15vw, 1.15rem);
+		font-weight: bold;
 	}
 
 	.step h2 {
@@ -229,8 +232,8 @@
 
 	.check-box {
 		flex-shrink: 0;
-		width: 1.9rem;
-		height: 1.9rem;
+		width: 1.65rem;
+		height: 1.65rem;
 		border: clamp(0.12rem, 0.18vw, 0.28rem) solid #37373c;
 		border-radius: 0.6rem;
 		background: #141318;
@@ -303,6 +306,17 @@
 		background: #239640;
 		align-self: center;
 		margin-top: 0.4rem;
+		font-size: clamp(0.95rem, 1.25vw, 1.25rem);
+		padding: clamp(0.72rem, 1vw, 1rem) clamp(1.8rem, 2.5vw, 2.5rem);
+		-webkit-text-stroke: black 0.28rem;
+	}
+
+	.btn.continue svg {
+		transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.btn.continue:hover:not(:disabled) svg {
+		transform: translateX(0.3rem);
 	}
 
 	.btn:hover:not(:disabled) {

@@ -54,7 +54,7 @@
 
 	let navListEl = $state<HTMLUListElement | null>(null);
 	let indicatorTop = $state(0);
-	let indicatorHeight = $state(44);
+	let indicatorHeight = $state(0);
 
 	$effect(() => {
 		if (!navListEl || activeIndex < 0) return;
@@ -73,7 +73,7 @@
 		</a>
 		<nav>
 			<div class="nav-rail">
-				{#if activeIndex >= 0}
+				{#if activeIndex >= 0 && indicatorHeight > 0}
 					<div
 						class="indicator-pill"
 						style="top:{indicatorTop}px;height:{indicatorHeight}px;background:{activeColor};"
