@@ -85,16 +85,18 @@ export const actions: Actions = {
 			.limit(1);
 		if (exists.length === 0) return fail(404, { error: 'sticker not found' });
 
+		const newFavoriteId = locals.user.favorite_sticker_id === id ? null : id;
+
 		try {
 			await db
 				.update(users)
-				.set({ favorite_sticker_id: id, updated_at: new Date() })
+				.set({ favorite_sticker_id: newFavoriteId, updated_at: new Date() })
 				.where(eq(users.id, locals.user.id));
 		} catch {
 			return fail(500, { error: 'failed to save favorite' });
 		}
 
-		return { saved: true, favoriteId: id };
+		return { saved: true, favoriteId: newFavoriteId };
 	},
 
 	wishlist: async ({ request, locals }) => {
