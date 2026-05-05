@@ -147,7 +147,8 @@
 <style>
 	.page {
 		padding: clamp(2rem, 4vw, 4rem);
-		max-width: 50rem;
+		width: 100%;
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
 		gap: clamp(1rem, 1.6vw, 1.6rem);
