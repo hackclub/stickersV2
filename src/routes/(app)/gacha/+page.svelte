@@ -58,7 +58,7 @@
 	}
 
 	.roll {
-		padding: clamp(0.75rem, 1.23vw, 1.43rem) clamp(2.63rem, 4.8vw, 5.85rem);
+		padding: clamp(0.2rem, 0.7vw, 0.9rem) clamp(2.63rem, 4.8vw, 5.85rem);
 		font-family: inherit;
 		font-size: clamp(1.05rem, 1.6vw, 1.75rem);
 		font-weight: bold;
@@ -80,6 +80,7 @@
 		transition:
 			transform 0.12s ease,
 			box-shadow 0.12s ease;
+		line-height: 1.5;
 	}
 
 	.roll::after {
