@@ -3,8 +3,6 @@
 </svelte:head>
 
 <div class="page">
-	<h1>gacha</h1>
-
 	<div class="banner"></div>
 
 	<div class="roll-buttons">
@@ -33,19 +31,9 @@
 		gap: clamp(1rem, 2vw, 2rem);
 	}
 
-	h1 {
-		margin: 0;
-		font-weight: bold;
-		font-style: italic;
-		font-size: clamp(3.2rem, 4.8vw, 4.8rem);
-		color: white;
-		-webkit-text-stroke: black clamp(0.28rem, 0.44vw, 0.64rem);
-		paint-order: stroke fill;
-	}
-
 	.banner {
 		width: 100%;
-		aspect-ratio: 2 / 1;
+		aspect-ratio: 16 / 9;
 		background: #141318;
 		border: clamp(0.12rem, 0.18vw, 0.28rem) solid #37373c;
 		border-radius: 1rem;
