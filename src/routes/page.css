@@ -405,7 +405,7 @@ body {
 	gap: clamp(2rem, 3vw, 4rem);
 	overflow: visible;
 	padding-bottom: 70px;
-	align-items: start;
+	align-items: stretch;
 }
 
 .step-path {

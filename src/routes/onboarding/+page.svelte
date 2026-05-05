@@ -243,7 +243,7 @@
 		gap: clamp(2rem, 4vw, 5rem);
 		overflow: visible;
 		padding-bottom: 70px;
-		align-items: start;
+		align-items: stretch;
 	}
 
 	.step-path {
@@ -354,19 +354,19 @@
 
 	.step-tag {
 		position: absolute;
-		bottom: -14px;
-		right: -10px;
+		bottom: -0.875em;
+		right: -0.625em;
 		transform: rotate(6deg);
 		background-color: white;
 		color: black;
 		font-family: 'Phantom Sans', sans-serif;
-		font-size: 1rem;
+		font-size: clamp(0.45rem, 1vw, 1.2rem);
 		font-weight: bold;
 		letter-spacing: 0.1em;
-		padding: 0.35rem 0.8rem;
-		border-radius: 0.5rem;
-		border: 2px solid black;
-		box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.5);
+		padding: 0.35em 0.8em;
+		border-radius: 0.5em;
+		border: 0.125em solid black;
+		box-shadow: 0.2em 0.35em 0 rgba(0, 0, 0, 0.5);
 		white-space: nowrap;
 		-webkit-text-stroke-width: 0;
 	}
