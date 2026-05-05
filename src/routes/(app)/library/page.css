@@ -315,17 +315,27 @@ body {
 	font-size: clamp(0.95rem, 1.1vw, 1.1rem);
 	padding: 0.55rem 1.4rem;
 	color: white;
+	-webkit-text-stroke: black 0.14rem;
+	paint-order: stroke fill;
 	background: #1d1c23;
-	border: clamp(0.12rem, 0.2vw, 0.3rem) solid black;
+	border: 0.18rem solid black;
 	border-radius: 999px;
 	box-shadow: 0 4px 0 black;
 	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
 	transition:
-		filter 0.12s ease,
 		transform 0.12s ease,
-		box-shadow 0.12s ease,
-		background 0.12s ease,
-		color 0.12s ease;
+		filter 0.12s ease,
+		box-shadow 0.12s ease;
+}
+
+.favorite-btn svg {
+	width: 1.15em;
+	height: 1.15em;
+	flex-shrink: 0;
+	stroke: none;
 }
 
 .favorite-btn:hover:not(:disabled) {

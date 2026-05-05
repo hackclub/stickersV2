@@ -24,7 +24,9 @@
 		}
 		if (searchQuery.trim() !== '') {
 			const q = searchQuery.toLowerCase();
-			list = list.filter((s) => s.name.toLowerCase().includes(q));
+			list = list.filter(
+				(s) => s.name.toLowerCase().includes(q) || (s.artist ?? '').toLowerCase().includes(q)
+			);
 		}
 		return list;
 	});

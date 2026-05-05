@@ -14,7 +14,10 @@
 	const filteredStickers = $derived(
 		searchQuery.trim() === ''
 			? data.stickers
-			: data.stickers.filter((s) => s.name.toLowerCase().includes(searchQuery.toLowerCase()))
+			: data.stickers.filter((s) => {
+				const q = searchQuery.toLowerCase();
+				return s.name.toLowerCase().includes(q) || (s.artist ?? '').toLowerCase().includes(q);
+			})
 	);
 
 	$effect(() => {
