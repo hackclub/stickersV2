@@ -8,8 +8,18 @@
 	<div class="banner"></div>
 
 	<div class="roll-buttons">
-		<button class="roll">x1 roll - 20 tokens</button>
-		<button class="roll">x10 roll - 200 tokens</button>
+		<button class="roll">
+			roll x1
+			<span class="roll-cost"
+				><img src="/images/token.png" alt="tokens" class="token-icon" /> 30</span
+			>
+		</button>
+		<button class="roll">
+			roll x10
+			<span class="roll-cost"
+				><img src="/images/token.png" alt="tokens" class="token-icon" /> 300</span
+			>
+		</button>
 	</div>
 </div>
 
@@ -48,40 +58,85 @@
 	}
 
 	.roll {
-		padding: clamp(0.6rem, 1vw, 1.2rem) clamp(1.2rem, 2.4vw, 2.7rem);
+		padding: clamp(0.75rem, 1.23vw, 1.43rem) clamp(2.63rem, 4.8vw, 5.85rem);
 		font-family: inherit;
-		font-size: clamp(0.95rem, 1.4vw, 1.55rem);
+		font-size: clamp(1.05rem, 1.6vw, 1.75rem);
 		font-weight: bold;
 		font-style: italic;
 		color: white;
-		-webkit-text-stroke: black clamp(0.11rem, 0.16vw, 0.18rem);
+		-webkit-text-stroke: black clamp(0.16rem, 0.24vw, 0.28rem);
 		paint-order: stroke fill;
-		background: linear-gradient(
-			90deg,
-			hsl(350, 90%, 75%),
-			hsl(57, 90%, 75%),
-			hsl(134, 90%, 75%),
-			hsl(225, 90%, 75%)
-		);
+		background: #f0f0f0;
 		border: clamp(0.14rem, 0.2vw, 0.22rem) solid black;
 		border-radius: 999px;
 		box-shadow: 0 clamp(3px, 0.4vw, 5px) 0 black;
 		cursor: pointer;
-		animation: prismatic 1.5s linear infinite;
-		animation-play-state: paused;
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.15rem;
 		transition:
 			transform 0.12s ease,
 			box-shadow 0.12s ease;
 	}
 
-	@keyframes prismatic {
-		to { filter: hue-rotate(360deg); }
+	.roll::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			90deg,
+			#ed344f,
+			#f5ee49,
+			#239640,
+			#3758c4,
+			#ed344f,
+			#f5ee49,
+			#239640
+		);
+		background-size: 300% 100%;
+		animation: rainbow-shift 2s linear infinite;
+		animation-play-state: paused;
+		opacity: 1;
+		z-index: -1;
+	}
+
+	.roll:hover::after {
+		animation-play-state: running;
+	}
+
+	@keyframes rainbow-shift {
+		0% {
+			background-position: 0% 50%;
+		}
+		100% {
+			background-position: 100% 50%;
+		}
 	}
 
 	.roll:hover {
-		animation-play-state: running;
 		transform: translateY(-2px);
 		box-shadow: 0 clamp(5px, 0.6vw, 7px) 0 black;
+	}
+
+	.roll-cost {
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
+		font-size: 0.8em;
+		font-style: normal;
+		opacity: 0.9;
+	}
+
+	.token-icon {
+		width: 1.1em;
+		height: 1.1em;
+		object-fit: contain;
+		-webkit-filter: drop-shadow(0 1px 0 black);
+		filter: drop-shadow(0 1px 0 black);
 	}
 
 	.roll:active {
