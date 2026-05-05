@@ -482,5 +482,33 @@
 		.step-grid {
 			grid-template-columns: 1fr;
 		}
+
+		.welcome-btn {
+			font-size: 1.1rem;
+			padding: 0.85rem 2rem;
+		}
+	}
+
+	@media (max-height: 900px) and (min-width: 901px) {
+		.welcome-card {
+			gap: clamp(0.8rem, 1.2vw, 1.5rem);
+		}
+
+		.step-arena {
+			margin-top: clamp(0.8rem, 1.2vw, 1.5rem);
+		}
+
+		.step-grid {
+			padding-bottom: 40px;
+		}
+
+		.step-item:nth-child(2),
+		.step-item:nth-child(4) {
+			--ty: 40px;
+		}
+
+		.welcome-btn {
+			margin-top: clamp(1.5rem, 2.5vw, 3rem);
+		}
 	}
 </style>
